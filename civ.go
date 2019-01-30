@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"testing"
-	
+
 	"github.com/stretchr/testify/assert"
 )
 
-var welcomeMessage = "Hello worldbuilders, this is a civilizing process to find peace..."
+const welcomeMessage = "Hello worldbuilders, this is a civilizing process to find peace..."
 
 func main() {
 
