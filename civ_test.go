@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func testMessage(t *testing.T) {
+func TestMessage(t *testing.T) {
 	assert.Equal(t,
 		welcomeMessage,
 		"Hello worldbuilders, this is a civilizing process to find peace...",
