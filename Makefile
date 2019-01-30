@@ -3,7 +3,7 @@ SHELL := /bin/bash
 default: build
 
 build:
-	@go build
+	@go build	
 
 lint: lint-go
 
@@ -21,3 +21,6 @@ cov-all: coverage
 coverage:
 	@go test -coverprofile=coverage.out ./...
 	@go tool cover -html=coverage.out
+
+fmt:
+	@go fmt .
