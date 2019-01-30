@@ -2,7 +2,7 @@ SHELL := /bin/bash
 
 default: build
 
-build:
+build: fmt
 	@go build	
 
 lint: lint-go
