@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../css/style.css">
     <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
+   
+    </script>
 </head>
 <body>
         <section class="info-box">
@@ -36,5 +38,32 @@
         </section>
     <canvas id="map"></canvas>
     <canvas id="hud"></canvas>
+
+    <script>
+        var tabs = document.querySelectorAll('.info-box li a');
+    var panels = document.querySelectorAll('.info-box article');
+
+    for(i = 0; i < tabs.length; i++) {
+    var tab = tabs[i];
+    setTabHandler(tab, i);
+    }
+
+    function setTabHandler(tab, tabPos) {
+        tab.onclick = function() {
+            for(i = 0; i < tabs.length; i++) {
+            tabs[i].className = '';
+            }
+
+            tab.className = 'active';
+
+            for(i = 0; i < panels.length; i++) {
+            panels[i].className = '';
+            }
+
+            panels[tabPos].className = 'active-panel';
+        }
+    }
+    </script>
+
 </body>
 </html>
