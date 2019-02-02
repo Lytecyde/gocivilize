@@ -38,7 +38,7 @@ body {
   }
 
   .info-box li a:focus, .info-box li a:hover {
-    background-color: green;
+    background-color: rgb(12, 82, 41);
     color: white;
   }
   
@@ -48,7 +48,7 @@ body {
   }
 
   .info-box .panels {
-    height: 352px;
+    height: 800px;
     position: relative;
     clear: both;
   }
@@ -57,7 +57,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    height: 352px;
+    height: 800px;
     padding: 10px;
     color: white;
     background-color: green;
