@@ -1,4 +1,4 @@
-.info-box ul {
+.tab-box ul {
     padding-left: 0;
     margin-top: 0;
 }
@@ -15,19 +15,19 @@ body {
     margin: 0;
 }
 
-.info-box {
+.tab-box {
     width: 750px;
-    height: 800px;
+    height: 48px;
     margin: left;
   }
 
-  .info-box li {
+  .tab-box li {
     float: left;
     list-style-type: none;
     width: 150px;
   }
   
-  .info-box li a {
+  .tab-box li a {
     display: inline-block;
     text-decoration: none;
     width: 100%;
@@ -37,34 +37,33 @@ body {
     text-align: center;
   }
 
-  .info-box li a:focus, .info-box li a:hover {
+  .tab-box li a:focus, .tab-box li a:hover {
     background-color: rgb(12, 82, 41);
     color: white;
   }
   
-  .info-box li a.active {
+  .tab-box li a.active {
     background-color: green;
     color: white;
   }
 
-  .info-box .panels {
-    width: 750px;
+  .panels {
+    width: 100%;
     height: 800px;
-    position: relative;
+    position: absolute;
     clear: both;
   }
 
-  .info-box article {
+  article {
     position: absolute;
     top: 0px;
     left: 0;
     height: 800px;
     width: 100%;
-    padding: 10px;
     color: white;
-    background-color: green;
+    background-color: black;
   }
   
-  .info-box .active-panel {
+  .active-panel {
     z-index: 1;
   }
