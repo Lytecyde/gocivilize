@@ -5,6 +5,9 @@
     <title>GoCivilize</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="stylesheet" href="../css/style.css">
+    <script type="text/javascript" src="../js/HexagonTools.js"></script>
+    <script type="text/javascript" src="../js/Grid.js"></script>
+    <script type="text/javascript" src="../js/HexCalcs.js"></script>
     <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
 </head>
 <body>
@@ -38,6 +41,11 @@
     <canvas id="hud"></canvas>
 
     <script>
+    //create hex for a canvas
+    var hexMap = HT.Grid(1.0,1.0);
+    var canvasMap =  document.getElementById('map');
+    drawHexGrid(canvasMap);
+    //create tabs    
     var tabs = document.querySelectorAll('.tab-box li a');
     var panels = document.querySelectorAll('article');
 
