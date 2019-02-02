@@ -1,0 +1,16 @@
+.info-box ul {
+    padding-left: 0;
+    margin-top: 0;
+}
+
+html {
+    font-family: sans-serif;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+body {
+    margin: 0;
+}
