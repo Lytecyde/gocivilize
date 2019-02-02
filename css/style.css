@@ -48,6 +48,7 @@ body {
   }
 
   .info-box .panels {
+    width: 750px;
     height: 800px;
     position: relative;
     clear: both;
@@ -58,6 +59,7 @@ body {
     top: 0;
     left: 0;
     height: 800px;
+    width: 100%;
     padding: 10px;
     color: white;
     background-color: green;
