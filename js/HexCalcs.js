@@ -28,8 +28,8 @@ function findHexWithSideLengthZAndRatio()
 
 function findHexWithWidthAndHeight()
 {
-	var width = parseFloat(document.getElementById("hexWidth").value);
-	var height = parseFloat(document.getElementById("hexHeight").value);
+	var width = parseFloat(100.0);//document.getElementById("hexWidth").value);
+	var height = parseFloat(86.60254037844388); //document.getElementById("hexHeight").value);
 	
 	
 	var y = height/2.0;
@@ -42,11 +42,6 @@ function findHexWithWidthAndHeight()
 	var z = (-b - Math.sqrt(Math.pow(b,2)-(4.0*a*c)))/(2.0*a);
 	
 	var x = (width - z)/2.0;
-	
-	var contentDiv = document.getElementById("hexStatus");
-
-	contentDiv.innerHTML = "Values for Hex: <br /><b>Width:</b> " + width + "<br /><b>Height: </b>" + height +
-		"<br /><b>Side Length, z:</b> " + z + "<br /><b>x:</b> " + x + "<br /><b>y:</b> " + y;
 	
 	HT.Hexagon.Static.WIDTH = width;
 	HT.Hexagon.Static.HEIGHT = height;
@@ -67,9 +62,10 @@ function drawHexGrid()
 
 function drawHexGrid(canvas)
 {
-	var grid = new HT.Grid(800, 600);
+	var grid = new HT.Grid(1900, 800);
 	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0, 0, 800, 600);
+    ctx.clearRect(0, 0, 1900, 800);
+    console.log(grid.Hexes.length);
 	for(var h in grid.Hexes)
 	{
 		grid.Hexes[h].draw(ctx);
@@ -82,10 +78,10 @@ function getHexGridZR()
 	drawHexGrid();
 }
 
-function getHexGridWH()
+function getHexGridWH(canvas)
 {
 	findHexWithWidthAndHeight();
-	drawHexGrid();
+	drawHexGrid(canvas);
 }
 
 function changeOrientation()
@@ -104,13 +100,13 @@ function changeOrientation()
 function debugHexZR()
 {
 	findHexWithSideLengthZAndRatio();
-	addHexToCanvasAndDraw(20, 20);
+	addHexToCanvasAndDraw(5, 5);
 }
 
 function debugHexWH()
 {
 	findHexWithWidthAndHeight();
-	addHexToCanvasAndDraw(20, 20);
+	addHexToCanvasAndDraw(5, 5);
 }
 
 function addHexToCanvasAndDraw(x, y)
@@ -120,6 +116,6 @@ function addHexToCanvasAndDraw(x, y)
 	
 	var canvas = document.getElementById("hexCanvas");
 	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0, 0, 800, 600);
+	ctx.clearRect(0, 0, 1500, 800);
 	hex.draw(ctx);
 }

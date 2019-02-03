@@ -7,7 +7,7 @@ html {
     font-family: sans-serif;
   }
   
-  * {
+* {
     box-sizing: border-box;
   }
   
@@ -70,6 +70,9 @@ body {
 
   #map {
     position: inherit;
+    display: inline-block;
+    vertical-align: baseline;
+    box-sizing: border-box; 
     height: 100%;
     width: 100%;
   }

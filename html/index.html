@@ -8,9 +8,10 @@
     <script type="text/javascript" src="../js/HexagonTools.js"></script>
     <script type="text/javascript" src="../js/Grid.js"></script>
     <script type="text/javascript" src="../js/HexCalcs.js"></script>
+    <script type="text/javascript" src="../js/Canvas.js"></script>
     <!--[if lt IE 9]><script src="js/html5shiv-printshiv.js" media="all"></script><![endif]-->
 </head>
-<body>
+<body onload="drawCanvas();tabs();">
         <section class="tab-box">
             <ul>
                 <li><a href="#" class="active">Map</a></li>
@@ -40,35 +41,5 @@
     
     <canvas id="hud"></canvas>
 
-    <script>
-    //create hex for a canvas
-    var hexMap = HT.Grid(1.0,1.0);
-    var canvasMap =  document.getElementById('map');
-    drawHexGrid(canvasMap);
-    //create tabs    
-    var tabs = document.querySelectorAll('.tab-box li a');
-    var panels = document.querySelectorAll('article');
-
-    for(i = 0; i < tabs.length; i++) {
-        var tab = tabs[i];
-        setTabHandler(tab, i);
-    }
-
-    function setTabHandler(tab, tabPos) {
-        tab.onclick = function() {
-            for(i = 0; i < tabs.length; i++) {
-            tabs[i].className = '';
-            }
-
-            tab.className = 'active';
-
-            for(i = 0; i < panels.length; i++) {
-            panels[i].className = '';
-            }
-
-            panels[tabPos].className = 'active-panel';
-        }
-    }
-    </script>
 </body>
 </html>
