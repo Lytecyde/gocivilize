@@ -28,8 +28,8 @@ function findHexWithSideLengthZAndRatio()
 
 function findHexWithWidthAndHeight()
 {
-	var width = parseFloat(100.0);//document.getElementById("hexWidth").value);
-	var height = parseFloat(86.60254037844388); //document.getElementById("hexHeight").value);
+	var width = parseFloat(100.0/4);//document.getElementById("hexWidth").value);
+	var height = parseFloat(86.60254037844388/4); //document.getElementById("hexHeight").value);
 	
 	
 	var y = height/2.0;
@@ -50,19 +50,8 @@ function findHexWithWidthAndHeight()
 
 function drawHexGrid()
 {
-	var grid = new HT.Grid(800, 600);
-	var canvas = document.getElementById("hexCanvas");
-	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0, 0, 800, 600);
-	for(var h in grid.Hexes)
-	{
-		grid.Hexes[h].draw(ctx);
-	}
-}
-
-function drawHexGrid(canvas)
-{
 	var grid = new HT.Grid(1900, 800);
+	var canvas = document.getElementById("map");
 	var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 1900, 800);
     console.log(grid.Hexes.length);
@@ -100,13 +89,13 @@ function changeOrientation()
 function debugHexZR()
 {
 	findHexWithSideLengthZAndRatio();
-	addHexToCanvasAndDraw(5, 5);
+	addHexToCanvasAndDraw(15, 15);
 }
 
 function debugHexWH()
 {
 	findHexWithWidthAndHeight();
-	addHexToCanvasAndDraw(5, 5);
+	addHexToCanvasAndDraw(15, 15);
 }
 
 function addHexToCanvasAndDraw(x, y)

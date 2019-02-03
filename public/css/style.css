@@ -38,7 +38,7 @@ body {
   }
 
   .tab-box li a:focus, .tab-box li a:hover {
-    background-color: rgb(12, 82, 41);
+    background-color: rgb(119, 189, 119);
     color: white;
   }
   
@@ -69,7 +69,7 @@ body {
   }
 
   #map {
-    position: inherit;
+    position: relative;
     display: inline-block;
     vertical-align: baseline;
     box-sizing: border-box; 

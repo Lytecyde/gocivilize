@@ -1,13 +1,12 @@
 //create hex for a canvas
 function drawCanvas(){
-    var canvasMap =  document.getElementById('map');
-    getHexGridWH(canvasMap);
+    getHexGridWH();
 }
 
 //create tabs    
 function tabs(){
     var tabs = document.querySelectorAll('.tab-box li a');
-    var panels = document.querySelectorAll('article');
+   
 
     for(i = 0; i < tabs.length; i++) {
         var tab = tabs[i];
@@ -17,6 +16,8 @@ function tabs(){
 }
 
 function setTabHandler(tab, tabPos) {
+    var panels = document.querySelectorAll('article');
+
     tab.onclick = function() {
         for(i = 0; i < tabs.length; i++) {
         tabs[i].className = '';
