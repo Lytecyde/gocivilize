@@ -3,8 +3,8 @@ function drawCanvas(){
     getHexGridWH();
 }
 
-//create tabs    
-function tabs(){
+   
+function createTabs(){
     var tabs = document.querySelectorAll('.tab-box li a');
    
 
