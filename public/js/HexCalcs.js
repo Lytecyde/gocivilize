@@ -28,8 +28,9 @@ function findHexWithSideLengthZAndRatio()
 
 function findHexWithWidthAndHeight()
 {
-	var width = parseFloat(100.0/4);//document.getElementById("hexWidth").value);
-	var height = parseFloat(86.60254037844388/4); //document.getElementById("hexHeight").value);
+	//for altering the size of the hexes
+	var width = parseFloat(100.0);//document.getElementById("hexWidth").value);
+	var height = parseFloat(86.60254037844388); //document.getElementById("hexHeight").value);
 	
 	
 	var y = height/2.0;
@@ -103,7 +104,7 @@ function addHexToCanvasAndDraw(x, y)
 	HT.Hexagon.Static.DRAWSTATS = true;
 	var hex = new HT.Hexagon(null, x, y);
 	
-	var canvas = document.getElementById("hexCanvas");
+	var canvas = document.getElementById("map");
 	var ctx = canvas.getContext('2d');
 	ctx.clearRect(0, 0, 1500, 800);
 	hex.draw(ctx);
