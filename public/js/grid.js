@@ -3,7 +3,6 @@
  * @constructor
  */
 HT.Grid = function(/*double*/ width, /*double*/ height) {
-	
 	this.Hexes = [];
 	//setup a dictionary for use later for assigning the X or Y CoOrd (depending on Orientation)
 	var HexagonsByXOrYCoOrd = {}; //Dictionary<int, List<Hexagon>>
