@@ -26,11 +26,10 @@ function findHexWithSideLengthZAndRatio() {
     HT.Hexagon.Static.SIDE = z;
 }
 
-function findHexWithWidthAndHeight() {
-    //for altering the size of the hexes
-    var width = parseFloat(100.0); //document.getElementById("hexWidth").value);
-    var height = parseFloat(86.60254037844388); //document.getElementById("hexHeight").value);
+var width = parseFloat(100.0);
+var height = parseFloat(86.60254037844388);
 
+function findHexWithWidthAndHeight(width, height) {
 
     var y = height / 2.0;
 
@@ -64,7 +63,7 @@ function getHexGridZR() {
 }
 
 function getHexGridWH(canvas) {
-    findHexWithWidthAndHeight();
+    findHexWithWidthAndHeight(width, height);
     drawHexGrid(canvas);
 }
 

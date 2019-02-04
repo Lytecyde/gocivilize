@@ -70,8 +70,21 @@ article {
 }
 
 .hud {
+    z-index: 1;
     position: absolute;
     right: 0px;
     width: 250px;
+    height: 800px;
     background-color: grey;
+}
+
+.hud li {
+    list-style-type: none;
+}
+
+#minimap {
+    z-index: 1;
+    margin: 0 auto;
+    color: black;
+    background-color: white;
 }

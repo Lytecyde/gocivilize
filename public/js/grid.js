@@ -58,11 +58,11 @@ HT.Grid = function( /*double*/ width, /*double*/ height) {
         var hexagonsByXOrY = HexagonsByXOrYCoOrd[coOrd1];
         var coOrd2 = Math.floor(coOrd1 / 2) + (coOrd1 % 2);
         for (var i in hexagonsByXOrY) {
-            var h = hexagonsByXOrY[i]; //Hexagon
+            var hex = hexagonsByXOrY[i];
             if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-                h.PathCoOrdY = coOrd2++;
+                hex.PathCoOrdY = coOrd2++;
             else
-                h.PathCoOrdX = coOrd2++;
+                hex.PathCoOrdX = coOrd2++;
         }
     }
 };

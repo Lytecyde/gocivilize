@@ -28,5 +28,5 @@ function setTabHandler(tab, tabPos) {
         }
 
         panels[tabPos].className = 'active-panel';
-    }
+    };
 }
