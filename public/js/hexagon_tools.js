@@ -95,7 +95,6 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.strokeStyle = "#FF0000";
     ctx.moveTo(this.Points[0].X, this.Points[0].Y);
     for (var i = 1; i < this.Points.length; i++) {
         var p = this.Points[i];
@@ -108,7 +107,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
 
     if (this.Id) {
         //draw text for debugging
-        ctx.fillStyle = "black"
+        ctx.fillStyle = "black";
         ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';

@@ -5,12 +5,12 @@
 
 html {
     font-family: sans-serif;
-  }
-  
+}
+
 * {
     box-sizing: border-box;
-  }
-  
+}
+
 body {
     margin: 0;
 }
@@ -22,48 +22,56 @@ body {
 }
 
 .tab-box li {
-  float: left;
-  list-style-type: none;
-  width: 150px;
+    float: left;
+    list-style-type: none;
+    width: 150px;
 }
 
 .tab-box li a {
-  display: inline-block;
-  text-decoration: none;
-  width: 100%;
-  line-height: 3;
-  background-color: green;
-  color: white;
-  text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    width: 100%;
+    line-height: 3;
+    background-color: green;
+    color: white;
+    text-align: center;
 }
 
-.tab-box li a:focus, .tab-box li a:hover {
-  background-color: rgb(119, 189, 119);
-  color: white;
+.tab-box li a:focus,
+.tab-box li a:hover {
+    background-color: rgb(119, 189, 119);
+    color: white;
 }
 
 .tab-box li a.active {
-  background-color: green;
-  color: white;
+    background-color: green;
+    color: white;
 }
 
 .panels {
-  width: 100%;
-  height: 800px;
-  position: absolute;
-  clear: both;
+    width: 100%;
+    height: 800px;
+    position: absolute;
+    clear: both;
 }
 
 article {
-  position: absolute;
-  top: 0px;
-  left: 0;
-  height: 800px;
-  width: 100%;
-  color: white;
-  background-color: black;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 800px;
+    width: 100%;
+    color: white;
+    background-color: black;
 }
 
 .active-panel {
-  z-index: 1;
+    z-index: 1;
+}
+
+.hud {
+    position: absolute;
+    right: 0px;
+    width: 250px;
+    background-color: grey;
 }

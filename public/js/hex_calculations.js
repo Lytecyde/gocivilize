@@ -1,3 +1,5 @@
+var grid = new HT.Grid(1900, 800);
+
 function findHexWithSideLengthZAndRatio() {
     var z = parseFloat(document.getElementById("sideLength").value);
     var r = parseFloat(document.getElementById("whRatio").value);
@@ -47,7 +49,6 @@ function findHexWithWidthAndHeight() {
 }
 
 function drawHexGrid() {
-    var grid = new HT.Grid(1900, 800);
     var canvas = document.getElementById("map");
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 1900, 800);
