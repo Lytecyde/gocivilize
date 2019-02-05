@@ -1,3 +1,5 @@
+"use strict";
+
 var HT = HT || {};
 /**
  * A Point is simply x and y coordinates

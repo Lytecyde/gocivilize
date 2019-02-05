@@ -7,7 +7,7 @@ build: fmt
 
 lint: lint-go
       lint-js
-	  
+
 lint-js: 
 	@jslint
 

@@ -1,3 +1,4 @@
+"use strict";
 var width = parseFloat(10.0);
 var height = parseFloat(8.660254037844388);
 
