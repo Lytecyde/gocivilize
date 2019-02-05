@@ -73,7 +73,7 @@ article {
     z-index: 1;
     position: absolute;
     right: 0px;
-    width: 250px;
+    width: 220px;
     height: 800px;
     background-color: grey;
 }
@@ -82,8 +82,14 @@ article {
     list-style-type: none;
 }
 
+.hud ul {
+    position: relative;
+    text-align: left;
+}
+
 #minimap {
     z-index: 1;
+    padding: 10px;
     margin: 0 auto;
     color: black;
     background-color: white;

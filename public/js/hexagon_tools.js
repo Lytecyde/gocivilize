@@ -112,7 +112,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
+        if (ctx.canvas.width != 200) ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
     }
 
     if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
