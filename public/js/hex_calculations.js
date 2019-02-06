@@ -1,7 +1,6 @@
 "use strict";
 
 function findHexWithWidthAndHeight(width, height) {
-
     var y = height / 2.0;
 
     //solve quadratic
