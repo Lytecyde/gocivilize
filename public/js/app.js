@@ -4,6 +4,7 @@ var grid = new HT.Grid(1900, 800);
 
 function onload() {
     createTabs();
+    createMinimap();
 }
 
 function createTabs() {

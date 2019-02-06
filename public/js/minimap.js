@@ -1,9 +1,7 @@
 "use strict";
 
-var width = parseFloat(10.0);
-var height = parseFloat(8.660254037844388);
-
-createMinimap();
+var widthMinimap = parseFloat(10.0);
+var heightMinimap = parseFloat(8.660254037844388);
 
 function createMinimap() {
     var canvas = document.getElementById("minimap");
