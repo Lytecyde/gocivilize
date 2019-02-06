@@ -2,13 +2,13 @@ function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a');
     var tab;
     for (i = 0; i < tabs.length; i++) {
-        tab = tabs[i];
-        setTabHandler(tab, i);
+        setTabHandler(tabs[i], i);
     }
 }
+
 function setTabHandler(tab, tabPos) {
     var panels = document.querySelectorAll('article');
-    tab.onclick = function () {
+    tab.onclick = function() {
         for (i = 0; i < tabs.length; i++) {
             tabs[i].className = '';
         }
