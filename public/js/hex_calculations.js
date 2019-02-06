@@ -1,8 +1,5 @@
 "use strict";
 
-var width = parseFloat(100.0);
-var height = parseFloat(86.60254037844388);
-
 function findHexWithWidthAndHeight(width, height) {
 
     var y = height / 2.0;
@@ -22,7 +19,9 @@ function findHexWithWidthAndHeight(width, height) {
 }
 
 function getHexGridWH(canvas) {
-    findHexWithWidthAndHeight(width, height);
+    var widthGrid = parseFloat(100.0);
+    var heightGrid = parseFloat(86.60254037844388);
+    findHexWithWidthAndHeight(widthGrid, heightGrid);
     drawHexGrid(canvas);
 }
 
