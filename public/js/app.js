@@ -8,7 +8,7 @@ function onload() {
 
 function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a');
-    var tab;
+    var i;
     for (i = 0; i < tabs.length; i++) {
         setTabHandler(tabs[i], i);
     }
