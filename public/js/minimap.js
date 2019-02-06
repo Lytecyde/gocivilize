@@ -1,4 +1,5 @@
 "use strict";
+
 var width = parseFloat(10.0);
 var height = parseFloat(8.660254037844388);
 
@@ -20,8 +21,6 @@ function findHexWithWidthAndHeight(width, height) {
 }
 
 function createMinimap() {
-    findHexWithWidthAndHeight(width, height);
-    getHexGridWH(width, height);
     var canvas = document.getElementById("minimap");
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, 200, 120);
