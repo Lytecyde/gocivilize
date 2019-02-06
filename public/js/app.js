@@ -27,3 +27,13 @@ function setTabHandler(tab, tabPos) {
         panels[tabPos].className = 'active-panel';
     };
 }
+
+function drawHexGrid() {
+    var canvas = document.getElementById("map");
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 1900, 800);
+    console.log(grid.Hexes.length);
+    for (var h in grid.Hexes) {
+        grid.Hexes[h].draw(ctx);
+    }
+}
