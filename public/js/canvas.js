@@ -1,9 +1,4 @@
 "use strict";
-define("hex_calcualtions.js");
-//create hex for a canvas
-function drawCanvas() {
-    getHexGridWH();
-}
 
 //create tabs 
 function tabs() {
