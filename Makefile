@@ -6,7 +6,7 @@ build: fmt
 	@go build	
 
 lint: lint-go
-      lint-js
+	lint-js
 
 lint-js: 
 	@jslint
