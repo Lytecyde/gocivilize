@@ -1,10 +1,11 @@
 "use strict";
+define("hex_calcualtions.js");
 //create hex for a canvas
 function drawCanvas() {
     getHexGridWH();
 }
 
-//create tabs    
+//create tabs 
 function tabs() {
     var tabs = document.querySelectorAll('.tab-box li a');
 

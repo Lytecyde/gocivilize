@@ -1,24 +1,38 @@
 "use strict";
 
 var HT = HT || {};
+var selected = true;
 /**
- * A Point is simply x and y coordinates
+ * A Point is  x and y coordinates
  * @constructor
  */
 HT.Point = function(x, y) {
-    this.X = x;
-    this.Y = y;
+    var X = x;
+    var Y = y;
 };
 
+
+//variables 
+var Points = [];
+var Id;
+
+var TopLeftPoint;
+var BottomRightPoint;
+var MidPoint;
+var P1;
+
+var topLeftX, topLeftY;
 /**
  * A Rectangle is x and y origin and width and height
  * @constructor
  */
 HT.Rectangle = function(x, y, width, height) {
-    this.X = x;
-    this.Y = y;
-    this.Width = width;
-    this.Height = height;
+    /*
+    var X = x;
+    var Y = y;
+    var Width = width;
+    var Height = height;
+    */
 };
 
 /**
@@ -26,10 +40,10 @@ HT.Rectangle = function(x, y, width, height) {
  * @constructor
  */
 HT.Line = function(x1, y1, x2, y2) {
-    this.X1 = x1;
-    this.Y1 = y1;
-    this.X2 = x2;
-    this.Y2 = y2;
+    var X1 = x1;
+    var Y1 = y1;
+    var X2 = x2;
+    var Y2 = y2;
 };
 
 /**
@@ -37,52 +51,48 @@ HT.Line = function(x1, y1, x2, y2) {
  * @constructor
  */
 HT.Hexagon = function(id, x, y) {
-    this.Points = []; //Polygon Base
+    topLeftX = x;
+    topLeftY = y;
     var x1 = null;
     var y1 = null;
     if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal) {
         x1 = (HT.Hexagon.Static.WIDTH - HT.Hexagon.Static.SIDE) / 2;
         y1 = (HT.Hexagon.Static.HEIGHT / 2);
-        this.Points.push(new HT.Point(x1 + x, y));
-        this.Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
-        this.Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x, y1 + y));
+        Points.push(new HT.Point(x1 + x, y));
+        Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, y));
+        Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
+        Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, HT.Hexagon.Static.HEIGHT + y));
+        Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
+        Points.push(new HT.Point(x, y1 + y));
     } else {
         x1 = (HT.Hexagon.Static.WIDTH / 2);
         y1 = (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2;
-        this.Points.push(new HT.Point(x1 + x, y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + HT.Hexagon.Static.SIDE + y));
-        this.Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x, y1 + HT.Hexagon.Static.SIDE + y));
-        this.Points.push(new HT.Point(x, y1 + y));
+        Points.push(new HT.Point(x1 + x, y));
+        Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
+        Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + HT.Hexagon.Static.SIDE + y));
+        Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
+        Points.push(new HT.Point(x, y1 + HT.Hexagon.Static.SIDE + y));
+        Points.push(new HT.Point(x, y1 + y));
     }
 
-    this.Id = id;
-
-    this.x = x;
-    this.y = y;
-    this.x1 = x1;
-    this.y1 = y1;
-
-    this.TopLeftPoint = new HT.Point(this.x, this.y);
-    this.BottomRightPoint = new HT.Point(this.x + HT.Hexagon.Static.WIDTH, this.y + HT.Hexagon.Static.HEIGHT);
-    this.MidPoint = new HT.Point(this.x + (HT.Hexagon.Static.WIDTH / 2), this.y + (HT.Hexagon.Static.HEIGHT / 2));
-
-    this.P1 = new HT.Point(x + x1, y + y1);
-
-    this.selected = false;
+    Id = id;
+    TopLeftPoint = new HT.Point(x, y);
+    BottomRightPoint = new HT.Point(x + HT.Hexagon.Static.WIDTH, y + HT.Hexagon.Static.HEIGHT);
+    MidPoint = new HT.Point(x + (HT.Hexagon.Static.WIDTH / 2), y + (HT.Hexagon.Static.HEIGHT / 2));
+    P1 = new HT.Point(x + x1, y + y1);
+    selected = false;
 };
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+    var letters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+    var colorCode = ['', '', '', '', '', ''];
+    var hash = '#';
+    var i = 0;
+    colorCode.foreach(function(i) {
+        colorCode[i] = letters[Math.floor(Math.random() * 16)];
+        i += 1;
+    });
+    return hash + colorCode.toString;
 }
 
 /**
@@ -91,30 +101,34 @@ function getRandomColor() {
  */
 HT.Hexagon.prototype.draw = function(ctx) {
     var fillingColor = getRandomColor();
-    if (!this.selected)
+    if (!selected) {
         ctx.strokeStyle = "grey";
-    else
+    } else {
         ctx.strokeStyle = "black";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(this.Points[0].X, this.Points[0].Y);
-    for (var i = 1; i < this.Points.length; i++) {
-        var p = this.Points[i];
-        ctx.lineTo(p.X, p.Y);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(Points[0].X, Points[0].Y);
+        var i;
+        var p;
+        Points.forEach(function(element) {
+            ctx.lineTo(p.X, p.Y);
+        });
+        ctx.fillStyle = fillingColor;
+        ctx.fill();
+        ctx.closePath();
+        ctx.stroke();
     }
-    ctx.fillStyle = fillingColor;
-    ctx.fill();
-    ctx.closePath();
-    ctx.stroke();
-
-    if (this.Id) {
+    if (Id) {
         //draw text for debugging
         ctx.fillStyle = "black";
         ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        if (ctx.canvas.width != 200) ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
+        var sizeMinimap = 200;
+        if (ctx.canvas.width != sizeMinimap) {
+            ctx.fillText(Id, MidPoint.X, MidPoint.Y);
+        }
     }
 
     if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
@@ -132,9 +146,9 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.lineWidth = 2;
         //draw our x1, y1, and z
         ctx.beginPath();
-        ctx.moveTo(this.P1.X, this.y);
-        ctx.lineTo(this.P1.X, this.P1.Y);
-        ctx.lineTo(this.x, this.P1.Y);
+        ctx.moveTo(P1.X, topLeftY);
+        ctx.lineTo(P1.X, P1.Y);
+        ctx.lineTo(topLeftX, P1.Y);
         ctx.closePath();
         ctx.stroke();
 
@@ -143,13 +157,25 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.textAlign = "left";
         ctx.textBaseline = 'middle';
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText("z", this.x + this.x1 / 2 - 8, this.y + this.y1 / 2);
-        ctx.fillText("x", this.x + this.x1 / 2, this.P1.Y + 10);
-        ctx.fillText("y", this.P1.X + 2, this.y + this.y1 / 2);
-        ctx.fillText("z = " + HT.Hexagon.Static.SIDE, this.P1.X, this.P1.Y + this.y1 + 10);
-        ctx.fillText("(" + this.x1.toFixed(2) + "," + this.y1.toFixed(2) + ")", this.P1.X, this.P1.Y + 10);
+        ctx.fillText("z", topLeftX + HT.Line.x1 / 2 - 8, topLeftY + HT.Line.y1 / 2);
+        ctx.fillText("x", topLeftX + HT.Line.x1 / 2, P1.Y + 10);
+        ctx.fillText("y", P1.X + 2, topLeftY + HT.Line.y1 / 2);
+        ctx.fillText("z = " + HT.Hexagon.Static.SIDE, P1.X, P1.Y + HT.Line.y1 + 10);
+        ctx.fillText("(" + x1.toFixed(2) + "," + y1.toFixed(2) + ")", P1.X, P1.Y + 10);
     }
+
+    drawCiv(ctx);
 };
+
+function drawCiv(ctx) {
+    ctx.fillStyle = "white";
+    ctx.lineWidth = 4;
+    ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = 'middle';
+    //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
+    ctx.fillText("#");
+}
 
 /**
  * Returns true if the x,y coordinates are inside this hexagon
@@ -157,7 +183,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
  * @return {boolean}
  */
 HT.Hexagon.prototype.isInBounds = function(x, y) {
-    return this.Contains(new HT.Point(x, y));
+    return HT.Hexagon.Contains(new HT.Point(x, y));
 };
 
 
@@ -168,9 +194,12 @@ HT.Hexagon.prototype.isInBounds = function(x, y) {
  * @return {boolean}
  */
 HT.Hexagon.prototype.isInHexBounds = function( /*Point*/ p) {
-    if (this.TopLeftPoint.X < p.X && this.TopLeftPoint.Y < p.Y &&
-        p.X < this.BottomRightPoint.X && p.Y < this.BottomRightPoint.Y)
+    if (TopLeftPoint.X < p.X &&
+        TopLeftPoint.Y < p.Y &&
+        p.X < BottomRightPoint.X &&
+        p.Y < BottomRightPoint.Y) {
         return true;
+    }
     return false;
 };
 
@@ -189,11 +218,16 @@ HT.Hexagon.prototype.Contains = function( /*Point*/ p) {
     if (this.isInHexBounds(p)) {
         //turn our absolute point into a relative point for comparing with the polygon's points
         //var pRel = new HT.Point(p.X - this.x, p.Y - this.y);
-        var i, j = 0;
-        for (i = 0, j = this.Points.length - 1; i < this.Points.length; j = i++) {
-            var iP = this.Points[i];
-            var jP = this.Points[j];
+        var i = 0;
+        var j = 0;
+        var iP;
+        var jP;
+        var pointsInHexagon = 6;
+        for (j = Points.length - 1; i < pointsInHexagon; j = i++) {
+            iP = Points[i];
+            jP = Points[j];
             if (
+                //CLEAN: magical logic 
                 (
                     ((iP.Y <= p.Y) && (p.Y < jP.Y)) ||
                     ((jP.Y <= p.Y) && (p.Y < iP.Y))
@@ -217,10 +251,10 @@ HT.Hexagon.prototype.Contains = function( /*Point*/ p) {
  */
 HT.Hexagon.prototype.distanceFromMidPoint = function( /*Point*/ p) {
     // Pythagoras' Theorem: Square of hypotenuse = sum of squares of other two sides
-    var deltaX = this.MidPoint.X - p.X;
-    var deltaY = this.MidPoint.Y - p.Y;
+    var deltaX = MidPoint.X - p.X;
+    var deltaY = MidPoint.Y - p.Y;
 
-    // squaring so don't need to worry about square-rooting a negative number 
+    //squaring so don't need to worry about square-rooting a negative number
     return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
 };
 
