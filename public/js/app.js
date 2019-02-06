@@ -1,5 +1,7 @@
 "use strict";
 
+var grid = new HT.Grid(1900, 800);
+
 function onload() {
     createTabs();
 }
