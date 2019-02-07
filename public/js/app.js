@@ -48,7 +48,7 @@ function gridType(n) {
         return id[n];
     }
 
-    function hexSizes(n) {
+    function mapSizes(n) {
         var size = [];
         var gridWidth = [1900, 200];
         var gridHeight = [800, 150];
