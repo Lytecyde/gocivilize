@@ -77,7 +77,8 @@ HT.Hexagon = function(id, x, y) {
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
-    for (var i = 0; i < 6; i++) {
+    var colorLength = 6;
+    for (var i = 0; i < colorLength; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
@@ -88,6 +89,7 @@ function getRandomColor() {
  * @this {HT.Hexagon}
  */
 HT.Hexagon.prototype.draw = function(ctx) {
+    console.log("map");
     var fillingColor = getRandomColor();
     if (!this.selected)
         ctx.strokeStyle = "grey";
@@ -233,4 +235,4 @@ HT.Hexagon.Static = {
     SIDE: 50.0,
     ORIENTATION: HT.Hexagon.Orientation.Normal,
     DRAWSTATS: false
-}; //hexagons will have 25 unit sides for now
+}; //hexagons will have 25 as unit sides now

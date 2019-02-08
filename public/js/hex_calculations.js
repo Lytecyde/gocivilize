@@ -17,38 +17,43 @@ function findHexWithWidthAndHeight(width, height) {
     HT.Hexagon.Static.SIDE = z;
 }
 
-function getHexGridWH(canvas) {
-    var widthGrid = parseFloat(100.0);
-    var heightGrid = parseFloat(86.60254037844388);
-    findHexWithWidthAndHeight(widthGrid, heightGrid);
-    drawHexGrid(canvas);
-}
-
-function changeOrientation() {
-    if (document.getElementById("hexOrientationNormal").checked) {
-        HT.Hexagon.Static.ORIENTATION = HT.Hexagon.Orientation.Normal;
-    } else {
-        HT.Hexagon.Static.ORIENTATION = HT.Hexagon.Orientation.Rotated;
+function getHexGridWH(mapType) {
+    if (typeof mapType !== 'undefined') {
+        var width = maps[mapType].hexWidth;
+        var height = maps[mapType].hexHeight;
+        findHexWithWidthAndHeight(width, height);
+        drawHexGrid(mapType);
     }
-    drawHexGrid();
 }
 
-function debugHexZR() {
-    findHexWithSideLengthZAndRatio();
-    addHexToCanvasAndDraw(15, 15);
-}
-
-function debugHexWH() {
-    findHexWithWidthAndHeight();
-    addHexToCanvasAndDraw(15, 15);
-}
-
-function addHexToCanvasAndDraw(x, y) {
-    HT.Hexagon.Static.DRAWSTATS = true;
-    var hex = new HT.Hexagon(null, x, y);
-
-    var canvas = document.getElementById("map");
+function drawHexGrid(mapType) {
+    var mapString = maps[mapType].mapName;
+    var canvas = document.getElementById(mapString);
     var ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, 1500, 800);
-    hex.draw(ctx);
+    //ctx.clearRect(0, 0, gridType.gridWidth, gridType.gridHeight);
+    var grid = makeGrid(mapType);
+    for (var h in grid.Hexes) {
+        grid.Hexes[h].draw(ctx);
+    }
 }
+
+function makeGrid(mapType){
+    return new HT.Grid(maps[mapType].mapWidth, maps[mapType].mapHeight);
+}
+/*
+ *   data for map
+*/
+function makeStruct(names) {
+    var names = names.split(' ');
+    var count = names.length;
+    function constructor() {
+      for (var i = 0; i < count; i++) {
+        this[names[i]] = arguments[i];
+      }
+    }
+    return constructor;
+}
+
+var Item = makeStruct("id mapName mapWidth mapHeight hexWidth hexHeight");
+var maps = [new Item(0, 'map', '1900' , '800', parseFloat(100.0), parseFloat(86.60254037844388) ),
+        new Item(1, 'minimap', '200' , '150', parseFloat(10.0), parseFloat(8.660254037844388) )];
