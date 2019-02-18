@@ -13,7 +13,7 @@ HT.Grid = function(mapType) {
     var row = 0;
     var y = 0.0;
     while (y + HT.Hexagon.Static.HEIGHT <= height) {
-        ({ row, y } = constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd));
+        ({ row, y } = constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd, this.Hexes));
     }
 
     //finally go through our list of hexagons by their x co-ordinate to assign the y co-ordinate
@@ -113,7 +113,7 @@ HT.Grid.prototype.GetNearestHex = function( /*Point*/ p) {
     return hx;
 };
 
-function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd) {
+function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd, t) {
     var col = 0;
     var offset = 0.0;
     if (row % 2 == 1) {
@@ -122,14 +122,14 @@ function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd) {
     }
     var x = offset;
     while (x + HT.Hexagon.Static.WIDTH <= width) {
-        ({ col, x } = constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd));
+        ({ col, x } = constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd, t));
     }
     row++;
 
     y += (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2 + HT.Hexagon.Static.SIDE;
     return { row, y };
 }
-function constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd) {
+function constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd, t) {
     var hexId = GetHexIdFromRowCol(row, col);
     var h = new HT.Hexagon(hexId, x, y);
     var pathCoOrd = col;
@@ -137,9 +137,10 @@ function constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd) {
     h.PathCoOrdY = row;
     pathCoOrd = row;
     h.paint(document.getElementById(maps[mapType].mapName));
-    this.Hexes.push(h);
-    if (!HexagonsByXOrYCoOrd[pathCoOrd])
+    t.push(h);
+    if (!HexagonsByXOrYCoOrd[pathCoOrd]) {
         HexagonsByXOrYCoOrd[pathCoOrd] = [];
+    }
     HexagonsByXOrYCoOrd[pathCoOrd].push(h);
     col += 2;
     x += HT.Hexagon.Static.WIDTH;

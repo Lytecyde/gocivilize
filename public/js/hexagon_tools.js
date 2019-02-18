@@ -85,14 +85,14 @@ HT.Hexagon.prototype.draw = function(ctx) {
     ctx.closePath();
     ctx.stroke();
 
-    if (this.Id) {
+    if (this.Id && ctx.width != 200) {
         //draw text for debugging
         ctx.fillStyle = "black";
         ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
+        //ctx.fillText(this.Id, this.MidPoint.X, this.MidPoint.Y);
     }
 
     if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
@@ -218,13 +218,13 @@ HT.Hexagon.Static = {
 }; //hexagons will have 25 as unit sides now
 
 HT.Hexagon.prototype.paint = function(ctx) {
-    console.log("Id:" + this.Id);
+    //console.log("Id:" + this.Id);
     var fillingColor = getColorFromMap(this.Id);
     ctx.fillStyle = fillingColor;
 }
 
 function getColorFromMap(Id){
-    console.log("Id in getColorFromMap:" + Id);
+    //console.log("Id in getColorFromMap:" + Id);
     var row = Id.replace(/[0-9]/g, '');
     var rowStrNum = [];
     var rowStr = "";
