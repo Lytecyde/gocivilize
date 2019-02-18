@@ -224,16 +224,21 @@ HT.Hexagon.prototype.paint = function(ctx) {
 }
 
 function getColorFromMap(Id){
+    console.log("Id in getColorFromMap:" + Id);
     var row = Id.replace(/[0-9]/g, '');
+    var rowStrNum = [];
+    var rowStr = "";
     var colInt;
     var rowInt;
-    var rowStr = "";
     var c;
     var col = Id.replace( /^\D+/g, '');
     var colInt = parseInt(row);
-    for(const m in row){
-        rowStr += (row.charCodeAt(m) - 97).toString;
+    for(var i = 0 ; i < row.length; i += 1){
+        rowStrNum[i] = row.charCodeAt(i) - 65;
+        console.log(rowStrNum[i]);
+        rowStr += String(rowStrNum[i]);
     }
     rowInt = parseInt(rowStr);
+    console.log("row int:" + rowInt);
     return appNameSpace.map[rowInt][colInt];
 }
