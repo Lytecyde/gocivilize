@@ -2,7 +2,10 @@
  * A Grid is the model of the playfield containing hexes
  * @constructor
  */
-HT.Grid = function( /*double*/ width, /*double*/ height) {
+
+HT.Grid = function(mapType) {
+    width = maps[mapType].mapWidth;
+    height = maps[mapType].mapHeight;
     this.Hexes = [];
     //setup a dictionary for use later for assigning the X or Y CoOrd (depending on Orientation)
     var HexagonsByXOrYCoOrd = {}; //Dictionary<int, List<Hexagon>>
@@ -33,6 +36,7 @@ HT.Grid = function( /*double*/ width, /*double*/ height) {
                 h.PathCoOrdY = row;
                 pathCoOrd = row;
             }
+            h.paint(document.getElementById(maps[mapType].mapName));
 
             this.Hexes.push(h);
 
@@ -66,7 +70,6 @@ HT.Grid = function( /*double*/ width, /*double*/ height) {
         }
     }
 };
-
 HT.Grid.Static = { Letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' };
 
 HT.Grid.prototype.GetHexId = function(row, col) {
@@ -80,6 +83,13 @@ HT.Grid.prototype.GetHexId = function(row, col) {
     return HT.Grid.Static.Letters[letterIndex] + letters + (col + 1);
 };
 
+HT.Grid.prototype.GetRow = function(id) {
+    return id.replace(/[0-9]/g, '');
+}
+
+HT.Grid.prototype.GetCol = function(id) {
+    return id.replace( /^\D+/g, '');
+}
 /**
  * Returns a hex at a given point
  * @this {HT.Grid}
@@ -92,7 +102,6 @@ HT.Grid.prototype.GetHexAt = function( /*Point*/ p) {
             return this.Hexes[h];
         }
     }
-
     return null;
 };
 
@@ -131,7 +140,6 @@ HT.Grid.prototype.GetHexById = function(id) {
  * @return {HT.Hexagon}
  */
 HT.Grid.prototype.GetNearestHex = function( /*Point*/ p) {
-
     var distance;
     var minDistance = Number.MAX_VALUE;
     var hx = null;
@@ -146,6 +154,5 @@ HT.Grid.prototype.GetNearestHex = function( /*Point*/ p) {
             hx = this.Hexes[h];
         }
     }
-
     return hx;
 };

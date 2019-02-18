@@ -3,11 +3,12 @@
 var MINIMAP = 0;
 var MAP = 1;
 var WORLDMAP = 2;
-var mapStrings = ["minimap","map"];
+var mapStrings = ["minimap", "map"];
+var map = makeMapColors();
 
 function onload() {
     createTabs();
-    createMinimap();
+    //createMap();
     getHexGridWH(MINIMAP);
     getHexGridWH(MAP);
 }
@@ -32,4 +33,31 @@ function setTabHandler(tab, tabPos) {
         }
         panels[tabPos].className = 'active-panel';
     };
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    var colorLength = 6;
+    for (var i = 0; i < colorLength; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function makeMapColors() {
+    var rows = 90;
+    var cols = 58;
+    var colorsMap = new Array(rows);
+
+    for (var i = 0; i < colorsMap.length; i++) {
+        colorsMap[i] = new Array(cols);
+    }
+
+    for (var i = 0; i < rows; i += 1) {
+        for (var j = 0; j < cols; j += 1) {
+            colorsMap[i][j] = getRandomColor();
+        }
+    }
+    return colorsMap;
 }

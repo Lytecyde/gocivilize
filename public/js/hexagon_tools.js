@@ -74,23 +74,13 @@ HT.Hexagon = function(id, x, y) {
     this.selected = false;
 };
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    var colorLength = 6;
-    for (var i = 0; i < colorLength; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
 
 /**
  * draws this Hexagon to the canvas
  * @this {HT.Hexagon}
  */
 HT.Hexagon.prototype.draw = function(ctx) {
-    console.log("map");
-    var fillingColor = getRandomColor();
+   
     if (!this.selected)
         ctx.strokeStyle = "grey";
     else
@@ -102,7 +92,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
         var p = this.Points[i];
         ctx.lineTo(p.X, p.Y);
     }
-    ctx.fillStyle = fillingColor;
+    this.paint(ctx);
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
@@ -150,7 +140,6 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.fillText("(" + this.x1.toFixed(2) + "," + this.y1.toFixed(2) + ")", this.P1.X, this.P1.Y + 10);
     }
 };
-
 /**
  * Returns true if the x,y coordinates are inside this hexagon
  * @this {HT.Hexagon}
@@ -159,7 +148,6 @@ HT.Hexagon.prototype.draw = function(ctx) {
 HT.Hexagon.prototype.isInBounds = function(x, y) {
     return this.Contains(new HT.Point(x, y));
 };
-
 
 /**
  * Returns true if the point is inside this hexagon, it is a quick contains
@@ -224,6 +212,10 @@ HT.Hexagon.prototype.distanceFromMidPoint = function( /*Point*/ p) {
     return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
 };
 
+HT.Hexagon.Color = {
+    Code: "#000000"
+};
+
 HT.Hexagon.Orientation = {
     Normal: 0,
     Rotated: 1
@@ -236,3 +228,22 @@ HT.Hexagon.Static = {
     ORIENTATION: HT.Hexagon.Orientation.Normal,
     DRAWSTATS: false
 }; //hexagons will have 25 as unit sides now
+
+HT.Hexagon.prototype.paint = function(ctx) {
+    console.log("Id:" + this.Id);
+    var fillingColor = getColorFromMap(this.Id);
+    ctx.fillStyle = fillingColor;
+}
+
+function getColorFromMap(Id){
+    var row = Id.replace(/[0-9]/g, '');
+    var colInt;
+    var rowInt;
+    var c;
+    var col = Id.replace( /^\D+/g, '');
+    var colInt = parseInt(row);
+    for(var m in row){
+        rowInt[m] = row.charCodeAt(m) - 97;
+    }
+    return map[rowInt][colInt];
+}
