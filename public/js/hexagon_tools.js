@@ -80,7 +80,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
         var p = this.Points[i];
         ctx.lineTo(p.X, p.Y);
     }
-    this.paintMap(ctx);
+    this.paint(ctx);
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
@@ -217,7 +217,7 @@ HT.Hexagon.Static = {
     DRAWSTATS: false
 }; //hexagons will have 25 as unit sides now
 
-HT.Hexagon.prototype.paintMap = function(ctx) {
+HT.Hexagon.prototype.paint = function(ctx) {
     //console.log("Id:" + this.Id);
     var fillingColor = getColorFromMap(this.Id);
     ctx.fillStyle = fillingColor;
