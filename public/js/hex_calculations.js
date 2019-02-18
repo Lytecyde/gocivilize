@@ -39,7 +39,7 @@ function makeContext(mapType) {
 
 function makeHexesMap( ctx, mapType) {
     var g = makeGrid(mapType);
-    for (var h in g.Hexes) {
+    for(const h in g.Hexes) {
         g.Hexes[h].draw(ctx);
     }
 }

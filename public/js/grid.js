@@ -13,48 +13,7 @@ HT.Grid = function(mapType) {
     var row = 0;
     var y = 0.0;
     while (y + HT.Hexagon.Static.HEIGHT <= height) {
-        var col = 0;
-
-        var offset = 0.0;
-        if (row % 2 == 1) {
-            if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-                offset = (HT.Hexagon.Static.WIDTH - HT.Hexagon.Static.SIDE) / 2 + HT.Hexagon.Static.SIDE;
-            else
-                offset = HT.Hexagon.Static.WIDTH / 2;
-            col = 1;
-        }
-
-        var x = offset;
-        while (x + HT.Hexagon.Static.WIDTH <= width) {
-            var hexId = this.GetHexId(row, col);
-            var h = new HT.Hexagon(hexId, x, y);
-
-            var pathCoOrd = col;
-            if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-                h.PathCoOrdX = col; //the column is the x coordinate of the hex, for the y coordinate we need to get more fancy
-            else {
-                h.PathCoOrdY = row;
-                pathCoOrd = row;
-            }
-            h.paint(document.getElementById(maps[mapType].mapName));
-
-            this.Hexes.push(h);
-
-            if (!HexagonsByXOrYCoOrd[pathCoOrd])
-                HexagonsByXOrYCoOrd[pathCoOrd] = [];
-            HexagonsByXOrYCoOrd[pathCoOrd].push(h);
-
-            col += 2;
-            if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-                x += HT.Hexagon.Static.WIDTH + HT.Hexagon.Static.SIDE;
-            else
-                x += HT.Hexagon.Static.WIDTH;
-        }
-        row++;
-        if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-            y += HT.Hexagon.Static.HEIGHT / 2;
-        else
-            y += (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2 + HT.Hexagon.Static.SIDE;
+        ({ row, y } = constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd));
     }
 
     //finally go through our list of hexagons by their x co-ordinate to assign the y co-ordinate
@@ -63,16 +22,13 @@ HT.Grid = function(mapType) {
         var coOrd2 = Math.floor(coOrd1 / 2) + (coOrd1 % 2);
         for (var i in hexagonsByXOrY) {
             var hex = hexagonsByXOrY[i];
-            if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal)
-                hex.PathCoOrdY = coOrd2++;
-            else
-                hex.PathCoOrdX = coOrd2++;
+            hex.PathCoOrdX = coOrd2++;
         }
     }
 };
 HT.Grid.Static = { Letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' };
 
-HT.Grid.prototype.GetHexId = function(row, col) {
+HT.Grid.prototype.GetHexIdFromRowCol = function(row, col) {
     var letterIndex = row;
     var letters = "";
     while (letterIndex > 25) {
@@ -156,3 +112,38 @@ HT.Grid.prototype.GetNearestHex = function( /*Point*/ p) {
     }
     return hx;
 };
+
+function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd) {
+    var col = 0;
+    var offset = 0.0;
+    if (row % 2 == 1) {
+       
+        offset = HT.Hexagon.Static.WIDTH / 2;
+        col = 1;
+    }
+    var x = offset;
+    while (x + HT.Hexagon.Static.WIDTH <= width) {
+        ({ col, x } = constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd));
+    }
+    row++;
+
+    y += (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2 + HT.Hexagon.Static.SIDE;
+    return { row, y };
+}
+function constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd) {
+    var hexId = this.GetHexIdFromRowCol(row, col);
+    var h = new HT.Hexagon(hexId, x, y);
+    var pathCoOrd = col;
+
+    h.PathCoOrdY = row;
+    pathCoOrd = row;
+    h.paint(document.getElementById(maps[mapType].mapName));
+    this.Hexes.push(h);
+    if (!HexagonsByXOrYCoOrd[pathCoOrd])
+        HexagonsByXOrYCoOrd[pathCoOrd] = [];
+    HexagonsByXOrYCoOrd[pathCoOrd].push(h);
+    col += 2;
+    x += HT.Hexagon.Static.WIDTH;
+    return { col, x };
+}
+

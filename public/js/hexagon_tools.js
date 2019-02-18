@@ -38,25 +38,14 @@ HT.Hexagon = function(id, x, y) {
     this.Points = []; //Polygon Base
     var x1 = null;
     var y1 = null;
-    if (HT.Hexagon.Static.ORIENTATION == HT.Hexagon.Orientation.Normal) {
-        x1 = (HT.Hexagon.Static.WIDTH - HT.Hexagon.Static.SIDE) / 2;
-        y1 = (HT.Hexagon.Static.HEIGHT / 2);
-        this.Points.push(new HT.Point(x1 + x, y));
-        this.Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
-        this.Points.push(new HT.Point(x1 + HT.Hexagon.Static.SIDE + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x, y1 + y));
-    } else {
-        x1 = (HT.Hexagon.Static.WIDTH / 2);
-        y1 = (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2;
-        this.Points.push(new HT.Point(x1 + x, y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
-        this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + HT.Hexagon.Static.SIDE + y));
-        this.Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
-        this.Points.push(new HT.Point(x, y1 + HT.Hexagon.Static.SIDE + y));
-        this.Points.push(new HT.Point(x, y1 + y));
-    }
+    x1 = (HT.Hexagon.Static.WIDTH / 2);
+    y1 = (HT.Hexagon.Static.HEIGHT - HT.Hexagon.Static.SIDE) / 2;
+    this.Points.push(new HT.Point(x1 + x, y));
+    this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + y));
+    this.Points.push(new HT.Point(HT.Hexagon.Static.WIDTH + x, y1 + HT.Hexagon.Static.SIDE + y));
+    this.Points.push(new HT.Point(x1 + x, HT.Hexagon.Static.HEIGHT + y));
+    this.Points.push(new HT.Point(x, y1 + HT.Hexagon.Static.SIDE + y));
+    this.Points.push(new HT.Point(x, y1 + y));
 
     this.Id = id;
 
@@ -80,7 +69,6 @@ HT.Hexagon = function(id, x, y) {
  * @this {HT.Hexagon}
  */
 HT.Hexagon.prototype.draw = function(ctx) {
-   
     if (!this.selected)
         ctx.strokeStyle = "grey";
     else
@@ -242,7 +230,7 @@ function getColorFromMap(Id){
     var c;
     var col = Id.replace( /^\D+/g, '');
     var colInt = parseInt(row);
-    for(var m in row){
+    for(const m in row){
         rowInt[m] = row.charCodeAt(m) - 97;
     }
     return map[rowInt][colInt];

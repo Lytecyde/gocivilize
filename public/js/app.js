@@ -1,22 +1,23 @@
 "use strict";
 
-var MINIMAP = 0;
-var MAP = 1;
-var WORLDMAP = 2;
-var mapStrings = ["minimap", "map"];
-var map = makeMapColors();
-
+var appNameSpace = {
+    MINIMAP:  0,
+    MAP : 1,
+    WORLDMAP : 2,
+    mapStrings : ["minimap", "map"],
+    map : makeMapColors()
+}
 function onload() {
     createTabs();
     //createMap();
-    getHexGridWH(MINIMAP);
-    getHexGridWH(MAP);
+    getHexGridWH(appNameSpace.MINIMAP);
+    getHexGridWH(appNameSpace.MAP);
 }
 
 function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a');
     var i;
-    for (i = 0; i < tabs.length; i++) {
+    for(i = 0; i < tabs.length; i++) {
         setTabHandler(tabs[i], i);
     }
 }
