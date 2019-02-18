@@ -232,13 +232,12 @@ function getColorFromMap(Id){
     var rowInt;
     var c;
     var col = Id.replace( /^\D+/g, '');
-    var colInt = parseInt(row);
+    var colInt = parseInt(col);
     for(var i = 0 ; i < row.length; i += 1){
         rowStrNum[i] = row.charCodeAt(i) - 65;
         console.log(rowStrNum[i]);
         rowStr += String(rowStrNum[i]);
     }
     rowInt = parseInt(rowStr);
-    console.log("row int:" + rowInt);
     return appNameSpace.map[rowInt][colInt];
 }
