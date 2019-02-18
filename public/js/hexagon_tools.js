@@ -227,11 +227,13 @@ function getColorFromMap(Id){
     var row = Id.replace(/[0-9]/g, '');
     var colInt;
     var rowInt;
+    var rowStr = "";
     var c;
     var col = Id.replace( /^\D+/g, '');
     var colInt = parseInt(row);
     for(const m in row){
-        rowInt[m] = row.charCodeAt(m) - 97;
+        rowStr += (row.charCodeAt(m) - 97).toString;
     }
-    return map[rowInt][colInt];
+    rowInt = parseInt(rowStr);
+    return appNameSpace.map[rowInt][colInt];
 }

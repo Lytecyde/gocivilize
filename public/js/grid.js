@@ -28,7 +28,7 @@ HT.Grid = function(mapType) {
 };
 HT.Grid.Static = { Letters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' };
 
-HT.Grid.prototype.GetHexIdFromRowCol = function(row, col) {
+function GetHexIdFromRowCol(row, col) {
     var letterIndex = row;
     var letters = "";
     while (letterIndex > 25) {
@@ -117,7 +117,6 @@ function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd) {
     var col = 0;
     var offset = 0.0;
     if (row % 2 == 1) {
-       
         offset = HT.Hexagon.Static.WIDTH / 2;
         col = 1;
     }
@@ -131,7 +130,7 @@ function constructHexesByRows(row, y, mapType, HexagonsByXOrYCoOrd) {
     return { row, y };
 }
 function constructAHex(row, col, x, y, mapType, HexagonsByXOrYCoOrd) {
-    var hexId = this.GetHexIdFromRowCol(row, col);
+    var hexId = GetHexIdFromRowCol(row, col);
     var h = new HT.Hexagon(hexId, x, y);
     var pathCoOrd = col;
 

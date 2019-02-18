@@ -5,11 +5,12 @@ var appNameSpace = {
     MAP : 1,
     WORLDMAP : 2,
     mapStrings : ["minimap", "map"],
-    map : makeMapColors()
+    map : [],
 }
+
 function onload() {
     createTabs();
-    //createMap();
+    createMap();
     getHexGridWH(appNameSpace.MINIMAP);
     getHexGridWH(appNameSpace.MAP);
 }
@@ -34,6 +35,10 @@ function setTabHandler(tab, tabPos) {
         }
         panels[tabPos].className = 'active-panel';
     };
+}
+
+function createMap() {
+    appNameSpace.map = makeMapColors();
 }
 
 function getRandomColor() {
