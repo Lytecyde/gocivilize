@@ -46,12 +46,16 @@ function createMap() {
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    var colorLength = 6;
-    for (var i = 0; i < colorLength; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
+    var colors = ['#33cc33', //darkgreen forest
+                '#ffcc00', //yellow desert
+                '#99ff66',  //light green field
+                '#808080', //grey mntn
+                '#0099ff', //light blue beach
+                '#003366', //dark blue ocean
+                '#996633', //brown hills
+                ];
+    var color ;
+    color = colors[Math.floor(Math.random() * colors.length)];
     return color;
 }
 
@@ -102,8 +106,8 @@ function assignUnits(){
 
 }
 function startingPoint() {
-    var X = Math.floor(Math.random() * 11);
-    var Y = Math.floor(Math.random() * 17);
+    var X = Math.floor(Math.random() * 17);
+    var Y = Math.floor(Math.random() * 11);
     console.log("x" + X + "y" + Y);
     return {X, Y};
 }
