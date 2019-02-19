@@ -46,15 +46,17 @@ function createMap() {
 }
 
 function getRandomColor() {
-    var colors = ['#33cc33', //darkgreen forest
-                '#ffcc00', //yellow desert
-                '#99ff66',  //light green field
-                '#808080', //grey mntn
-                '#0099ff', //light blue beach
-                '#003366', //dark blue ocean
-                '#996633', //brown hills
-                ];
-    var color ;
+    var colors = [
+        '#006600',//darkgreen forest
+        '#33cc33', //LIGHT GREEN 
+        '#ffcc00', //yellow desert
+        '#99ff66',  //VERYlight green field
+        '#808080', //grey mntn
+        '#0099ff', //light blue beach
+        '#003366', //dark blue ocean
+        '#996633' //brown hills
+    ];
+    var color;
     color = colors[Math.floor(Math.random() * colors.length)];
     return color;
 }

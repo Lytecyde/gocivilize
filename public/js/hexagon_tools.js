@@ -102,8 +102,11 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.font = "bolder 100pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';
+        const otherThanMinimap = ctx.canvas.width != 200;
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText(civilization.units[this.PathCoOrdX][this.PathCoOrdY], this.MidPoint.X, this.MidPoint.Y + 25);
+        if (otherThanMinimap) {
+            ctx.fillText(civilization.units[this.PathCoOrdX][this.PathCoOrdY], this.MidPoint.X, this.MidPoint.Y + 25);
+        }
     }
 
     if (HT.Hexagon.Static.DRAWSTATS) {
@@ -237,8 +240,8 @@ HT.Hexagon.prototype.paintUnits = function(ctx){
     var x = this.PathCoOrdX;
     var y = this.PathCoOrdY;
     var sign = civilization.units[x][y];
-    console.log(x + "  " + y + civilization.units[x][y]);
-    ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
+    //console.log(x + "  " + y + civilization.units[x][y]);
+    //ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
 }
 
 function IdToRowCol(Id) {
