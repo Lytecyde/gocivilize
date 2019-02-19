@@ -237,7 +237,7 @@ HT.Hexagon.prototype.paintUnits = function(ctx){
     var x = this.PathCoOrdX;
     var y = this.PathCoOrdY;
     var sign = civilization.units[x][y];
-    console.log(x + "  " + y + civilization.units[x][y])
+    console.log(x + "  " + y + civilization.units[x][y]);
     ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
 }
 
