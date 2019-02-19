@@ -8,8 +8,8 @@ var appNameSpace = {
     WORLDMAP : 2,
     mapStrings : ["minimap", "map"],
     map : [],
-    units : [],
-}
+    units : []
+};
 
 function onload() {
     createTabs();
@@ -22,7 +22,7 @@ function onload() {
 function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a');
     var i;
-    for(i = 0; i < tabs.length; i++) {
+    for(i = 0; i < tabs.length; i+=1) {
         setTabHandler(tabs[i], i);
     }
 }
@@ -30,11 +30,11 @@ function createTabs() {
 function setTabHandler(tab, tabPos) {
     var panels = document.querySelectorAll('article');
     tab.onclick = function() {
-        for (i = 0; i < tabs.length; i++) {
+        for (i = 0; i < tabs.length; i+=1) {
             tabs[i].className = '';
         }
         tab.className = 'active';
-        for (i = 0; i < panels.length; i++) {
+        for (i = 0; i < panels.length; i+=1) {
             panels[i].className = '';
         }
         panels[tabPos].className = 'active-panel';
@@ -77,7 +77,7 @@ function makeUnitMap(){
     var cols = appNameSpace.COLS;
     //create unitsMap[][]
     var units = new Array(rows);
-    for (var i = 0; i < units.length; i++) {
+    for (var i = 0; i < rows; i++) {
         units[i] = new Array(cols);
     }
     //set startingpoints
