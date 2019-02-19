@@ -81,11 +81,10 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.lineTo(p.X, p.Y);
     }
     this.paint(ctx);
-    this.paintUnits(ctx);
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
-
+    this.paintUnits(ctx);
     if (this.Id && ctx.width != 200) {
         //draw text for debugging
         ctx.fillStyle = "black";
@@ -107,29 +106,6 @@ HT.Hexagon.prototype.draw = function(ctx) {
         if (otherThanMinimap) {
             ctx.fillText(civilization.units[this.PathCoOrdX][this.PathCoOrdY], this.MidPoint.X, this.MidPoint.Y + 25);
         }
-    }
-
-    if (HT.Hexagon.Static.DRAWSTATS) {
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 2;
-        //draw our x1, y1, and z
-        ctx.beginPath();
-        ctx.moveTo(this.P1.X, this.y);
-        ctx.lineTo(this.P1.X, this.P1.Y);
-        ctx.lineTo(this.x, this.P1.Y);
-        ctx.closePath();
-        ctx.stroke();
-
-        ctx.fillStyle = "black";
-        ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
-        ctx.textAlign = "left";
-        ctx.textBaseline = 'middle';
-        //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText("z", this.x + this.x1 / 2 - 8, this.y + this.y1 / 2);
-        ctx.fillText("x", this.x + this.x1 / 2, this.P1.Y + 10);
-        ctx.fillText("y", this.P1.X + 2, this.y + this.y1 / 2);
-        ctx.fillText("z = " + HT.Hexagon.Static.SIDE, this.P1.X, this.P1.Y + this.y1 + 10);
-        ctx.fillText("(" + this.x1.toFixed(2) + "," + this.y1.toFixed(2) + ")", this.P1.X, this.P1.Y + 10);
     }
 };
 /**
@@ -178,7 +154,8 @@ HT.Hexagon.prototype.Contains = function( /*Point*/ p) {
                     ((iP.Y <= p.Y) && (p.Y < jP.Y)) ||
                     ((jP.Y <= p.Y) && (p.Y < iP.Y))
                     //((iP.Y > p.Y) != (jP.Y > p.Y))
-                ) &&
+                )
+                &&
                 (p.X < (jP.X - iP.X) * (p.Y - iP.Y) / (jP.Y - iP.Y) + iP.X)
             ) {
                 isIn = !isIn;
@@ -223,39 +200,31 @@ HT.Hexagon.Static = {
 
 HT.Hexagon.prototype.paint = function(ctx) {
     //console.log("Id:" + this.Id);
-    var fillingColor = getColorFromMap(this.Id);
+    var fillingColor = getColorFromMap(this);
     ctx.fillStyle = fillingColor;
 }
 
-function getColorFromMap(Id){
-    //console.log("Id in getColorFromMap:" + Id);
-    var { rowInt, colInt } = IdToRowCol(Id);
-    return appNameSpace.map[rowInt][colInt];
+function getColorFromMap(t){
+    if (t.PathCoOrdX !== null && t.PathCoOrdY !== null && typeof(t.PathCoOrdX) != "undefined" && typeof(t.PathCoOrdY) != "undefined") {
+        var rowInt = t.PathCoOrdX;
+        var colInt = t.PathCoOrdY;
+        //console.log("r" + rowInt +  "c" + colInt);
+        return appNameSpace.map[rowInt][colInt];
+    }
 }
 
 HT.Hexagon.prototype.paintUnits = function(ctx){
     ctx.font = "bolder 40pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = 'middle';
-    var x = this.PathCoOrdX;
-    var y = this.PathCoOrdY;
-    var sign = civilization.units[x][y];
-    //console.log(x + "  " + y + civilization.units[x][y]);
-    //ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
-}
-
-function IdToRowCol(Id) {
-    var row = Id.replace(/[0-9]/g, '');
-    var rowStrNum = [];
-    var rowStr = "";
-    var colInt;
-    var rowInt;
-    var col = Id.replace(/^\D+/g, '');
-    var colInt = parseInt(col);
-    for (var i = 0; i < row.length; i += 1) {
-        rowStrNum[i] = row.charCodeAt(i) - 65;
-        rowStr += String(rowStrNum[i]);
+    if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
+        var x = this.PathCoOrdX;
+        var y = this.PathCoOrdY;
+        var sign = civilization.units[x][y];
+        const otherThanMinimap = ctx.canvas.width != 200;
+        if (otherThanMinimap) {
+            ctx.fillText(civilization.units[this.PathCoOrdX][this.PathCoOrdY], this.MidPoint.X, this.MidPoint.Y + 25);
+        }
+        ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
     }
-    rowInt = parseInt(rowStr);
-    return { rowInt, colInt };
 }

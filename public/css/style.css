@@ -82,10 +82,10 @@ article {
     background-color: grey;
 }
 
-.hud ul {
+.hud table {
     position: relative;
     text-align: left;
-    right: 5px;
+    left: 5px;
 }
 
 #minimap {
@@ -98,7 +98,6 @@ article {
 }
 
 .button {
-    background-color: rgb(105, 11, 105);
     color: white;
     width: 220px;
     right: 5px;
