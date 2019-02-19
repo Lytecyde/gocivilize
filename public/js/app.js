@@ -1,16 +1,20 @@
 "use strict";
 
 var appNameSpace = {
+    ROWS : 90,
+    COLS : 58,
     MINIMAP:  0,
     MAP : 1,
     WORLDMAP : 2,
     mapStrings : ["minimap", "map"],
     map : [],
+    units : [],
 }
 
 function onload() {
     createTabs();
     createMap();
+    assignUnits();
     getHexGridWH(appNameSpace.MINIMAP);
     getHexGridWH(appNameSpace.MAP);
 }
@@ -52,8 +56,8 @@ function getRandomColor() {
 }
 
 function makeMapColors() {
-    var rows = 90;
-    var cols = 58;
+    var rows = appNameSpace.ROWS;
+    var cols = appNameSpace.COLS;
     var colorsMap = new Array(rows);
 
     for (var i = 0; i < colorsMap.length; i++) {
@@ -66,4 +70,40 @@ function makeMapColors() {
         }
     }
     return colorsMap;
+}
+
+function makeUnitMap(){
+    var rows = appNameSpace.ROWS;
+    var cols = appNameSpace.COLS;
+    //create unitsMap[][]
+    var units = new Array(rows);
+    for (var i = 0; i < units.length; i++) {
+        units[i] = new Array(cols);
+    }
+    //set startingpoints
+    var sp = startingPoint();
+    //paint all units to map
+    for (let x = 0; x < rows; x++) {
+        for (let y = 0; y < cols; y++) {
+            if(x == sp.X &&
+                y == sp.Y){
+                units[x][y] = "*";
+            }
+            else {
+                units[x][y] = "";
+            }
+        }
+    }
+    return units;
+}
+
+function assignUnits(){
+    civilization.units = makeUnitMap();
+
+}
+function startingPoint() {
+    var X = Math.floor(Math.random() * 11);
+    var Y = Math.floor(Math.random() * 17);
+    console.log("x" + X + "y" + Y);
+    return {X, Y};
 }

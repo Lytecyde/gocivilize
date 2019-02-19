@@ -81,6 +81,7 @@ HT.Hexagon.prototype.draw = function(ctx) {
         ctx.lineTo(p.X, p.Y);
     }
     this.paint(ctx);
+    this.paintUnits(ctx);
     ctx.fill();
     ctx.closePath();
     ctx.stroke();
@@ -98,11 +99,11 @@ HT.Hexagon.prototype.draw = function(ctx) {
     if (this.PathCoOrdX !== null && this.PathCoOrdY !== null && typeof(this.PathCoOrdX) != "undefined" && typeof(this.PathCoOrdY) != "undefined") {
         //draw co-ordinates for debugging
         ctx.fillStyle = "black";
-        ctx.font = "bolder 8pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
+        ctx.font = "bolder 100pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = 'middle';
         //var textWidth = ctx.measureText(this.Planet.BoundingHex.Id);
-        ctx.fillText("(" + this.PathCoOrdX + "," + this.PathCoOrdY + ")", this.MidPoint.X, this.MidPoint.Y + 10);
+        ctx.fillText(civilization.units[this.PathCoOrdX][this.PathCoOrdY], this.MidPoint.X, this.MidPoint.Y + 25);
     }
 
     if (HT.Hexagon.Static.DRAWSTATS) {
@@ -225,19 +226,33 @@ HT.Hexagon.prototype.paint = function(ctx) {
 
 function getColorFromMap(Id){
     //console.log("Id in getColorFromMap:" + Id);
+    var { rowInt, colInt } = IdToRowCol(Id);
+    return appNameSpace.map[rowInt][colInt];
+}
+
+HT.Hexagon.prototype.paintUnits = function(ctx){
+    ctx.font = "bolder 40pt Trebuchet MS,Tahoma,Verdana,Arial,sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = 'middle';
+    var x = this.PathCoOrdX;
+    var y = this.PathCoOrdY;
+    var sign = civilization.units[x][y];
+    console.log(x + "  " + y + civilization.units[x][y])
+    ctx.fillText(sign,this.MidPoint.X, this.MidPoint.Y);
+}
+
+function IdToRowCol(Id) {
     var row = Id.replace(/[0-9]/g, '');
     var rowStrNum = [];
     var rowStr = "";
     var colInt;
     var rowInt;
-    var c;
-    var col = Id.replace( /^\D+/g, '');
+    var col = Id.replace(/^\D+/g, '');
     var colInt = parseInt(col);
-    for(var i = 0 ; i < row.length; i += 1){
+    for (var i = 0; i < row.length; i += 1) {
         rowStrNum[i] = row.charCodeAt(i) - 65;
-        console.log(rowStrNum[i]);
         rowStr += String(rowStrNum[i]);
     }
     rowInt = parseInt(rowStr);
-    return appNameSpace.map[rowInt][colInt];
+    return { rowInt, colInt };
 }
