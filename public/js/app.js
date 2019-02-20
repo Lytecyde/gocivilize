@@ -1,22 +1,22 @@
 "use strict";
 
 var app = {
-    ROWS : 20,
-    COLS : 8,
+    ROWS: 20,
+    COLS: 8,
     MINIMAP:  0,
-    MAP : 1,
-    WORLDMAP : 2,
-    mapStrings : ["minimap", "map"],
-    map : [],
-    units : [],
-    colors : [
+    MAP: 1,
+    WORLDMAP: 2,
+    mapStrings: ["minimap", "map"],
+    map: [],
+    units: [],
+    colors: [
         '#006600',//darkgreen forest
-        '#33cc33', //LIGHT GREEN 
-        '#ffcc00', //yellow desert
-        '#99ff66',  //VERYlight green field
-        '#808080', //grey mntn
-        '#0099ff', //light blue beach
-        '#003366', //dark blue ocean
+        '#33cc33',//LIGHT GREEN 
+        '#ffcc00',//yellow desert
+        '#99ff66',//VERYlight green field
+        '#808080',//grey mntn
+        '#0099ff',//light blue beach
+        '#003366',//dark blue ocean
         '#996633' //brown hills
     ]
 };
@@ -87,8 +87,8 @@ function makeUnitMap(){
     var units = makeUnits(app.ROWS, app.COLS);
     var sp = setStartingPoint();
 
-    for (let x = 0; x < app.ROWS; x++) {
-        for (let y = 0; y < app.COLS; y++) {
+    for (var x = 0; x < app.ROWS; x++) {
+        for (var y = 0; y < app.COLS; y++) {
             if(x == sp.X &&
                 y == sp.Y) {
                 units[x][y] = "*";
@@ -120,10 +120,5 @@ function displayUnitMap(){
 function setStartingPoint() {
     var X = Math.floor(Math.random() * 20);
     var Y = Math.floor(Math.random() * 11);
-    return {X, Y};
-}
-
-app.mouse = {
-    tempX : 0,
-    tempY : 0
+    return {X: X, Y: Y};
 }
