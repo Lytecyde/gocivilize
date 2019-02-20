@@ -1,5 +1,6 @@
 "use strict";
 
+// FIXME: shorter name is better, like "app"
 var appNameSpace = {
     ROWS : 90,
     COLS : 58,
@@ -11,6 +12,11 @@ var appNameSpace = {
     units : []
 };
 
+// FIXME: all functions should be namespaced.
+// app.onload = function () {
+//      createTabs();
+//      ...
+// }
 function onload() {
     createTabs();
     createColoredMap();
@@ -49,6 +55,8 @@ function createColoredMap() {
     appNameSpace.map = makeMapColors();
 }
 
+// FIXME: extract colors into namespace:
+// app.colors = [ .... ]
 function getRandomColor() {
     var colors = [
         '#006600',//darkgreen forest
@@ -66,11 +74,13 @@ function getRandomColor() {
 }
 
 function makeMapColors() {
+    // FIXME: don't use local variables, just use namespaced variable
     var rows = appNameSpace.ROWS;
     var cols = appNameSpace.COLS;
     var colorsMap = new Array(rows);
 
     for (var i = 0; i < colorsMap.length; i++) {
+        // FIXME: move this init. code into the next for loop instead to avoid double looping.
         colorsMap[i] = new Array(cols);
     }
 
@@ -85,13 +95,16 @@ function makeMapColors() {
 function makeUnitMap(){
     var rows = appNameSpace.ROWS;
     var cols = appNameSpace.COLS;
+    // FIXME: use newline to group code blocks. 
     //create unitsMap[][]
     var units = new Array(rows);
     for (var i = 0; i < rows; i++) {
         units[i] = new Array(cols);
     }
+    // FIXME: use newline to group code blocks. 
     //set startingpoints
     var sp = startingPoint();
+    // FIXME: use newline to group code blocks. 
     //paint all units to map
     for (let x = 0; x < rows; x++) {
         for (let y = 0; y < cols; y++) {
@@ -108,6 +121,7 @@ function makeUnitMap(){
 }
 
 function assignUnits(){
+    // FIXME: whats this namespace "civilization" ? there should be only 1 namespace, "app"
     civilization.units = makeUnitMap();
 
 }
@@ -118,6 +132,7 @@ function startingPoint() {
     return {X, Y};
 }
 
+// FIXME: app.mouse = { ... }
 var mouse = {
     tempX : 0,
     tempY : 0
