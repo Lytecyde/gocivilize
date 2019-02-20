@@ -5,13 +5,12 @@ default: build
 build: fmt
 	@go build	
 
-lint: lint-go
-	lint-js
+lint: lint-go lint-js
 
 lint-js: 
 	@jslint
 
-lint-go:
+lint-go: # curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin latest
 	@golangci-lint run
 
 run: build
