@@ -27,3 +27,6 @@ coverage:
 
 fmt:
 	@go fmt .
+
+install:
+	@npm install
