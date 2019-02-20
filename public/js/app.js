@@ -31,12 +31,17 @@ function onload() {
     createColoredMap();
     assignUnits();
     hgrid();
-    //displayUnitMap();
+    hgridMini();
 };
 
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
     hexagonGrid.drawHexGrid(8, 20, 50, 50, true);
+}
+
+function hgridMini() {
+    var hexagonGrid = new HexagonGrid("minimap", 5);
+    hexagonGrid.drawHexGrid(8, 20, 5, 5, false);
 }
 
 function createTabs() {
@@ -76,6 +81,9 @@ function makeMapColors() {
 
     for (var i = 0; i < app.ROWS; i += 1) {
         colorsMap[i] = new Array(app.COLS);
+    }
+
+    for (var i = 0; i < app.ROWS; i += 1) {
         for (var j = 0; j < app.COLS; j += 1) {
             colorsMap[i][j] = getRandomColor();
         }

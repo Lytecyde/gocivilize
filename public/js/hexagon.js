@@ -40,7 +40,7 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isDe
             if (isDebug) {
                 debugText = col + "," + row;
             }
-            var randomColor = getRandomColor()
+            var randomColor = app.map[col][row];
             this.drawHex(currentHexX, currentHexY, randomColor, debugText);
         }
         offsetColumn = !offsetColumn;
