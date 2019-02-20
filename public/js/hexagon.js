@@ -51,7 +51,8 @@ HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
     var drawx = (column * this.side) + this.canvasOriginX;
 
-    this.drawHex(drawx, drawy, color, "");
+    this.drawHex(drawx, drawy, color, civilization.units[row][column]);
+    if(civilization.units[row][column]!="")console.log(civilization.units[row][column]);
 };
 
 HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, debugText) {
@@ -73,13 +74,14 @@ HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, debugText) {
     this.context.stroke();
 
     if (debugText) {
-        this.context.font = "8px";
-        this.context.fillStyle = "#000";
+        this.context.font = "40px";
+        this.context.fillStyle = "red";
+        console.log(debugText);
         this.context.fillText(debugText, x0 + (this.width / 2) - (this.width/4), y0 + (this.height - 5));
     }
 };
 
-//Recusivly step up to the body to calculate canvas offset.
+//Recursively step up to the body to calculate canvas offset.
 HexagonGrid.prototype.getRelativeCanvasOffset = function() {
 	var x = 0, y = 0;
 	var layoutElement = this.canvas;
@@ -88,7 +90,6 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function() {
             x += layoutElement.offsetLeft;
             y += layoutElement.offsetTop;
         } while (layoutElement = layoutElement.offsetParent);
-        
         return { x: x, y: y };
     }
 }
