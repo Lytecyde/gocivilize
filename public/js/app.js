@@ -32,7 +32,7 @@ function onload() {
     assignUnits();
     hgrid();
     hgridMini();
-};
+}
 
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
@@ -94,11 +94,11 @@ function makeMapColors() {
 function makeUnitMap(){
     var units = makeUnits(app.ROWS, app.COLS);
     var sp = setStartingPoint();
-
+    console.log(sp);
     for (var x = 0; x < app.ROWS; x++) {
         for (var y = 0; y < app.COLS; y++) {
-            if(x == sp.X &&
-                y == sp.Y) {
+            if(x == sp.x &&
+                y == sp.y) {
                 units[x][y] = "*";
             }
             else {
@@ -119,10 +119,6 @@ function makeUnits(rows, cols) {
 
 function assignUnits(){
     civilization.units = makeUnitMap();
-}
-
-function displayUnitMap(){
-
 }
 
 function setStartingPoint() {

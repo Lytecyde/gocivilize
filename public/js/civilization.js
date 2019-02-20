@@ -10,12 +10,12 @@ var civilization = new Map(
     units = [],
     happiness = 50,
     loyalty = 50,
-    amenities = 0,
+    amenities = 0
 );
 
 var identification = {
     name : "",
-    number : 0,
+    number : 0
 }
 
 var unit = {

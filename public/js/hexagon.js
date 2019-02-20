@@ -39,9 +39,10 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isDe
 
             if (isDebug) {
                 debugText = col + "," + row;
+
             }
             var randomColor = app.map[col][row];
-            this.drawHex(currentHexX, currentHexY, randomColor, debugText);
+            this.drawHex(currentHexX, currentHexY, randomColor, civilization.units[col][row]);
         }
         offsetColumn = !offsetColumn;
     }
@@ -51,7 +52,7 @@ HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
     var drawx = (column * this.side) + this.canvasOriginX;
 
-    this.drawHex(drawx, drawy, color, civilization.units[row][column]);
+    this.drawHex(drawx, drawy, color, "");
     if(civilization.units[row][column]!="")console.log(civilization.units[row][column]);
 };
 
@@ -74,10 +75,14 @@ HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, debugText) {
     this.context.stroke();
 
     if (debugText) {
-        this.context.font = "40px";
+        this.context.font = "8px sans-serif";
+        this.context.fillStyle = "black";
+        //console.log(debugText);
+        this.context.fillText(debugText, x0 + (this.width/4), y0 + (this.height - 5));
+
+        this.context.font = "40px sans-serif";
         this.context.fillStyle = "red";
-        console.log(debugText);
-        this.context.fillText(debugText, x0 + (this.width / 2) - (this.width/4), y0 + (this.height - 5));
+        this.context.fillText(debugText,x0 + 50, y0 + 50);
     }
 };
 
