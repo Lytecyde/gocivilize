@@ -8,7 +8,7 @@ build: fmt
 lint: lint-go lint-js
 
 lint-js: 
-	@jslint
+	@jslint public/js/*.js
 
 lint-go: # curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin latest
 	@golangci-lint run

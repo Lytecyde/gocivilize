@@ -1,0 +1,22 @@
+{
+  "name": "gocivilize",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lytecyde/gocivilize.git"
+  },
+  "author": "Mik Seljamaa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lytecyde/gocivilize/issues"
+  },
+  "homepage": "https://github.com/Lytecyde/gocivilize#readme",
+  "dependencies": {
+    "jslint": "^0.12.1"
+  }
+}
