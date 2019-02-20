@@ -65,8 +65,8 @@ article {
     left: 0;
     height: 800px;
     width: 100%;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
 }
 
 .active-panel {

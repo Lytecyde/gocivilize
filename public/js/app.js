@@ -13,10 +13,14 @@ var appNameSpace = {
 
 function onload() {
     createTabs();
-    createMap();
+    createColoredMap();
     assignUnits();
-    getHexGridWH(appNameSpace.MINIMAP);
-    getHexGridWH(appNameSpace.MAP);
+    hgrid();
+}
+
+function hgrid() {
+    var hexagonGrid = new HexagonGrid("map", 50);
+    hexagonGrid.drawHexGrid(8, 20, 50, 50, true);
 }
 
 function createTabs() {
@@ -41,7 +45,7 @@ function setTabHandler(tab, tabPos) {
     };
 }
 
-function createMap() {
+function createColoredMap() {
     appNameSpace.map = makeMapColors();
 }
 
@@ -112,4 +116,9 @@ function startingPoint() {
     var Y = Math.floor(Math.random() * 11);
     console.log("x" + X + "y" + Y);
     return {X, Y};
+}
+
+var mouse = {
+    tempX : 0,
+    tempY : 0
 }
