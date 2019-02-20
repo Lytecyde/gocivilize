@@ -118,7 +118,7 @@ function displayUnitMap(){
 }
 
 function setStartingPoint() {
-    var X = Math.floor(Math.random() * 20);
-    var Y = Math.floor(Math.random() * 11);
-    return {X: X, Y: Y};
+    var x = Math.floor(Math.random() * app.ROWS);
+    var y = Math.floor(Math.random() * app.COLS);
+    return {x: x, y: y};
 }
