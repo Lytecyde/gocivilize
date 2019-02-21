@@ -12,14 +12,14 @@ function HexagonGrid(canvasId, radius) {
 
     this.canvasOriginX = 0;
     this.canvasOriginY = 0;
-    
+
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
 };
 
 HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isDebug) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
-    
+
     var currentHexX;
     var currentHexY;
     var debugText = "";
@@ -28,7 +28,6 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isDe
 
     for (var col = 0; col < cols; col++) {
         for (var row = 0; row < rows; row++) {
-
             if (!offsetColumn) {
                 currentHexX = (col * this.side) + originX;
                 currentHexY = (row * this.height) + originY;
@@ -53,8 +52,14 @@ HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawx = (column * this.side) + this.canvasOriginX;
 
     this.drawHex(drawx, drawy, color, "");
-    if(civilization.units[row][column]!="")console.log(civilization.units[row][column]);
 };
+
+HexagonGrid.prototype.clearHexAtColRow = function(column, row) {
+    var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
+    var drawx = (column * this.side) + this.canvasOriginX;
+    var color = app.map[column][row];
+    this.drawHex(drawx, drawy, color, "");
+}
 
 HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, debugText) {
     this.context.strokeStyle = "#000";
@@ -95,7 +100,7 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function() {
 }
 
 //Uses a grid overlay algorithm to determine hexagon location
-//Left edge of grid has a test to acuratly determin correct hex
+//Left edge of grid has a test to accurately determine correct hex
 HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
 
 	var offSet = this.getRelativeCanvasOffset();
