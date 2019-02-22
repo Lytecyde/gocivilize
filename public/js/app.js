@@ -27,7 +27,8 @@ var app = {
         "mauve",
         "lilac",
         "violet",
-        "black"
+        "black",
+        "white"
     ],
 };
 
@@ -64,13 +65,14 @@ function createTabs() {
     }
 }
 
-function setTabHandler(tab, tabPos) {
+function setTabHandler(tabs, tabPos) {
     var panels = document.querySelectorAll('article');
-    tab.onclick = function() {
+    var i;
+    tabs.onclick = function() {
         for (i = 0; i < tabs.length; i+=1) {
             tabs[i].className = '';
         }
-        tab.className = 'active';
+        tabs.className = 'active';
         for (i = 0; i < panels.length; i+=1) {
             panels[i].className = '';
         }
