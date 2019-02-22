@@ -266,13 +266,39 @@ HexagonGrid.prototype.clickEvent = function (e) {
     var localY = mouseY - this.canvasOriginY;
 
     var tile = this.getSelectedTile(localX, localY);
+
     if (tile.column >= 0 && tile.row >= 0) {
         var drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
         var drawx = (tile.column * this.side) + this.canvasOriginX;
-
-        this.drawHex(drawx, drawy - 6, app.map[tile.column][tile.row], "");
+        if(civilization.units[tile.column][tile.row] == "*"){
+            //removeUnit(drawx, drawy, tile);
+            this.clearHexAtColRow(tile.column, tile.row)
+            app.MOVING = true;
+            lastTile = tile;
+            civilization.units[tile.column][tile.row] = "";
+        };
+    };
+    if(app.MOVING == true && this.isAroundTile(lastTile, tile)){
+        civilization.units[tile.column][tile.row] = "*";
+        this.drawHexAtColRow(tile.column, tile.row);
+        this.visible();
+        app.MOVING = false;
     };
 };
+
+HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
+    for(const h of this.getEncirclementOne(lastTile.column, lastTile.row) ) {
+        if(h.COL == tile.column && h.ROW == tile.row) {
+            return true;
+        };
+    };
+    return false;
+}
+
+
+function removeUnit(drawx, drawy, tile) {
+    this.drawHex(drawx, drawy - 6, app.map[tile.column][tile.row], "");
+}
 
 function zoneOfVisibility(tile) {
     var enc = this.getEncirclementOne(tile.column, tile.row);

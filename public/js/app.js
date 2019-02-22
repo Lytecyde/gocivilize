@@ -3,6 +3,7 @@
 var app = {
     ROWS: 20,
     COLS: 8,
+    MOVING: false,
     MINIMAP:  0,
     MAP: 1,
     WORLDMAP: 2,
