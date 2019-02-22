@@ -20,7 +20,7 @@ var identification = {
 
 var unit = {
     identification,
-    location : [0,0],
+    location : [],
     type : "Settler",
     sign : "👨",
     movement : 2,

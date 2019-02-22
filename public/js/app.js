@@ -18,7 +18,17 @@ var app = {
         '#0099ff',//light blue beach
         '#003366',//dark blue ocean
         '#996633' //brown hills
-    ]
+    ],
+    civColors: [
+        "red",
+        "purple",
+        "magenta",
+        "pink",
+        "mauve",
+        "lilac",
+        "violet",
+        "black"
+    ],
 };
 
 // FIXME: all functions should be namespaced.
@@ -37,6 +47,8 @@ function onload() {
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
     hexagonGrid.drawHexGrid(8, 20, 50, 50, true);
+    hexagonGrid.drawFogOfWar(8, 20, 50, 50, false);
+    hexagonGrid.visible();
 }
 
 function hgridMini() {
