@@ -14,7 +14,7 @@ function HexagonGrid(canvasId, radius) {
     this.canvasOriginY = 0;
 
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
-};
+}
 
 HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isWithUnits) {
     this.canvasOriginX = originX;
@@ -159,8 +159,8 @@ HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, unitSign) {
 
 //Recursively step up to the body to calculate canvas offset.
 HexagonGrid.prototype.getRelativeCanvasOffset = function() {
-	var x = 0, y = 0;
-	var layoutElement = this.canvas;
+    var x = 0, y = 0;
+    var layoutElement = this.canvas;
     if (layoutElement.offsetParent) {
         do {
             x += layoutElement.offsetLeft;
@@ -173,8 +173,7 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function() {
 //Uses a grid overlay algorithm to determine hexagon location
 //Left edge of grid has a test to accurately determine correct hex
 HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
-
-	var offSet = this.getRelativeCanvasOffset();
+    var offSet = this.getRelativeCanvasOffset();
 
     mouseX -= offSet.x;
     mouseY -= offSet.y;
@@ -188,9 +187,7 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
 
     //Test if on left side of frame            
     if (mouseX > (column * this.side) && mouseX < (column * this.side) + this.width - this.side) {
-
-
-        //Now test which of the two triangles we are in 
+        //Now test which of the two triangles we are in
         //Top left triangle points
         var p1 = new Object();
         p1.x = column * this.side;
@@ -321,8 +318,8 @@ HexagonGrid.prototype.visible = function(){
 function getListUnits(units){
     var listUnitLocations = [];
     var i = 0;
-    for(var x = 0; x < app.ROWS; x += 1) {
-        for (var y = 0; y < app.COLS; y += 1) {
+    for(var x = 0; x < app.COLS; x += 1) {
+        for (var y = 0; y < app.ROWS; y += 1) {
             if(units[x][y] == "*") listUnitLocations[i++] = {x:x, y:y};
         }
     }

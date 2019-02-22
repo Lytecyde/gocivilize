@@ -1,8 +1,8 @@
 "use strict";
 
 var app = {
-    ROWS: 20,
-    COLS: 8,
+    ROWS: 8,
+    COLS: 20,
     MOVING: false,
     MINIMAP:  0,
     MAP: 1,
@@ -48,14 +48,14 @@ function onload() {
 
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
-    hexagonGrid.drawHexGrid(8, 20, 50, 50, true);
-    hexagonGrid.drawFogOfWar(8, 20, 50, 50, false);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, true);
+    hexagonGrid.drawFogOfWar(app.ROWS, app.COLS, 50, 50, false);
     hexagonGrid.visible();
 }
 
 function hgridMini() {
     var hexagonGrid = new HexagonGrid("minimap", 5);
-    hexagonGrid.drawHexGrid(8, 20, 5, 5, false);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5, false);
 }
 
 function createTabs() {
@@ -92,14 +92,14 @@ function getRandomColor() {
 }
 
 function makeMapColors() {
-    var colorsMap = new Array(app.ROWS);
+    var colorsMap = new Array(app.COLS);
 
-    for (var i = 0; i < app.ROWS; i += 1) {
-        colorsMap[i] = new Array(app.COLS);
+    for (var i = 0; i < app.COLS; i += 1) {
+        colorsMap[i] = new Array(app.ROWS);
     }
 
-    for (var i = 0; i < app.ROWS; i += 1) {
-        for (var j = 0; j < app.COLS; j += 1) {
+    for (var i = 0; i < app.COLS; i += 1) {
+        for (var j = 0; j < app.ROWS; j += 1) {
             colorsMap[i][j] = getRandomColor();
         }
     }
@@ -107,11 +107,11 @@ function makeMapColors() {
 }
 
 function makeUnitMap(){
-    var units = makeUnits(app.ROWS, app.COLS);
+    var units = makeUnits(app.COLS, app.ROWS);
     var sp = setStartingPoint();
     console.log(sp);
-    for (var x = 0; x < app.ROWS; x++) {
-        for (var y = 0; y < app.COLS; y++) {
+    for (var x = 0; x < app.COLS; x++) {
+        for (var y = 0; y < app.ROWS; y++) {
             if(x == sp.x &&
                 y == sp.y) {
                 units[x][y] = "*";
@@ -137,7 +137,7 @@ function assignUnits(){
 }
 
 function setStartingPoint() {
-    var x = Math.floor(Math.random() * app.ROWS);
-    var y = Math.floor(Math.random() * app.COLS);
+    var x = Math.floor(Math.random() * app.COLS);
+    var y = Math.floor(Math.random() * app.ROWS);
     return {x: x, y: y};
 }
