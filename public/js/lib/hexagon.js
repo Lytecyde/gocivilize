@@ -215,7 +215,9 @@ HexagonGrid.prototype.clickEvent = function (e) {
         mouseY = e.pageY,
         localX = mouseX - this.canvasOriginX,
         localY = mouseY - this.canvasOriginY,
-        tile = this.getSelectedTile(localX, localY);
+        tile = this.getSelectedTile(localX, localY),
+        drawy,
+        drawx;
 
     if (tile.column >= 0 && tile.row >= 0) {
         drawy = tile.column % 2 === 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);

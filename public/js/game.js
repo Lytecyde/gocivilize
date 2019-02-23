@@ -181,17 +181,3 @@ function createFogMap() {
         }
     }
 }
-
-function move(location, direction) {
-    removeUnit(location);
-    var newLocation = getNewLocation(location, direction);
-    drawUnit(newLocation);
-};
-
-function removeUnit(location) {
-
-};
-
-function getNewLocation(location) {
-
-};
