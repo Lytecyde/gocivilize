@@ -16,18 +16,18 @@ var civilization = new Map(
 );
 
 var identification = {
-    name : "",
-    number : 0
+    name: "",
+    number: 0
 }
 
 var unit = {
     identification,
-    location : [],
-    type : "Settler",
-    sign : "👨",
-    movement : 2,
-    power : 1,
-    life : 10
+    location: [],
+    type: "Settler",
+    sign: "👨",
+    movement: 2,
+    power: 1,
+    life: 10
 }
 
 var locationPoint = function(x, y){
@@ -36,6 +36,6 @@ var locationPoint = function(x, y){
 }
 
 var civilizations = {
-    names : ["Egypt", "Mesopotamia", "Greece", "Rome", "Germany", "England", "Russia", "India", "China", "Japan", "Aztec", "Maya"],
-    capitals : ["Thebes", "Uruk", "Athens", "Rome", "Berlin", "London", "Moscow", "Delhi", "Beijing", "Tokyo", "Tenochtitlan", "Tikal"],
+    names: ["Egypt", "Mesopotamia", "Greece", "Rome", "Germany", "England", "Russia", "India", "China", "Japan", "Aztec", "Maya"],
+    capitals: ["Thebes", "Uruk", "Athens", "Rome", "Berlin", "London", "Moscow", "Delhi", "Beijing", "Tokyo", "Tenochtitlan", "Tikal"],
 };
