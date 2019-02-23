@@ -4,10 +4,6 @@ var app = {
     ROWS: 8,
     COLS: 20,
     MOVING: false,
-    MINIMAP:  0,
-    MAP: 1,
-    WORLDMAP: 2,
-    mapStrings: ["minimap", "map"],
     map: [],
     units: [],
     lastTile: { row:0, column:0},
@@ -21,17 +17,6 @@ var app = {
         '#003366',//dark blue ocean
         '#996633' //brown hills
     ],
-    civColors: [
-        "red",
-        "purple",
-        "magenta",
-        "pink",
-        "mauve",
-        "lilac",
-        "violet",
-        "black",
-        "white"
-    ]
 };
 
 // FIXME: all functions should be namespaced.
@@ -147,10 +132,18 @@ function assignUnits(){
     civilization.units = makeUnitMap();
 }
 
+function randomCol() {
+    return Math.floor(Math.random() * app.COLS);
+}
+
+function randomRow() {
+    return Math.floor(Math.random() * app.ROWS);
+}
+
 function getStartingPoint() {
     return {
-        x: Math.floor(Math.random() * app.COLS),
-        y: Math.floor(Math.random() * app.ROWS),
+        x: randomCol(),
+        y: randomRow(),
     };
 }
 
@@ -173,15 +166,6 @@ function createFogMap() {
         }
     }
 }
-
-var moves = {
-    NE: 0,
-    SE: 1,
-    S: 2,
-    SW: 3,
-    NW: 4,
-    N: 5
-};
 
 function move(location, direction) {
     removeUnit(location);
