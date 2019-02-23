@@ -48,15 +48,18 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY) {
 };
 
 HexagonGrid.prototype.getEncirclementOne = function(col, row) {
-    var encirclement = [];
     const numberOfTilesAroundHex = 6;
-    var dx = [ 1, 1, 0, -1, -1, 0];
-    var dy1 = [ -1, 0, 1, 0 , -1, -1];
-    var dy2 = [ 0, 1, 1, 1, 0, -1];
-    var dy = col % 2 == 0 ? dy1 : dy2;
+    
+    var encirclement = [],
+        dx = [ 1, 1, 0, -1, -1, 0],
+        dy1 = [ -1, 0, 1, 0 , -1, -1],
+        dy2 = [ 0, 1, 1, 1, 0, -1],
+        dy = col % 2 == 0 ? dy1 : dy2;
+
     for (var i = 0; i < numberOfTilesAroundHex; i += 1){
         encirclement[i] = {COL: col + dx[i], ROW: row + dy[i] };
     }
+
     return encirclement;
 }
 
@@ -66,10 +69,13 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
 
     var currentHexX,
         currentHexY,
-        offsetColumn = false;
+        offsetColumn = false,
+        col,
+        row,
+        color;
 
-    for (var col = 0; col < cols; col++) {
-        for (var row = 0; row < rows; row++) {
+    for (col = 0; col < cols; col++) {
+        for (row = 0; row < rows; row++) {
             if (!offsetColumn) {
                 currentHexX = (col * this.side) + originX;
                 currentHexY = (row * this.height) + originY;
@@ -78,8 +84,8 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
                 currentHexY = (row * this.height) + originY + (this.height * 0.5);
             }
 
-            var fogColor = "rgba(110,110,110, 0.75)";
-            this.drawHexagon(currentHexX, currentHexY, fogColor);
+            var color = "rgba(110,110,110, 0.75)";
+            this.drawHexagon(currentHexX, currentHexY, color);
         }
 
         offsetColumn = !offsetColumn;
