@@ -50,7 +50,6 @@ function clickEventHandler (tile) {
 function onload() {
     createTabs();
     createColoredMap();
-    //createFogMap();
     assignUnits();
     hgrid();
     hgridMini();
@@ -182,26 +181,6 @@ function getStartingPoint() {
 
 function removeUnit(drawx, drawy, tile) {
     tile.drawHex(drawx, drawy - 6, game.map[tile.column][tile.row], "");
-}
-
-function createFogMap() {
-    var fogs = [],
-        x,
-        y;
-
-    for (x = 0; x < game.COLS; x += 1) {
-        for (y = 0; y < game.ROWS; y += 1) {
-            fogs[x] = new Array();
-        }
-    }
-
-    civilization.fogMap = fogs;
-
-    for (x = 0; x < game.COLS; x += 1) {  
-        for (y = 0; y < game.ROWS; y += 1) {
-            civilization.fogMap[x][y] = true;
-        }
-    }
 }
 
 function getListUnits(units) {
