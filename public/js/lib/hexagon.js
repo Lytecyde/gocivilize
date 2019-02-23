@@ -261,10 +261,13 @@ HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
 }
 
 HexagonGrid.prototype.visible = function(){
-    var units = civilization.units;
-    for(const u of getListUnits(units)) {
+    var units = civilization.units,
+        u,
+        h;
+
+    for (u of getListUnits(units)) {
         this.drawHexAtColRow( u.x, u.y, app.map[u.x][u.y]);
-        for(const h of this.getEncirclementOne(u.x, u.y)) {
+        for (h of this.getEncirclementOne(u.x, u.y)) {
             this.drawHexAtColRow( h.COL, h.ROW, app.map[h.COL][h.ROW]);
         }
     }
