@@ -229,8 +229,8 @@ HexagonGrid.prototype.sign = function(p1, p2, p3) {
 
 //TODO: Replace with optimized barycentric coordinate method
 HexagonGrid.prototype.isPointInTriangle = function isPointInTriangle(pt, v1, v2, v3) {
-    var b1 = this.sign(pt, v1, v2) < 0.0;
-        b2 = this.sign(pt, v2, v3) < 0.0;
+    var b1 = this.sign(pt, v1, v2) < 0.0,
+        b2 = this.sign(pt, v2, v3) < 0.0,
         b3 = this.sign(pt, v3, v1) < 0.0;
 
     return ((b1 == b2) && (b2 == b3));
@@ -241,7 +241,9 @@ HexagonGrid.prototype.clickEvent = function (e) {
         mouseY = e.pageY,
         localX = mouseX - this.canvasOriginX,
         localY = mouseY - this.canvasOriginY,
-        tile = this.getSelectedTile(localX, localY);
+        tile = this.getSelectedTile(localX, localY),
+        drawy,
+        drawx;
 
     if (tile.column >= 0 && tile.row >= 0) {
         drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
