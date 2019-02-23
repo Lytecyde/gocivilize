@@ -57,7 +57,10 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
         i;
 
     for (i = 0; i < numberOfTilesAroundHex; i += 1) {
-        encirclement[i] = {COL: col + dx[i], ROW: row + dy[i] };
+        encirclement[i] = {
+            col: col + dx[i],
+            row: row + dy[i],
+        };
     }
 
     return encirclement;
@@ -238,10 +241,10 @@ HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
     var h;
 
     for (h of this.getEncirclementOne(lastTile.column, lastTile.row)) {
-        if (h.COL === tile.column && h.ROW === tile.row) {
+        if (h.col === tile.column && h.row === tile.row) {
             return true;
         };
-    };
+    }
 
     return false;
 };
@@ -254,7 +257,7 @@ HexagonGrid.prototype.visible = function () {
     for (u of getListUnits(units)) {
         this.drawHexAtColRow(u.x, u.y, app.map[u.x][u.y]);
         for (h of this.getEncirclementOne(u.x, u.y)) {
-            this.drawHexAtColRow(h.COL, h.ROW, app.map[h.COL][h.ROW]);
+            this.drawHexAtColRow(h.col, h.row, app.map[h.col][h.row]);
         }
     }
 
