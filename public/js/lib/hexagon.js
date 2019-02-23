@@ -53,7 +53,7 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     var numberOfTilesAroundHex = 6,
         encirclement = [],
         dx = [1, 1, 0, -1, -1, 0],
-        dy1 = [-1, 0, 1, 0 , -1, -1],
+        dy1 = [-1, 0, 1, 0, -1, -1],
         dy2 = [0, 1, 1, 1, 0, -1],
         dy = col % 2 === 0 ? dy1 : dy2,
         i;
@@ -78,7 +78,7 @@ HexagonGrid.prototype.drawHexAtColRow = function (column, row, color) {
 HexagonGrid.prototype.clearHexAtColRow = function (column, row, color) {
     var drawy = column % 2 === 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
         drawx = (column * this.side) + this.canvasOriginX;
-    
+
     this.drawHexagon(drawx, drawy, color);
 };
 
@@ -112,6 +112,7 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function () {
             x += layoutElement.offsetLeft;
             y += layoutElement.offsetTop;
         } while (layoutElement = layoutElement.offsetParent);
+
         return {
             x: x,
             y: y,
@@ -137,8 +138,8 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
 
     mouseX -= offSet.x;
     mouseY -= offSet.y;
-    column = Math.floor((mouseX) / this.side);
-    f1 = Math.floor((mouseY) / this.height);
+    column = Math.floor(mouseX / this.side);
+    f1 = Math.floor(mouseY / this.height);
     f2 = Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1;
     row = Math.floor(column % 2 === 0 ? f1 : f2);
 
@@ -165,10 +166,10 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
         mousePoint.y = mouseY;
 
         if (this.isPointInTriangle(mousePoint, p1, p2, p3)) {
-            column--;
+            column = column - 1;
 
-            if (column % 2 != 0) {
-                row--;
+            if (column % 2 !== 0) {
+                row = row - 1;
             }
         }
 
@@ -185,7 +186,7 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
         p6.y = p5.y;
 
         if (this.isPointInTriangle(mousePoint, p4, p5, p6)) {
-            column--;
+            column = column - 1;
 
             if (column % 2 === 0) {
                 row += 1;
@@ -203,7 +204,6 @@ HexagonGrid.prototype.sign = function (p1, p2, p3) {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 };
 
-//TODO: Replace with optimized barycentric coordinate method
 HexagonGrid.prototype.isPointInTriangle = function isPointInTriangle(pt, v1, v2, v3) {
     var b1 = this.sign(pt, v1, v2) < 0.0,
         b2 = this.sign(pt, v2, v3) < 0.0,
@@ -227,12 +227,12 @@ HexagonGrid.prototype.clickEvent = function (e) {
 };
 
 HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
-    var h;
+    var h = null;
 
     for (h of this.getEncirclementOne(lastTile.column, lastTile.row)) {
         if (h.col === tile.column && h.row === tile.row) {
             return true;
-        };
+        }
     }
 
     return false;
