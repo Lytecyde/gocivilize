@@ -48,16 +48,21 @@ function onload() {
     hgridMini();
 }
 
+// FIXME: move to map
+app.getMapColor = function (col, row) {
+    return app.map[col][row];
+};
+
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, app.getMapColor);
     hexagonGrid.drawFogOfWar(app.ROWS, app.COLS, 50, 50, false);
     hexagonGrid.visible();
 }
 
 function hgridMini() {
     var hexagonGrid = new HexagonGrid("minimap", 5);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5, app.getMapColor);
 }
 
 function createTabs() {
