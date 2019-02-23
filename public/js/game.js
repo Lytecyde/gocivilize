@@ -60,7 +60,7 @@ game.getMapColor = function (col, row) {
     return game.map[col][row];
 };
 
-game.fogOfWarColor = function (col, row) {
+game.fogOfWarColor = function () {
     return "rgba(110,110,110, 0.75)";
 };
 
@@ -80,7 +80,7 @@ function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a'),
         i;
 
-    for(i = 0; i < tabs.length; i+=1) {
+    for(i = 0; i < tabs.length; i = i + 1) {
         setTabHandler(tabs[i], i);
     }
 }
@@ -91,12 +91,12 @@ function setTabHandler(tabs, tabPos) {
         i;
 
     tabs.onclick = function() {
-        for (i = 0; i < tabs.length; i+=1) {
+        for (i = 0; i < tabs.length; i = i + 1) {
             tabs[i].className = '';
         }
 
         tabs.className = 'active';
-        for (i = 0; i < panels.length; i+=1) {
+        for (i = 0; i < panels.length; i = i + 1) {
             panels[i].className = '';
         }
 
@@ -117,12 +117,12 @@ function makeMapColors() {
         i,
         j;
 
-    for (i = 0; i < game.COLS; i += 1) {
+    for (i = 0; i < game.COLS; i = i + 1) {
         colorsMap[i] = new Array(game.ROWS);
     }
 
-    for (i = 0; i < game.COLS; i += 1) {
-        for (j = 0; j < game.ROWS; j += 1) {
+    for (i = 0; i < game.COLS; i = i + 1) {
+        for (j = 0; j < game.ROWS; j = j + 1) {
             colorsMap[i][j] = getRandomColor();
         }
     }
@@ -153,7 +153,7 @@ function makeUnits(rows, cols) {
     var units = new Array(rows),
         i;
 
-    for (i = 0; i < rows; i++) {
+    for (i = 0; i < rows; i = i + 1) {
         units[i] = new Array(cols);
     }
 
@@ -189,8 +189,8 @@ function getListUnits(units) {
         x,
         y;
 
-    for (x = 0; x < game.COLS; x += 1) {
-        for (y = 0; y < game.ROWS; y += 1) {
+    for (x = 0; x < game.COLS; x = x + 1) {
+        for (y = 0; y < game.ROWS; y = y + 1) {
             if (units[x][y] === "*") {
                 listUnitLocations[i++] = {
                     x: x,
@@ -201,4 +201,4 @@ function getListUnits(units) {
     }
 
     return listUnitLocations;
-};
+}
