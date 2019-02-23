@@ -1,3 +1,4 @@
+/*global document*/
 "use strict";
 
 var game = {
@@ -6,7 +7,10 @@ var game = {
     MOVING: false,
     map: [],
     units: [],
-    lastTile: { row:0, column:0},
+    lastTile: {
+        row: 0,
+        column: 0,
+    },
     colors: [
         '#006600',//darkgreen forest
         '#33cc33',//LIGHT GREEN
@@ -19,20 +23,15 @@ var game = {
     ],
 };
 
-function clickEventHandler (tile) {
-    var drawy,
-        drawx;
-
+function clickEventHandler(tile) {
     if (tile.column >= 0 && tile.row >= 0) {
-        drawy = tile.column % 2 === 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
-        drawx = (tile.column * this.side) + this.canvasOriginX;
         if (civilization.units[tile.column][tile.row] === "*") {
-            color = game.map[column][row];
+            var color = game.map[tile.column][tile.row];
             this.clearHexAtColRow(tile.column, tile.row, color);
             game.MOVING = true;
             game.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
-        };
+        }
     }
 
     if (game.MOVING && this.isAroundTile(game.lastTile, tile)) {
@@ -40,7 +39,7 @@ function clickEventHandler (tile) {
         this.drawHexAtColRow(tile.column, tile.row);
         game.MOVING = false;
     }
-};
+}
 
 // FIXME: all functions should be namespaced.
 // game.onload = function () {
@@ -80,7 +79,7 @@ function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a'),
         i;
 
-    for(i = 0; i < tabs.length; i = i + 1) {
+    for (i = 0; i < tabs.length; i = i + 1) {
         setTabHandler(tabs[i], i);
     }
 }
@@ -90,7 +89,7 @@ function setTabHandler(tabs, tabPos) {
     var panels = document.querySelectorAll('article'),
         i;
 
-    tabs.onclick = function() {
+    tabs.onclick = function () {
         for (i = 0; i < tabs.length; i = i + 1) {
             tabs[i].className = '';
         }
@@ -130,14 +129,14 @@ function makeMapColors() {
     return colorsMap;
 }
 
-function makeUnitMap(){
+function makeUnitMap() {
     var units = makeUnits(game.COLS, game.ROWS),
         sp = getStartingPoint(),
         x,
         y;
 
-    for (x = 0; x < game.COLS; x++) {
-        for (y = 0; y < game.ROWS; y++) {
+    for (x = 0; x < game.COLS; x = x + 1) {
+        for (y = 0; y < game.ROWS; y = y + 1) {
             if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
             } else {
@@ -160,7 +159,7 @@ function makeUnits(rows, cols) {
     return units;
 }
 
-function assignUnits(){
+function assignUnits() {
     civilization.units = makeUnitMap();
 }
 
