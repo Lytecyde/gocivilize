@@ -27,18 +27,18 @@ function clickEventHandler (tile) {
         drawy = tile.column % 2 === 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
         drawx = (tile.column * this.side) + this.canvasOriginX;
         if (civilization.units[tile.column][tile.row] === "*") {
-            color = app.map[column][row];
+            color = game.map[column][row];
             this.clearHexAtColRow(tile.column, tile.row, color);
-            app.MOVING = true;
-            app.lastTile = tile;
+            game.MOVING = true;
+            game.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
         };
     }
 
-    if (app.MOVING && this.isAroundTile(app.lastTile, tile)) {
+    if (game.MOVING && this.isAroundTile(game.lastTile, tile)) {
         civilization.units[tile.column][tile.row] = "*";
         this.drawHexAtColRow(tile.column, tile.row);
-        app.MOVING = false;
+        game.MOVING = false;
     }
 };
 
@@ -66,13 +66,13 @@ game.fogOfWarColor = function (col, row) {
 };
 
 function hgrid() {
-    var hexagonGrid = new HexagonGrid("map", 50);
+    var hexagonGrid = new HexagonGrid("map", 50, clickEventHandler);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.getMapColor);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
 }
 
 function hgridMini() {
-    var hexagonGrid = new HexagonGrid("minimap", 5);
+    var hexagonGrid = new HexagonGrid("minimap", 5, null);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 5, 5, game.getMapColor);
 }
 

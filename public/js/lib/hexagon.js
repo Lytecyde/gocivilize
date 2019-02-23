@@ -2,7 +2,7 @@
 // Hex math defined here: http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 "use strict";
 
-function HexagonGrid(canvasId, radius) {
+function HexagonGrid(canvasId, radius, clickEventHandler) {
     this.radius = radius;
 
     this.height = Math.sqrt(3) * radius;
@@ -16,6 +16,8 @@ function HexagonGrid(canvasId, radius) {
     this.canvasOriginY = 0;
 
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
+
+    this.clickEventHandler = clickEventHandler;
 }
 
 HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, colorFunc) {
@@ -50,9 +52,9 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, colo
 HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     var numberOfTilesAroundHex = 6,
         encirclement = [],
-        dx = [ 1, 1, 0, -1, -1, 0],
-        dy1 = [ -1, 0, 1, 0 , -1, -1],
-        dy2 = [ 0, 1, 1, 1, 0, -1],
+        dx = [1, 1, 0, -1, -1, 0],
+        dy1 = [-1, 0, 1, 0 , -1, -1],
+        dy2 = [0, 1, 1, 1, 0, -1],
         dy = col % 2 === 0 ? dy1 : dy2,
         i;
 
@@ -129,16 +131,16 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
         p5,
         p6,
         column,
-        row;
+        row,
+        f1,
+        f2;
 
     mouseX -= offSet.x;
     mouseY -= offSet.y;
-
     column = Math.floor((mouseX) / this.side);
-    row = Math.floor(
-        column % 2 === 0
-            ? Math.floor((mouseY) / this.height)
-            : Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1);
+    f1 = Math.floor((mouseY) / this.height);
+    f2 = Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1;
+    row = Math.floor(column % 2 === 0 ? f1 : f2);
 
     //Test if on left side of frame
     if (mouseX > (column * this.side) && mouseX < (column * this.side) + this.width - this.side) {
