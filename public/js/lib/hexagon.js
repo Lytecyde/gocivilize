@@ -61,10 +61,9 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
 
-    var currentHexX;
-    var currentHexY;
-
-    var offsetColumn = false;
+    var currentHexX,
+        currentHexY,
+        offsetColumn = false;
 
     for (var col = 0; col < cols; col++) {
         for (var row = 0; row < rows; row++) {
@@ -79,10 +78,10 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
             var fogColor = "rgba(110,110,110, 0.75)";
             this.drawHexagon(currentHexX, currentHexY, fogColor);
         }
+
         offsetColumn = !offsetColumn;
     }
 };
-
 
 HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
@@ -98,7 +97,7 @@ HexagonGrid.prototype.clearHexAtColRow = function(column, row) {
     this.drawHexagon(drawx, drawy, color);
 }
 
-HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor, unitSign) {
+HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor) {
     this.context.strokeStyle = "#000";
     this.context.beginPath();
     this.context.moveTo(x0 + this.width - this.side, y0);
@@ -115,12 +114,6 @@ HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor, unitSign) {
 
     this.context.closePath();
     this.context.stroke();
-
-    if (unitSign) {
-        this.context.font = "80px sans-serif";
-        this.context.fillStyle = "red";
-        this.context.fillText(unitSign,x0 + 30, y0 + 85);
-    }
 };
 
 //Recursively step up to the body to calculate canvas offset.
