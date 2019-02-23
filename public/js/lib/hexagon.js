@@ -1,3 +1,4 @@
+/*global document*/
 // Hex math defined here: http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 "use strict";
 
@@ -21,13 +22,15 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
 
-    var currentHexX;
-    var currentHexY;
+    var currentHexX,
+        currentHexY,
+        offsetColumn = false,
+        col,
+        row,
+        color;
 
-    var offsetColumn = false;
-
-    for (var col = 0; col < cols; col++) {
-        for (var row = 0; row < rows; row++) {
+    for (col = 0; col < cols; col++) {
+        for (row = 0; row < rows; row++) {
             if (!offsetColumn) {
                 currentHexX = (col * this.side) + originX;
                 currentHexY = (row * this.height) + originY;
@@ -36,7 +39,7 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY) {
                 currentHexY = (row * this.height) + originY + (this.height * 0.5);
             }
 
-            var color = app.map[col][row];
+            color = app.map[col][row];
             this.drawHexagon(currentHexX, currentHexY, color);
         }
 
