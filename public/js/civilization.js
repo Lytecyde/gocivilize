@@ -1,9 +1,12 @@
 "use strict";
 
 var civilization = {
-    identification,
+    identification: null,
     capital: "",
-    startingPoint: locationPoint,
+    startingPoint: {
+        x: 0,
+        y: 0,
+    },
     population: 4,
     gold: 50,
     food: 50,
@@ -15,27 +18,22 @@ var civilization = {
     happiness: 50,
     loyalty: 50,
     amenities: 0
-);
+};
 
 var identification = {
     name: "",
     number: 0
-}
+};
 
 var unit = {
-    identification,
+    identification: null,
     location: [],
     type: "Settler",
     sign: "👨",
     movement: 2,
     power: 1,
     life: 10
-}
-
-var locationPoint = function(x, y){
-    this.X = x;
-    this.Y = y;
-}
+};
 
 var civilizations = {
     names: ["Egypt", "Mesopotamia", "Greece", "Rome", "Germany", "England", "Russia", "India", "China", "Japan", "Aztec", "Maya"],
