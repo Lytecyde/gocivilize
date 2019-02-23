@@ -63,21 +63,21 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     return encirclement;
 };
 
-HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
+HexagonGrid.prototype.drawHexAtColRow = function (column, row, color) {
     var drawy = column % 2 === 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
         drawx = (column * this.side) + this.canvasOriginX;
 
     this.drawHexagon(drawx, drawy, color);
 };
 
-HexagonGrid.prototype.clearHexAtColRow = function(column, row) {
+HexagonGrid.prototype.clearHexAtColRow = function (column, row) {
     var drawy = column % 2 === 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
         drawx = (column * this.side) + this.canvasOriginX,
         color = app.map[column][row];
     this.drawHexagon(drawx, drawy, color);
 };
 
-HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor) {
+HexagonGrid.prototype.drawHexagon = function (x0, y0, fillColor) {
     this.context.strokeStyle = "#000";
     this.context.beginPath();
     this.context.moveTo(x0 + this.width - this.side, y0);
@@ -97,7 +97,7 @@ HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor) {
 };
 
 //Recursively step up to the body to calculate canvas offset.
-HexagonGrid.prototype.getRelativeCanvasOffset = function() {
+HexagonGrid.prototype.getRelativeCanvasOffset = function () {
     var x = 0,
         y = 0,
         layoutElement = this.canvas;
@@ -116,7 +116,7 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function() {
 
 //Uses a grid overlay algorithm to determine hexagon location
 //Left edge of grid has a test to accurately determine correct hex
-HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
+HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
     var offSet = this.getRelativeCanvasOffset(),
         mousePoint,
         p1,
@@ -141,21 +141,21 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
     if (mouseX > (column * this.side) && mouseX < (column * this.side) + this.width - this.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
-        p1 = new Object();
+        p1 = {};
         p1.x = column * this.side;
         p1.y = column % 2 === 0
             ? row * this.height
             : (row * this.height) + (this.height / 2);
 
-        p2 = new Object();
+        p2 = {};
         p2.x = p1.x;
         p2.y = p1.y + (this.height / 2);
 
-        p3 = new Object();
+        p3 = {};
         p3.x = p1.x + this.width - this.side;
         p3.y = p1.y;
 
-        mousePoint = new Object();
+        mousePoint = {};
         mousePoint.x = mouseX;
         mousePoint.y = mouseY;
 
@@ -168,14 +168,14 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
         }
 
         //Bottom left triangle points
-        p4 = new Object();
+        p4 = {};
         p4 = p2;
 
-        p5 = new Object();
+        p5 = {};
         p5.x = p4.x;
         p5.y = p4.y + (this.height / 2);
 
-        p6 = new Object();
+        p6 = {};
         p6.x = p5.x + (this.width - this.side);
         p6.y = p5.y;
 
@@ -194,7 +194,7 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
     };
 };
 
-HexagonGrid.prototype.sign = function(p1, p2, p3) {
+HexagonGrid.prototype.sign = function (p1, p2, p3) {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 };
 
@@ -234,8 +234,10 @@ HexagonGrid.prototype.clickEvent = function (e) {
     }
 };
 
-HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
-    for (const h of this.getEncirclementOne(lastTile.column, lastTile.row) ) {
+HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
+    var h;
+
+    for (h of this.getEncirclementOne(lastTile.column, lastTile.row)) {
         if (h.COL === tile.column && h.ROW === tile.row) {
             return true;
         };
@@ -244,15 +246,15 @@ HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
     return false;
 };
 
-HexagonGrid.prototype.visible = function() {
+HexagonGrid.prototype.visible = function () {
     var units = civilization.units,
         u,
         h;
 
     for (u of getListUnits(units)) {
-        this.drawHexAtColRow( u.x, u.y, app.map[u.x][u.y]);
+        this.drawHexAtColRow(u.x, u.y, app.map[u.x][u.y]);
         for (h of this.getEncirclementOne(u.x, u.y)) {
-            this.drawHexAtColRow( h.COL, h.ROW, app.map[h.COL][h.ROW]);
+            this.drawHexAtColRow(h.COL, h.ROW, app.map[h.COL][h.ROW]);
         }
     }
 
