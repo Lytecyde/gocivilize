@@ -50,14 +50,14 @@ function onload() {
 
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, true);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50);
     hexagonGrid.drawFogOfWar(app.ROWS, app.COLS, 50, 50, false);
     hexagonGrid.visible();
 }
 
 function hgridMini() {
     var hexagonGrid = new HexagonGrid("minimap", 5);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5, false);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5);
 }
 
 function createTabs() {

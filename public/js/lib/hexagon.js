@@ -17,13 +17,12 @@ function HexagonGrid(canvasId, radius) {
     this.canvas.addEventListener("mousedown", this.clickEvent.bind(this), false);
 }
 
-HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isWithUnits) {
+HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY) {
     this.canvasOriginX = originX;
     this.canvasOriginY = originY;
 
     var currentHexX;
     var currentHexY;
-    var unitSign = "";
 
     var offsetColumn = false;
 
@@ -37,44 +36,10 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, isWi
                 currentHexY = (row * this.height) + originY + (this.height * 0.5);
             }
 
-            if (isWithUnits) {
-                unitSign = civilization.units[col][row];
-            }
-
-            var randomColor = app.map[col][row];
-            this.drawHex(currentHexX, currentHexY, randomColor, unitSign);
+            var color = app.map[col][row];
+            this.drawHexagon(currentHexX, currentHexY, color);
         }
-        offsetColumn = !offsetColumn;
-    }
-};
-//FIXME: refactor out duplicate code
-HexagonGrid.prototype.drawTerraIncognita = function () {
-    this.canvasOriginX = originX;
-    this.canvasOriginY = originY;
 
-    var currentHexX;
-    var currentHexY;
-    var unitSign = "";
-
-    var offsetColumn = false;
-
-    for (var col = 0; col < cols; col++) {
-        for (var row = 0; row < rows; row++) {
-            if (!offsetColumn) {
-                currentHexX = (col * this.side) + originX;
-                currentHexY = (row * this.height) + originY;
-            } else {
-                currentHexX = col * this.side + originX;
-                currentHexY = (row * this.height) + originY + (this.height * 0.5);
-            }
-
-            if (isWithUnits) {
-                unitSign = civilization.units[col][row];
-            }
-
-            var unknownLandColor = "#fff";
-            this.drawHex(currentHexX, currentHexY, unknownLandColor, unitSign);
-        }
         offsetColumn = !offsetColumn;
     }
 };
@@ -112,7 +77,7 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
             }
 
             var fogColor = "rgba(110,110,110, 0.75)";
-            this.drawHex(currentHexX, currentHexY, fogColor, "");
+            this.drawHexagon(currentHexX, currentHexY, fogColor);
         }
         offsetColumn = !offsetColumn;
     }
@@ -123,17 +88,17 @@ HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
     var drawx = (column * this.side) + this.canvasOriginX;
 
-    this.drawHex(drawx, drawy, color, civilization.units[column][row]);
+    this.drawHexagon(drawx, drawy, color);
 };
 
 HexagonGrid.prototype.clearHexAtColRow = function(column, row) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
     var drawx = (column * this.side) + this.canvasOriginX;
     var color = app.map[column][row];
-    this.drawHex(drawx, drawy, color, "");
+    this.drawHexagon(drawx, drawy, color);
 }
 
-HexagonGrid.prototype.drawHex = function(x0, y0, fillColor, unitSign) {
+HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor, unitSign) {
     this.context.strokeStyle = "#000";
     this.context.beginPath();
     this.context.moveTo(x0 + this.width - this.side, y0);
