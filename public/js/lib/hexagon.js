@@ -47,16 +47,16 @@ HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, colo
     }
 };
 
-HexagonGrid.prototype.getEncirclementOne = function(col, row) {
-    const numberOfTilesAroundHex = 6;
-    
-    var encirclement = [],
+HexagonGrid.prototype.getEncirclementOne = function (col, row) {
+    var numberOfTilesAroundHex = 6,
+        encirclement = [],
         dx = [ 1, 1, 0, -1, -1, 0],
         dy1 = [ -1, 0, 1, 0 , -1, -1],
         dy2 = [ 0, 1, 1, 1, 0, -1],
-        dy = col % 2 == 0 ? dy1 : dy2;
+        dy = col % 2 == 0 ? dy1 : dy2,
+        i;
 
-    for (var i = 0; i < numberOfTilesAroundHex; i += 1){
+    for (i = 0; i < numberOfTilesAroundHex; i += 1){
         encirclement[i] = {COL: col + dx[i], ROW: row + dy[i] };
     }
 
