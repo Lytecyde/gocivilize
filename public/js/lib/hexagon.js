@@ -70,10 +70,10 @@ HexagonGrid.prototype.drawHexAtColRow = function (column, row, color) {
     this.drawHexagon(drawx, drawy, color);
 };
 
-HexagonGrid.prototype.clearHexAtColRow = function (column, row) {
+HexagonGrid.prototype.clearHexAtColRow = function (column, row, color) {
     var drawy = column % 2 === 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
-        drawx = (column * this.side) + this.canvasOriginX,
-        color = app.map[column][row];
+        drawx = (column * this.side) + this.canvasOriginX;
+    
     this.drawHexagon(drawx, drawy, color);
 };
 
@@ -219,7 +219,7 @@ HexagonGrid.prototype.clickEvent = function (e) {
         drawx = (tile.column * this.side) + this.canvasOriginX;
         if (civilization.units[tile.column][tile.row] === "*") {
             color = app.map[column][row];
-            this.clearHexAtColRow(tile.column, tile.row);
+            this.clearHexAtColRow(tile.column, tile.row, color);
             app.MOVING = true;
             app.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
