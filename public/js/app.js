@@ -111,7 +111,6 @@ function makeMapColors() {
 function makeUnitMap(){
     var units = makeUnits(app.COLS, app.ROWS);
     var sp = setStartingPoint();
-    console.log(sp);
     for (var x = 0; x < app.COLS; x++) {
         for (var y = 0; y < app.ROWS; y++) {
             if(x == sp.x &&
