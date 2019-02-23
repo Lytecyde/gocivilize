@@ -92,13 +92,16 @@ function getRandomColor() {
 }
 
 function makeMapColors() {
-    var colorsMap = [];
-    for (var i = 0; i < app.COLS; i += 1) {
+    var colorsMap = [],
+        i,
+        j;
+
+    for (i = 0; i < app.COLS; i += 1) {
         colorsMap[i] = new Array(app.ROWS);
     }
 
-    for (var i = 0; i < app.COLS; i += 1) {
-        for (var j = 0; j < app.ROWS; j += 1) {
+    for (i = 0; i < app.COLS; i += 1) {
+        for (j = 0; j < app.ROWS; j += 1) {
             colorsMap[i][j] = getRandomColor();
         }
     }
@@ -108,10 +111,12 @@ function makeMapColors() {
 
 function makeUnitMap(){
     var units = makeUnits(app.COLS, app.ROWS),
-        sp = getStartingPoint();
+        sp = getStartingPoint(),
+        x,
+        y;
 
-    for (var x = 0; x < app.COLS; x++) {
-        for (var y = 0; y < app.ROWS; y++) {
+    for (x = 0; x < app.COLS; x++) {
+        for (y = 0; y < app.ROWS; y++) {
             if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
             } else {
@@ -124,8 +129,10 @@ function makeUnitMap(){
 }
 
 function makeUnits(rows, cols) {
-    var units = new Array(rows);
-    for (var i = 0; i < rows; i++) {
+    var units = new Array(rows),
+        i;
+
+    for (i = 0; i < rows; i++) {
         units[i] = new Array(cols);
     }
 
@@ -156,16 +163,20 @@ function removeUnit(drawx, drawy, tile) {
 }
 
 function createFogMap() {
-    var fogs = [];
-    for(var x = 0; x < app.COLS; x += 1) {
-        for (var y = 0; y < app.ROWS; y += 1) {
+    var fogs = [],
+        x,
+        y;
+
+    for (x = 0; x < app.COLS; x += 1) {
+        for (y = 0; y < app.ROWS; y += 1) {
             fogs[x] = new Array();
         }
     }
+
     civilization.fogMap = fogs;
 
-    for(var x = 0; x < app.COLS; x += 1) {  
-        for (var y = 0; y < app.ROWS; y += 1) {
+    for (x = 0; x < app.COLS; x += 1) {  
+        for (y = 0; y < app.ROWS; y += 1) {
             civilization.fogMap[x][y] = true;
         }
     }
