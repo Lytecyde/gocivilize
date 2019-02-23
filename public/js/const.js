@@ -1,3 +1,5 @@
+"use strict";
+
 var moves = {
     NE: 0,
     SE: 1,

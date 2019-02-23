@@ -1,18 +1,20 @@
-var civilization = new Map(
+"use strict";
+
+var civilization = {
     identification,
-    capital = "",
-    startingPoint = locationPoint,
-    population = 4,
-    gold = 50,
-    food = 50,
-    fuel = 0,
-    pollution = 0,
-    units = [],
-    fogMap = [],
-    unknownMap = [],
-    happiness = 50,
-    loyalty = 50,
-    amenities = 0
+    capital: "",
+    startingPoint: locationPoint,
+    population: 4,
+    gold: 50,
+    food: 50,
+    fuel: 0,
+    pollution: 0,
+    units: [],
+    fogMap: [],
+    unknownMap: [],
+    happiness: 50,
+    loyalty: 50,
+    amenities: 0
 );
 
 var identification = {
