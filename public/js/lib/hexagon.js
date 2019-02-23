@@ -215,28 +215,9 @@ HexagonGrid.prototype.clickEvent = function (e) {
         mouseY = e.pageY,
         localX = mouseX - this.canvasOriginX,
         localY = mouseY - this.canvasOriginY,
-        tile = this.getSelectedTile(localX, localY),
-        drawy,
-        drawx;
+        tile = this.getSelectedTile(localX, localY);
 
-    if (tile.column >= 0 && tile.row >= 0) {
-        drawy = tile.column % 2 === 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
-        drawx = (tile.column * this.side) + this.canvasOriginX;
-        if (civilization.units[tile.column][tile.row] === "*") {
-            color = app.map[column][row];
-            this.clearHexAtColRow(tile.column, tile.row, color);
-            app.MOVING = true;
-            app.lastTile = tile;
-            civilization.units[tile.column][tile.row] = "";
-        };
-    }
-
-    if (app.MOVING && this.isAroundTile(app.lastTile, tile)) {
-        civilization.units[tile.column][tile.row] = "*";
-        this.drawHexAtColRow(tile.column, tile.row);
-        this.visible();
-        app.MOVING = false;
-    }
+    this.clickEventHandler(tile);
 };
 
 HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
@@ -249,37 +230,4 @@ HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
     }
 
     return false;
-};
-
-HexagonGrid.prototype.visible = function () {
-    var units = civilization.units,
-        u,
-        h;
-
-    for (u of getListUnits(units)) {
-        this.drawHexAtColRow(u.x, u.y, app.map[u.x][u.y]);
-        for (h of this.getEncirclementOne(u.x, u.y)) {
-            this.drawHexAtColRow(h.col, h.row, app.map[h.col][h.row]);
-        }
-    }
-
-    function getListUnits(units) {
-        var listUnitLocations = [],
-            i = 0,
-            x,
-            y;
-
-        for (x = 0; x < app.COLS; x += 1) {
-            for (y = 0; y < app.ROWS; y += 1) {
-                if (units[x][y] === "*") {
-                    listUnitLocations[i++] = {
-                        x: x,
-                        y: y,
-                    };
-                }
-            }
-        }
-
-        return listUnitLocations;
-    }
 };

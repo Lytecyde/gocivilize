@@ -1,6 +1,6 @@
 "use strict";
 
-var app = {
+var game = {
     ROWS: 8,
     COLS: 20,
     MOVING: false,
@@ -19,8 +19,31 @@ var app = {
     ],
 };
 
+function clickEventHandler (tile) {
+    var drawy,
+        drawx;
+
+    if (tile.column >= 0 && tile.row >= 0) {
+        drawy = tile.column % 2 === 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
+        drawx = (tile.column * this.side) + this.canvasOriginX;
+        if (civilization.units[tile.column][tile.row] === "*") {
+            color = app.map[column][row];
+            this.clearHexAtColRow(tile.column, tile.row, color);
+            app.MOVING = true;
+            app.lastTile = tile;
+            civilization.units[tile.column][tile.row] = "";
+        };
+    }
+
+    if (app.MOVING && this.isAroundTile(app.lastTile, tile)) {
+        civilization.units[tile.column][tile.row] = "*";
+        this.drawHexAtColRow(tile.column, tile.row);
+        app.MOVING = false;
+    }
+};
+
 // FIXME: all functions should be namespaced.
-// app.onload = function () {
+// game.onload = function () {
 //      createTabs();
 //      ...
 // }
@@ -34,24 +57,23 @@ function onload() {
 }
 
 // FIXME: move to map
-app.getMapColor = function (col, row) {
-    return app.map[col][row];
+game.getMapColor = function (col, row) {
+    return game.map[col][row];
 };
 
-app.fogOfWarColor = function (col, row) {
+game.fogOfWarColor = function (col, row) {
     return "rgba(110,110,110, 0.75)";
 };
 
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, app.getMapColor);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, app.fogOfWarColor);
-    hexagonGrid.visible();
+    hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.getMapColor);
+    hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
 }
 
 function hgridMini() {
     var hexagonGrid = new HexagonGrid("minimap", 5);
-    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5, app.getMapColor);
+    hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 5, 5, game.getMapColor);
 }
 
 // FIXME: move into view/tabs
@@ -84,11 +106,11 @@ function setTabHandler(tabs, tabPos) {
 }
 
 function createColoredMap() {
-    app.map = makeMapColors();
+    game.map = makeMapColors();
 }
 
 function getRandomColor() {
-    return app.colors[Math.floor(Math.random() * app.colors.length)];
+    return game.colors[Math.floor(Math.random() * game.colors.length)];
 }
 
 function makeMapColors() {
@@ -96,12 +118,12 @@ function makeMapColors() {
         i,
         j;
 
-    for (i = 0; i < app.COLS; i += 1) {
-        colorsMap[i] = new Array(app.ROWS);
+    for (i = 0; i < game.COLS; i += 1) {
+        colorsMap[i] = new Array(game.ROWS);
     }
 
-    for (i = 0; i < app.COLS; i += 1) {
-        for (j = 0; j < app.ROWS; j += 1) {
+    for (i = 0; i < game.COLS; i += 1) {
+        for (j = 0; j < game.ROWS; j += 1) {
             colorsMap[i][j] = getRandomColor();
         }
     }
@@ -110,13 +132,13 @@ function makeMapColors() {
 }
 
 function makeUnitMap(){
-    var units = makeUnits(app.COLS, app.ROWS),
+    var units = makeUnits(game.COLS, game.ROWS),
         sp = getStartingPoint(),
         x,
         y;
 
-    for (x = 0; x < app.COLS; x++) {
-        for (y = 0; y < app.ROWS; y++) {
+    for (x = 0; x < game.COLS; x++) {
+        for (y = 0; y < game.ROWS; y++) {
             if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
             } else {
@@ -144,11 +166,11 @@ function assignUnits(){
 }
 
 function randomCol() {
-    return Math.floor(Math.random() * app.COLS);
+    return Math.floor(Math.random() * game.COLS);
 }
 
 function randomRow() {
-    return Math.floor(Math.random() * app.ROWS);
+    return Math.floor(Math.random() * game.ROWS);
 }
 
 function getStartingPoint() {
@@ -159,7 +181,7 @@ function getStartingPoint() {
 }
 
 function removeUnit(drawx, drawy, tile) {
-    tile.drawHex(drawx, drawy - 6, app.map[tile.column][tile.row], "");
+    tile.drawHex(drawx, drawy - 6, game.map[tile.column][tile.row], "");
 }
 
 function createFogMap() {
@@ -167,17 +189,37 @@ function createFogMap() {
         x,
         y;
 
-    for (x = 0; x < app.COLS; x += 1) {
-        for (y = 0; y < app.ROWS; y += 1) {
+    for (x = 0; x < game.COLS; x += 1) {
+        for (y = 0; y < game.ROWS; y += 1) {
             fogs[x] = new Array();
         }
     }
 
     civilization.fogMap = fogs;
 
-    for (x = 0; x < app.COLS; x += 1) {  
-        for (y = 0; y < app.ROWS; y += 1) {
+    for (x = 0; x < game.COLS; x += 1) {  
+        for (y = 0; y < game.ROWS; y += 1) {
             civilization.fogMap[x][y] = true;
         }
     }
 }
+
+function getListUnits(units) {
+    var listUnitLocations = [],
+        i = 0,
+        x,
+        y;
+
+    for (x = 0; x < game.COLS; x += 1) {
+        for (y = 0; y < game.ROWS; y += 1) {
+            if (units[x][y] === "*") {
+                listUnitLocations[i++] = {
+                    x: x,
+                    y: y,
+                };
+            }
+        }
+    }
+
+    return listUnitLocations;
+};
