@@ -65,6 +65,7 @@ function hgridMini() {
     hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 5, 5, app.getMapColor);
 }
 
+// FIXME: move into view/tabs
 function createTabs() {
     var tabs = document.querySelectorAll('.tab-box li a'),
         i;
@@ -74,6 +75,7 @@ function createTabs() {
     }
 }
 
+// FIXME: move into view/tabs
 function setTabHandler(tabs, tabPos) {
     var panels = document.querySelectorAll('article'),
         i;
@@ -117,7 +119,7 @@ function makeMapColors() {
 
 function makeUnitMap(){
     var units = makeUnits(app.COLS, app.ROWS),
-        sp = setStartingPoint();
+        sp = getStartingPoint();
 
     for (var x = 0; x < app.COLS; x++) {
         for (var y = 0; y < app.ROWS; y++) {
@@ -145,7 +147,7 @@ function assignUnits(){
     civilization.units = makeUnitMap();
 }
 
-function setStartingPoint() {
+function getStartingPoint() {
     return {
         x: Math.floor(Math.random() * app.COLS),
         y: Math.floor(Math.random() * app.ROWS),
