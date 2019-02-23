@@ -61,7 +61,7 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     }
 
     return encirclement;
-}
+};
 
 HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWithUnits) {
     this.canvasOriginX = originX;
@@ -93,18 +93,18 @@ HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWi
 };
 
 HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
-    var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
-    var drawx = (column * this.side) + this.canvasOriginX;
+    var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
+        drawx = (column * this.side) + this.canvasOriginX;
 
     this.drawHexagon(drawx, drawy, color);
 };
 
 HexagonGrid.prototype.clearHexAtColRow = function(column, row) {
-    var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2);
-    var drawx = (column * this.side) + this.canvasOriginX;
-    var color = app.map[column][row];
+    var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
+        drawx = (column * this.side) + this.canvasOriginX,
+        color = app.map[column][row];
     this.drawHexagon(drawx, drawy, color);
-}
+};
 
 HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor) {
     this.context.strokeStyle = "#000";
@@ -127,51 +127,64 @@ HexagonGrid.prototype.drawHexagon = function(x0, y0, fillColor) {
 
 //Recursively step up to the body to calculate canvas offset.
 HexagonGrid.prototype.getRelativeCanvasOffset = function() {
-    var x = 0, y = 0;
-    var layoutElement = this.canvas;
+    var x = 0,
+        y = 0,
+        layoutElement = this.canvas;
+
     if (layoutElement.offsetParent) {
         do {
             x += layoutElement.offsetLeft;
             y += layoutElement.offsetTop;
         } while (layoutElement = layoutElement.offsetParent);
-        return { x: x, y: y };
+        return {
+            x: x,
+            y: y,
+        };
     }
-}
+};
 
 //Uses a grid overlay algorithm to determine hexagon location
 //Left edge of grid has a test to accurately determine correct hex
 HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
-    var offSet = this.getRelativeCanvasOffset();
+    var offSet = this.getRelativeCanvasOffset(),
+        mousePoint,
+        p1,
+        p2,
+        p3,
+        p4,
+        p5,
+        p6,
+        column,
+        row;
 
     mouseX -= offSet.x;
     mouseY -= offSet.y;
 
-    var column = Math.floor((mouseX) / this.side);
-    var row = Math.floor(
+    column = Math.floor((mouseX) / this.side);
+    row = Math.floor(
         column % 2 == 0
             ? Math.floor((mouseY) / this.height)
             : Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1);
-
 
     //Test if on left side of frame
     if (mouseX > (column * this.side) && mouseX < (column * this.side) + this.width - this.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
-        var p1 = new Object();
+        p1 = new Object();
         p1.x = column * this.side;
         p1.y = column % 2 == 0
             ? row * this.height
             : (row * this.height) + (this.height / 2);
 
-        var p2 = new Object();
+        p2 = new Object();
         p2.x = p1.x;
         p2.y = p1.y + (this.height / 2);
 
-        var p3 = new Object();
+        p3 = new Object();
         p3.x = p1.x + this.width - this.side;
         p3.y = p1.y;
 
-        var mousePoint = new Object();
+        mousePoint = new Object();
         mousePoint.x = mouseX;
         mousePoint.y = mouseY;
 
@@ -184,14 +197,14 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
         }
 
         //Bottom left triangle points
-        var p4 = new Object();
+        p4 = new Object();
         p4 = p2;
 
-        var p5 = new Object();
+        p5 = new Object();
         p5.x = p4.x;
         p5.y = p4.y + (this.height / 2);
 
-        var p6 = new Object();
+        p6 = new Object();
         p6.x = p5.x + (this.width - this.side);
         p6.y = p5.y;
 
@@ -204,9 +217,11 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
         }
     }
 
-    return  { row: row, column: column };
+    return {
+        row: row,
+        column: column,
+    };
 };
-
 
 HexagonGrid.prototype.sign = function(p1, p2, p3) {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
@@ -214,17 +229,15 @@ HexagonGrid.prototype.sign = function(p1, p2, p3) {
 
 //TODO: Replace with optimized barycentric coordinate method
 HexagonGrid.prototype.isPointInTriangle = function isPointInTriangle(pt, v1, v2, v3) {
-    var b1, b2, b3;
-
-    b1 = this.sign(pt, v1, v2) < 0.0;
-    b2 = this.sign(pt, v2, v3) < 0.0;
-    b3 = this.sign(pt, v3, v1) < 0.0;
+    var b1 = this.sign(pt, v1, v2) < 0.0;
+        b2 = this.sign(pt, v2, v3) < 0.0;
+        b3 = this.sign(pt, v3, v1) < 0.0;
 
     return ((b1 == b2) && (b2 == b3));
 };
 
 HexagonGrid.prototype.clickEvent = function (e) {
-    var mouseX = e.pageX;
+    var mouseX = e.pageX,
         mouseY = e.pageY,
         localX = mouseX - this.canvasOriginX,
         localY = mouseY - this.canvasOriginY,
@@ -258,7 +271,7 @@ HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
     };
 
     return false;
-}
+};
 
 HexagonGrid.prototype.visible = function(){
     var units = civilization.units,
@@ -288,7 +301,7 @@ HexagonGrid.prototype.visible = function(){
                 }
             }
         }
+
         return listUnitLocations;
     }
-}
-
+};
