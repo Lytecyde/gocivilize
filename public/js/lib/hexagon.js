@@ -1,4 +1,5 @@
 // Hex math defined here: http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
+"use strict";
 
 function HexagonGrid(canvasId, radius) {
     this.radius = radius;
@@ -185,7 +186,7 @@ HexagonGrid.prototype.getSelectedTile = function(mouseX, mouseY) {
             : Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1);
 
 
-    //Test if on left side of frame            
+    //Test if on left side of frame
     if (mouseX > (column * this.side) && mouseX < (column * this.side) + this.width - this.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
@@ -265,17 +266,17 @@ HexagonGrid.prototype.clickEvent = function (e) {
     var tile = this.getSelectedTile(localX, localY);
 
     if (tile.column >= 0 && tile.row >= 0) {
+        //TODO refactor to  drawy drawx functions
         var drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
         var drawx = (tile.column * this.side) + this.canvasOriginX;
         if(civilization.units[tile.column][tile.row] == "*"){
-            //removeUnit(drawx, drawy, tile);
             this.clearHexAtColRow(tile.column, tile.row)
             app.MOVING = true;
-            lastTile = tile;
+            app.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
         };
     };
-    if(app.MOVING == true && this.isAroundTile(lastTile, tile)){
+    if(app.MOVING == true && this.isAroundTile(app.lastTile, tile)){
         civilization.units[tile.column][tile.row] = "*";
         this.drawHexAtColRow(tile.column, tile.row);
         this.visible();
@@ -298,8 +299,17 @@ HexagonGrid.prototype.visible = function(){
         this.drawHexAtColRow( u.x, u.y, app.map[u.x][u.y]);
         for(const h of this.getEncirclementOne(u.x, u.y)) {
             this.drawHexAtColRow( h.COL, h.ROW, app.map[h.COL][h.ROW]);
-            civilization.fogMap[h.COL][h.ROW] = false;
         }
+    }
+    function getListUnits(units) {
+        var listUnitLocations = [];
+        var i = 0;
+        for(var x = 0; x < app.COLS; x += 1) {
+            for (var y = 0; y < app.ROWS; y += 1) {
+                if(units[x][y] == "*") listUnitLocations[i++] = {x:x, y:y};
+            }
+        }
+        return listUnitLocations;
     }
 }
 

@@ -10,9 +10,10 @@ var app = {
     mapStrings: ["minimap", "map"],
     map: [],
     units: [],
+    lastTile: { row:0, column:0},
     colors: [
         '#006600',//darkgreen forest
-        '#33cc33',//LIGHT GREEN 
+        '#33cc33',//LIGHT GREEN
         '#ffcc00',//yellow desert
         '#99ff66',//VERYlight green field
         '#808080',//grey mntn
@@ -30,7 +31,7 @@ var app = {
         "violet",
         "black",
         "white"
-    ],
+    ]
 };
 
 // FIXME: all functions should be namespaced.
@@ -41,6 +42,7 @@ var app = {
 function onload() {
     createTabs();
     createColoredMap();
+    //createFogMap();
     assignUnits();
     hgrid();
     hgridMini();
@@ -92,7 +94,7 @@ function getRandomColor() {
 }
 
 function makeMapColors() {
-    var colorsMap = new Array(app.COLS);
+    var colorsMap = [];
 
     for (var i = 0; i < app.COLS; i += 1) {
         colorsMap[i] = new Array(app.ROWS);
