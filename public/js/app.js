@@ -61,24 +61,28 @@ function hgridMini() {
 }
 
 function createTabs() {
-    var tabs = document.querySelectorAll('.tab-box li a');
-    var i;
+    var tabs = document.querySelectorAll('.tab-box li a'),
+        i;
+
     for(i = 0; i < tabs.length; i+=1) {
         setTabHandler(tabs[i], i);
     }
 }
 
 function setTabHandler(tabs, tabPos) {
-    var panels = document.querySelectorAll('article');
-    var i;
+    var panels = document.querySelectorAll('article'),
+        i;
+
     tabs.onclick = function() {
         for (i = 0; i < tabs.length; i+=1) {
             tabs[i].className = '';
         }
+
         tabs.className = 'active';
         for (i = 0; i < panels.length; i+=1) {
             panels[i].className = '';
         }
+
         panels[tabPos].className = 'active-panel';
     };
 }
@@ -88,14 +92,11 @@ function createColoredMap() {
 }
 
 function getRandomColor() {
-    var color;
-    color = app.colors[Math.floor(Math.random() * app.colors.length)];
-    return color;
+    return app.colors[Math.floor(Math.random() * app.colors.length)];
 }
 
 function makeMapColors() {
     var colorsMap = [];
-
     for (var i = 0; i < app.COLS; i += 1) {
         colorsMap[i] = new Array(app.ROWS);
     }
@@ -105,23 +106,24 @@ function makeMapColors() {
             colorsMap[i][j] = getRandomColor();
         }
     }
+
     return colorsMap;
 }
 
 function makeUnitMap(){
-    var units = makeUnits(app.COLS, app.ROWS);
-    var sp = setStartingPoint();
+    var units = makeUnits(app.COLS, app.ROWS),
+        sp = setStartingPoint();
+
     for (var x = 0; x < app.COLS; x++) {
         for (var y = 0; y < app.ROWS; y++) {
-            if(x == sp.x &&
-                y == sp.y) {
+            if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
-            }
-            else {
+            } else {
                 units[x][y] = "";
             }
         }
     }
+
     return units;
 }
 
@@ -130,6 +132,7 @@ function makeUnits(rows, cols) {
     for (var i = 0; i < rows; i++) {
         units[i] = new Array(cols);
     }
+
     return units;
 }
 
@@ -138,7 +141,8 @@ function assignUnits(){
 }
 
 function setStartingPoint() {
-    var x = Math.floor(Math.random() * app.COLS);
-    var y = Math.floor(Math.random() * app.ROWS);
-    return {x: x, y: y};
+    return {
+        x: Math.floor(Math.random() * app.COLS),
+        y: Math.floor(Math.random() * app.ROWS),
+    };
 }
