@@ -225,25 +225,24 @@ HexagonGrid.prototype.isPointInTriangle = function isPointInTriangle(pt, v1, v2,
 
 HexagonGrid.prototype.clickEvent = function (e) {
     var mouseX = e.pageX;
-    var mouseY = e.pageY;
-
-    var localX = mouseX - this.canvasOriginX;
-    var localY = mouseY - this.canvasOriginY;
-
-    var tile = this.getSelectedTile(localX, localY);
+        mouseY = e.pageY,
+        localX = mouseX - this.canvasOriginX,
+        localY = mouseY - this.canvasOriginY,
+        tile = this.getSelectedTile(localX, localY);
 
     if (tile.column >= 0 && tile.row >= 0) {
-        //TODO refactor to  drawy drawx functions
-        var drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
-        var drawx = (tile.column * this.side) + this.canvasOriginX;
-        if(civilization.units[tile.column][tile.row] == "*"){
+        drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
+        drawx = (tile.column * this.side) + this.canvasOriginX;
+        if(civilization.units[tile.column][tile.row] === "*"){
+            color = app.map[column][row];
             this.clearHexAtColRow(tile.column, tile.row)
             app.MOVING = true;
             app.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
         };
     };
-    if(app.MOVING == true && this.isAroundTile(app.lastTile, tile)){
+
+    if (app.MOVING && this.isAroundTile(app.lastTile, tile)) {
         civilization.units[tile.column][tile.row] = "*";
         this.drawHexAtColRow(tile.column, tile.row);
         this.visible();
@@ -252,11 +251,12 @@ HexagonGrid.prototype.clickEvent = function (e) {
 };
 
 HexagonGrid.prototype.isAroundTile = function(lastTile, tile) {
-    for(const h of this.getEncirclementOne(lastTile.column, lastTile.row) ) {
-        if(h.COL == tile.column && h.ROW == tile.row) {
+    for (const h of this.getEncirclementOne(lastTile.column, lastTile.row) ) {
+        if (h.COL === tile.column && h.ROW === tile.row) {
             return true;
         };
     };
+
     return false;
 }
 
@@ -268,12 +268,21 @@ HexagonGrid.prototype.visible = function(){
             this.drawHexAtColRow( h.COL, h.ROW, app.map[h.COL][h.ROW]);
         }
     }
+
     function getListUnits(units) {
-        var listUnitLocations = [];
-        var i = 0;
-        for(var x = 0; x < app.COLS; x += 1) {
-            for (var y = 0; y < app.ROWS; y += 1) {
-                if(units[x][y] == "*") listUnitLocations[i++] = {x:x, y:y};
+        var listUnitLocations = [],
+            i = 0,
+            x,
+            y;
+
+        for (x = 0; x < app.COLS; x += 1) {
+            for (y = 0; y < app.ROWS; y += 1) {
+                if (units[x][y] == "*") {
+                    listUnitLocations[i++] = {
+                        x: x,
+                        y: y,
+                    };
+                }
             }
         }
         return listUnitLocations;
