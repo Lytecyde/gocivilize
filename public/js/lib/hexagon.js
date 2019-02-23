@@ -63,35 +63,6 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     return encirclement;
 };
 
-HexagonGrid.prototype.drawFogOfWar = function(rows, cols, originX, originY, isWithUnits) {
-    this.canvasOriginX = originX;
-    this.canvasOriginY = originY;
-
-    var currentHexX,
-        currentHexY,
-        offsetColumn = false,
-        col,
-        row,
-        color;
-
-    for (col = 0; col < cols; col++) {
-        for (row = 0; row < rows; row++) {
-            if (!offsetColumn) {
-                currentHexX = (col * this.side) + originX;
-                currentHexY = (row * this.height) + originY;
-            } else {
-                currentHexX = col * this.side + originX;
-                currentHexY = (row * this.height) + originY + (this.height * 0.5);
-            }
-
-            var color = "rgba(110,110,110, 0.75)";
-            this.drawHexagon(currentHexX, currentHexY, color);
-        }
-
-        offsetColumn = !offsetColumn;
-    }
-};
-
 HexagonGrid.prototype.drawHexAtColRow = function(column, row, color) {
     var drawy = column % 2 == 0 ? (row * this.height) + this.canvasOriginY : (row * this.height) + this.canvasOriginY + (this.height / 2),
         drawx = (column * this.side) + this.canvasOriginX;
@@ -248,7 +219,7 @@ HexagonGrid.prototype.clickEvent = function (e) {
     if (tile.column >= 0 && tile.row >= 0) {
         drawy = tile.column % 2 == 0 ? (tile.row * this.height) + this.canvasOriginY + 6 : (tile.row * this.height) + this.canvasOriginY + 6 + (this.height / 2);
         drawx = (tile.column * this.side) + this.canvasOriginX;
-        if(civilization.units[tile.column][tile.row] === "*"){
+        if (civilization.units[tile.column][tile.row] === "*"){
             color = app.map[column][row];
             this.clearHexAtColRow(tile.column, tile.row)
             app.MOVING = true;

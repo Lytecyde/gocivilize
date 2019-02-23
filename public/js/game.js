@@ -38,10 +38,14 @@ app.getMapColor = function (col, row) {
     return app.map[col][row];
 };
 
+app.fogOfWarColor = function (col, row) {
+    return "rgba(110,110,110, 0.75)";
+};
+
 function hgrid() {
     var hexagonGrid = new HexagonGrid("map", 50);
     hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, app.getMapColor);
-    hexagonGrid.drawFogOfWar(app.ROWS, app.COLS, 50, 50, false);
+    hexagonGrid.drawHexGrid(app.ROWS, app.COLS, 50, 50, app.fogOfWarColor);
     hexagonGrid.visible();
 }
 
