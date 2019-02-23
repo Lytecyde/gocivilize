@@ -289,13 +289,3 @@ HexagonGrid.prototype.visible = function(){
     }
 }
 
-HexagonGrid.prototype.mapUnknown = function(){
-    for(var x = 0; x < app.COLS; x += 1) {
-        for (let y = 0; y < app.ROWS; y++) {
-            var enc = this.getEncirclementOne(x, y);
-            for(const h of enc){
-                if(false){}//one is not fog then this tile is not unknown
-            }
-        }
-    }
-}
