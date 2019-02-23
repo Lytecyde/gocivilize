@@ -307,10 +307,10 @@ function zoneOfVisibility(tile) {
 HexagonGrid.prototype.visible = function(){
     var units = civilization.units;
     for(const u of getListUnits(units)) {
-        console.log("unit" + u);
         this.drawHexAtColRow( u.x, u.y, app.map[u.x][u.y]);
         for(const h of this.getEncirclementOne(u.x, u.y)) {
             this.drawHexAtColRow( h.COL, h.ROW, app.map[h.COL][h.ROW]);
+            civilization.fogMap[h.COL][h.ROW] = false;
         }
     }
 }
@@ -326,4 +326,29 @@ function getListUnits(units){
     return listUnitLocations;
 }
 
-//FIXME: col and x and row and y are mixed incorrectly as x and y refer to coordinates not hex locations on hex grid
+function createFogMap() {
+    var fogs = new Array(app.COLS);
+    for(var x = 0; x < app.COLS; x += 1) {   
+        for (var y = 0; y < app.ROWS; y += 1) {
+            fogs[x] = new Array();
+        }
+    }
+    civilization.fogMap = fogs;
+    
+    for(var x = 0; x < app.COLS; x += 1) {   
+        for (var y = 0; y < app.ROWS; y += 1) {
+            civilization.fogMap[x][y] = true;
+        }
+    }
+}
+
+HexagonGrid.prototype.mapUnknown = function(){
+    for(var x = 0; x < app.COLS; x += 1) {
+        for (let y = 0; y < app.ROWS; y++) {
+            var enc = this.getEncirclementOne(x, y);
+            for(const h of enc){
+                if(false){}//one is not fog then this tile is not unknown
+            }
+        }
+    }
+}
