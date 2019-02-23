@@ -1,4 +1,4 @@
-/*global document*/
+/*global document,HexagonGrid,civilization*/
 "use strict";
 
 var game = {
@@ -23,7 +23,7 @@ var game = {
     ],
 };
 
-function clickEventHandler(tile) {
+game.clickEventHandler = function (tile) {
     if (tile.column >= 0 && tile.row >= 0) {
         if (civilization.units[tile.column][tile.row] === "*") {
             var color = game.map[tile.column][tile.row];
@@ -39,22 +39,16 @@ function clickEventHandler(tile) {
         this.drawHexAtColRow(tile.column, tile.row);
         game.MOVING = false;
     }
-}
+};
 
-// FIXME: all functions should be namespaced.
-// game.onload = function () {
-//      createTabs();
-//      ...
-// }
-function onload() {
-    createTabs();
-    createColoredMap();
-    assignUnits();
-    hgrid();
-    hgridMini();
-}
+game.onload = function () {
+    game.createTabs();
+    game.createColoredMap();
+    game.assignUnits();
+    game.hgrid();
+    game.hgridMini();
+};
 
-// FIXME: move to map
 game.getMapColor = function (col, row) {
     return game.map[col][row];
 };
@@ -63,29 +57,27 @@ game.fogOfWarColor = function () {
     return "rgba(110,110,110, 0.75)";
 };
 
-function hgrid() {
-    var hexagonGrid = new HexagonGrid("map", 50, clickEventHandler);
+game.hgrid = function () {
+    var hexagonGrid = new HexagonGrid("map", 50, game.clickEventHandler);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.getMapColor);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
-}
+};
 
-function hgridMini() {
+game.hgridMini = function () {
     var hexagonGrid = new HexagonGrid("minimap", 5, null);
     hexagonGrid.drawHexGrid(game.ROWS, game.COLS, 5, 5, game.getMapColor);
-}
+};
 
-// FIXME: move into view/tabs
-function createTabs() {
+game.createTabs = function () {
     var tabs = document.querySelectorAll('.tab-box li a'),
         i;
 
     for (i = 0; i < tabs.length; i = i + 1) {
-        setTabHandler(tabs[i], i);
+        game.setTabHandler(tabs[i], i);
     }
-}
+};
 
-// FIXME: move into view/tabs
-function setTabHandler(tabs, tabPos) {
+game.setTabHandler = function (tabs, tabPos) {
     var panels = document.querySelectorAll('article'),
         i;
 
@@ -101,17 +93,17 @@ function setTabHandler(tabs, tabPos) {
 
         panels[tabPos].className = 'active-panel';
     };
-}
+};
 
-function createColoredMap() {
-    game.map = makeMapColors();
-}
+game.createColoredMap = function () {
+    game.map = game.makeMapColors();
+};
 
-function getRandomColor() {
+game.getRandomColor = function () {
     return game.colors[Math.floor(Math.random() * game.colors.length)];
-}
+};
 
-function makeMapColors() {
+game.makeMapColors = function () {
     var colorsMap = [],
         i,
         j;
@@ -122,16 +114,16 @@ function makeMapColors() {
 
     for (i = 0; i < game.COLS; i = i + 1) {
         for (j = 0; j < game.ROWS; j = j + 1) {
-            colorsMap[i][j] = getRandomColor();
+            colorsMap[i][j] = game.getRandomColor();
         }
     }
 
     return colorsMap;
-}
+};
 
-function makeUnitMap() {
-    var units = makeUnits(game.COLS, game.ROWS),
-        sp = getStartingPoint(),
+game.makeUnitMap = function () {
+    var units = game.makeUnits(game.COLS, game.ROWS),
+        sp = game.getStartingPoint(),
         x,
         y;
 
@@ -146,9 +138,9 @@ function makeUnitMap() {
     }
 
     return units;
-}
+};
 
-function makeUnits(rows, cols) {
+game.makeUnits = function (rows, cols) {
     var units = new Array(rows),
         i;
 
@@ -157,32 +149,32 @@ function makeUnits(rows, cols) {
     }
 
     return units;
-}
+};
 
-function assignUnits() {
-    civilization.units = makeUnitMap();
-}
+game.assignUnits = function () {
+    civilization.units = game.makeUnitMap();
+};
 
-function randomCol() {
+game.randomCol = function () {
     return Math.floor(Math.random() * game.COLS);
-}
+};
 
-function randomRow() {
+game.randomRow = function () {
     return Math.floor(Math.random() * game.ROWS);
-}
+};
 
-function getStartingPoint() {
+game.getStartingPoint = function () {
     return {
-        x: randomCol(),
-        y: randomRow(),
+        x: game.randomCol(),
+        y: game.randomRow(),
     };
-}
+};
 
-function removeUnit(drawx, drawy, tile) {
+game.removeUnit = function (drawx, drawy, tile) {
     tile.drawHex(drawx, drawy - 6, game.map[tile.column][tile.row], "");
-}
+};
 
-function getListUnits(units) {
+game.getListUnits = function (units) {
     var listUnitLocations = [],
         i = 0,
         x,
@@ -200,4 +192,4 @@ function getListUnits(units) {
     }
 
     return listUnitLocations;
-}
+};
