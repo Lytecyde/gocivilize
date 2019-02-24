@@ -9,7 +9,7 @@ var game = {
     units: [],
     lastTile: {
         row: 0,
-        column: 0,
+        column: 0
     },
     colors: [
         '#006600',//darkgreen forest

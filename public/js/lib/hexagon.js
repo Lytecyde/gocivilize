@@ -140,7 +140,7 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
     mouseY -= offSet.y;
     column = Math.floor(mouseX / this.side);
     f1 = Math.floor(mouseY / this.height);
-    f2 = Math.floor(((mouseY + (this.height * 0.5)) / this.height)) - 1;
+    f2 = Math.floor((mouseY + (this.height * 0.5)) / this.height) - 1;
     row = Math.floor(column % 2 === 0 ? f1 : f2);
 
     //Test if on left side of frame
@@ -196,7 +196,7 @@ HexagonGrid.prototype.getSelectedTile = function (mouseX, mouseY) {
 
     return {
         row: row,
-        column: column,
+        column: column
     };
 };
 
@@ -226,14 +226,14 @@ HexagonGrid.prototype.clickEvent = function (e) {
     this.clickEventHandler(tile);
 };
 
+//!!!linting for loop !!!
 HexagonGrid.prototype.isAroundTile = function (lastTile, tile) {
-    var h = null;
-
-    for (h of this.getEncirclementOne(lastTile.column, lastTile.row)) {
+    var listAroundTile = lastTile.getEncirclementOne(lastTile.column, lastTile.row);
+    listAroundTile.foreach(function (h) {
         if (h.col === tile.column && h.row === tile.row) {
             return true;
         }
-    }
+    });
 
     return false;
 };
