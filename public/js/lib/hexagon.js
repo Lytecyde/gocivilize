@@ -61,7 +61,7 @@ HexagonGrid.prototype.getEncirclementOne = function (col, row) {
     for (i = 0; i < numberOfTilesAroundHex; i += 1) {
         encirclement[i] = {
             col: col + dx[i],
-            row: row + dy[i],
+            row: row + dy[i]
         };
     }
 
@@ -115,7 +115,7 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function () {
 
         return {
             x: x,
-            y: y,
+            y: y
         };
     }
 };
