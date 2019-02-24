@@ -4,7 +4,7 @@
 var game = {
     ROWS: 8,
     COLS: 20,
-    MOVING: false,
+    moving: false,
     map: [],
     units: [],
     lastTile: {
@@ -20,7 +20,7 @@ var game = {
         '#0099ff',//light blue beach
         '#003366',//dark blue ocean
         '#996633' //brown hills
-    ],
+    ]
 };
 
 game.clickEventHandler = function (tile) {
@@ -28,16 +28,16 @@ game.clickEventHandler = function (tile) {
         if (civilization.units[tile.column][tile.row] === "*") {
             var color = game.map[tile.column][tile.row];
             this.clearHexAtColRow(tile.column, tile.row, color);
-            game.MOVING = true;
+            game.moving = true;
             game.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
         }
     }
 
-    if (game.MOVING && this.isAroundTile(game.lastTile, tile)) {
+    if (game.moving && this.isAroundTile(game.lastTile, tile)) {
         civilization.units[tile.column][tile.row] = "*";
         this.drawHexAtColRow(tile.column, tile.row);
-        game.MOVING = false;
+        game.moving = false;
     }
 };
 
