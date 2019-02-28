@@ -5,8 +5,8 @@ var game = {
     ROWS: 8,
     COLS: 20,
     moving: false,
-    map: [],
-    units: [],
+    colorsMap: [],
+    unitsMap: [],
     lastTile: {
         row: 0,
         column: 0
@@ -26,7 +26,7 @@ var game = {
 game.clickEventHandler = function (tile) {
     if (tile.column >= 0 && tile.row >= 0) {
         if (civilization.units[tile.column][tile.row] === "*") {
-            var color = game.map[tile.column][tile.row];
+            var color = game.colorsMap[tile.column][tile.row];
             this.clearHexAtColRow(tile.column, tile.row, color);
             game.moving = true;
             game.lastTile = tile;
@@ -50,7 +50,7 @@ game.onload = function () {
 };
 
 game.getMapColor = function (col, row) {
-    return game.map[col][row];
+    return game.colorsMap[col][row];
 };
 
 game.fogOfWarColor = function () {
@@ -96,7 +96,7 @@ game.setTabHandler = function (tabs, tabPos) {
 };
 
 game.createColoredMap = function () {
-    game.map = game.makeMapColors();
+    game.colorsMap = game.makeMapColors();
 };
 
 game.getRandomColor = function () {
@@ -104,21 +104,34 @@ game.getRandomColor = function () {
 };
 
 game.makeMapColors = function () {
-    var colorsMap = [],
-        i,
-        j;
-
-    for (i = 0; i < game.COLS; i = i + 1) {
-        colorsMap[i] = new Array(game.ROWS);
-    }
-
-    for (i = 0; i < game.COLS; i = i + 1) {
-        for (j = 0; j < game.ROWS; j = j + 1) {
-            colorsMap[i][j] = game.getRandomColor();
-        }
-    }
+    var colorsMap = [[]];
+    colorsMap.length = game.COLS * game.ROWS;
+    colorsMap.forEach(function (x) {
+        colorsMap[x] = game.getRandomColor();
+    });
 
     return colorsMap;
+};
+
+game.create2DArray = function (columns, rows) {
+    var arr = [];
+    arr.length = rows;
+    var i = columns;
+    var mapRows = [];
+    mapRows.length = rows;
+    while (i > 0) {
+        arr[columns - 1 - i] = mapRows;
+        i -= 1;
+    }
+
+    return arr;
+};
+
+game.makeUnits = function (cols, rows) {
+    var units = game.create2DArray(cols, rows);
+
+    units.fill(" ");
+    return units;
 };
 
 game.makeUnitMap = function () {
@@ -127,8 +140,8 @@ game.makeUnitMap = function () {
         x,
         y;
 
-    for (x = 0; x < game.COLS; x = x + 1) {
-        for (y = 0; y < game.ROWS; y = y + 1) {
+    for (x = 0; x < game.ROWS; x += 1) {
+        for (y = 0; y < game.COLS; y += 1) {
             if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
             } else {
@@ -140,16 +153,7 @@ game.makeUnitMap = function () {
     return units;
 };
 
-game.makeUnits = function (rows, cols) {
-    var units = new Array(rows),
-        i;
 
-    for (i = 0; i < rows; i = i + 1) {
-        units[i] = new Array(cols);
-    }
-
-    return units;
-};
 
 game.assignUnits = function () {
     civilization.units = game.makeUnitMap();
@@ -166,12 +170,12 @@ game.randomRow = function () {
 game.getStartingPoint = function () {
     return {
         x: game.randomCol(),
-        y: game.randomRow(),
+        y: game.randomRow()
     };
 };
 
 game.removeUnit = function (drawx, drawy, tile) {
-    tile.drawHex(drawx, drawy - 6, game.map[tile.column][tile.row], "");
+    tile.drawHex(drawx, drawy - 6, game.colorsMap[tile.column][tile.row], "");
 };
 
 game.getListUnits = function (units) {
@@ -185,7 +189,7 @@ game.getListUnits = function (units) {
             if (units[x][y] === "*") {
                 listUnitLocations[i++] = {
                     x: x,
-                    y: y,
+                    y: y
                 };
             }
         }

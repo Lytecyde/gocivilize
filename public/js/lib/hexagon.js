@@ -20,7 +20,22 @@ function HexagonGrid(canvasId, radius, clickEventHandler) {
     this.clickEventHandler = clickEventHandler;
 }
 
+
 //helper functionality
+function create2DArray(columns, rows) {
+    var arr = [];
+    arr.length = rows;
+    var i = columns;
+    var mapRows = [];
+    mapRows.length = rows;
+    while (i > 0) {
+        arr[columns - 1 - i] = mapRows;
+        i -= 1;
+    }
+
+    return arr;
+}
+
 function isEvenColumn(column) {
     return column % 2 === 0;
 }
@@ -33,11 +48,12 @@ function getCurrentHexXY(offsetColumn, col, row, originX, originY, t) {
     if (!offsetColumn) {
         currentHex.x = (col * t.side) + originX;
         currentHex.y = (row * t.height) + originY;
+        return {currentHex};
     } else {
         currentHex.x = col * t.side + originX;
         currentHex.y = (row * t.height) + originY + (t.height * 0.5);
+        return {currentHex};
     }
-    return {currentHex};
 }
 
 function getYCoordinateOfEncirclement(col) {
@@ -94,26 +110,40 @@ function get_p2(p1, t) {
 //helper functions end
 
 HexagonGrid.prototype.drawHexGrid = function (rows, cols, originX, originY, colorFunc) {
-    this.canvasOriginX = originX;
-    this.canvasOriginY = originY;
+    var t = this;
+    t.canvasOriginX = originX;
+    t.canvasOriginY = originY;
 
-    var currentHex = {
+    var currentHexCoordinate = {
         x: 0,
         y: 0
     };
+
     var offsetColumn = false,
-        col,
-        row,
-        color;
-    var t = this;
-    for (col = 0; col < cols; col += 1) {
-        for (row = 0; row < rows; row += 1) {
-            currentHex = getCurrentHexXY(offsetColumn, col, row, originX, originY, t);
-            color = colorFunc(col, row);
-            this.drawHexagon(currentHex.x, currentHex.y, color);
-        }
+        col = 0,
+        row = 0,
+        color = "";
+
+    var hexContents = {
+        currentHexCoordinate: {
+            x: 0,
+            y: 0
+        },
+        color: ""
+    };
+
+    var map = create2DArray(cols, rows);
+
+    map.map(function (item) {
+        item.map(function (subItem) {
+            hexContents = prepareHex(currentHexCoordinate, offsetColumn, col, row, originX, originY, t, color, colorFunc);
+            subItem = drawHexagon(hexContents);
+            map[row][col] = subItem;
+            col += 1;
+        });
+        row += 1;
         offsetColumn = !offsetColumn;
-    }
+    });
 };
 
 HexagonGrid.prototype.getEncirclementOne = function (col, row) {
@@ -145,11 +175,16 @@ HexagonGrid.prototype.drawHexAtColRow = function (column, row, color) {
         drawy = (row * this.height) + this.canvasOriginY + (this.height / 2);
     }
     var drawx = (column * this.side) + this.canvasOriginX;
-
-    this.drawHexagon(drawx, drawy, color);
+    var hexCoordinate = {
+        x: drawx,
+        y: drawy
+    };
+    this.drawHexagon(hexCoordinate, color);
 };
 
-HexagonGrid.prototype.drawHexagon = function (x0, y0, fillColor) {
+HexagonGrid.prototype.drawHexagon = function (currentHex, fillColor) {
+    var x0 = currentHex.x,
+        y0 = currentHex.y;
     this.context.strokeStyle = "#000";
     this.context.beginPath();
     this.context.moveTo(x0 + this.width - this.side, y0);
@@ -186,6 +221,12 @@ HexagonGrid.prototype.getRelativeCanvasOffset = function () {
         };
     }
 };
+
+function prepareHex(currentHex, offsetColumn, col, row, originX, originY, t, color, colorFunc) {
+    currentHex = getCurrentHexXY(offsetColumn, col, row, originX, originY, t);
+    color = colorFunc(col, row);
+    return {currentHex, color};
+}
 
 //Uses a grid overlay algorithm to determine hexagon location
 //Left edge of grid has a test to accurately determine correct hex
