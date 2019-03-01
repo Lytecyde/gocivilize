@@ -27,16 +27,16 @@ game.clickEventHandler = function (tile) {
     if (tile.column >= 0 && tile.row >= 0) {
         if (civilization.units[tile.column][tile.row] === "*") {
             var color = game.colorsMap[tile.column][tile.row];
-            this.clearHexAtColRow(tile.column, tile.row, color);
+            tile.clearHexAtColRow(tile.column, tile.row, color);
             game.moving = true;
             game.lastTile = tile;
             civilization.units[tile.column][tile.row] = "";
         }
     }
 
-    if (game.moving && this.isAroundTile(game.lastTile, tile)) {
+    if (game.moving && tile.isAroundTile(game.lastTile, tile)) {
         civilization.units[tile.column][tile.row] = "*";
-        this.drawHexAtColRow(tile.column, tile.row);
+        tile.drawHexAtColRow(tile.column, tile.row);
         game.moving = false;
     }
 };
