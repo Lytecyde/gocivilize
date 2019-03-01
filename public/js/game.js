@@ -70,25 +70,29 @@ game.hgridMini = function () {
 
 game.createTabs = function () {
     var tabs = document.querySelectorAll('.tab-box li a'),
-        i;
+        i = 0;
 
-    for (i = 0; i < tabs.length; i = i + 1) {
+    while (i < tabs.length) {
         game.setTabHandler(tabs[i], i);
+        i += 1;
     }
 };
 
 game.setTabHandler = function (tabs, tabPos) {
     var panels = document.querySelectorAll('article'),
-        i;
+        i = 0;
 
     tabs.onclick = function () {
-        for (i = 0; i < tabs.length; i = i + 1) {
+        while (i < tabs.length) {
             tabs[i].className = '';
+            i += 1;
         }
 
         tabs.className = 'active';
-        for (i = 0; i < panels.length; i = i + 1) {
+        i = 0;
+        while (i < panels.length) {
             panels[i].className = '';
+            i = i + 1;
         }
 
         panels[tabPos].className = 'active-panel';
@@ -137,17 +141,19 @@ game.makeUnits = function (cols, rows) {
 game.makeUnitMap = function () {
     var units = game.makeUnits(game.COLS, game.ROWS),
         sp = game.getStartingPoint(),
-        x,
-        y;
-
-    for (x = 0; x < game.ROWS; x += 1) {
-        for (y = 0; y < game.COLS; y += 1) {
+        x = 0,
+        y = 0;
+    while (x < game.ROWS) {
+        y = 0;
+        while (y < game.COLS) {
             if (x === sp.x && y === sp.y) {
                 units[x][y] = "*";
             } else {
                 units[x][y] = "";
             }
+            y += 1;
         }
+        x += 1;
     }
 
     return units;
@@ -181,18 +187,21 @@ game.removeUnit = function (drawx, drawy, tile) {
 game.getListUnits = function (units) {
     var listUnitLocations = [],
         i = 0,
-        x,
-        y;
+        x = 0,
+        y = 0;
 
-    for (x = 0; x < game.COLS; x = x + 1) {
-        for (y = 0; y < game.ROWS; y = y + 1) {
+    while (x < game.COLS) {
+        y = 0;
+        while (y < game.ROWS) {
             if (units[x][y] === "*") {
-                listUnitLocations[i++] = {
+                listUnitLocations[i] = {
                     x: x,
                     y: y
                 };
+                i += 1;
             }
         }
+        x = x + 1;
     }
 
     return listUnitLocations;
