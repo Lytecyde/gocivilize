@@ -23,14 +23,15 @@ Buildings can bring additional tax incomes for the civilization.
 Arts, prose, architecture and music, movies and games all advance the culture and provide works for foreign trade.
 
 ## Design
-Once the mechanics of the game are ready, modules can be built for altering the design of the game. Initial design side of the game 
-will be very simple.
+Once the mechanics of the game are ready, modules can be built for altering the design of the game. Initial design side of the 
+game will be very simple.
 
 ## Development
 You can develop a unit's skills and tool use with Great Artists, Scientists, Engineers, Leaders.
 
 ## Demilitarisation
-As the game advances humanity becomes more civil by using less military, peace and the pursuit of prosperity.
+As the game advances humanity becomes more civil by using less military, pursuing peace and prosperity to construct a better 
+world. 
 
 ## Loyalty
 Polarisation multiplies the amount of influence between the two civs - opposing politics and economies and religions make
