@@ -132,37 +132,34 @@ game.create2DArray = function (columns, rows) {
 };
 
 game.makeUnits = function (cols, rows) {
-    var units = game.create2DArray(cols, rows);
-
+    var units = game.create2DArray(rows, cols);
     units.fill(" ");
     return units;
 };
 
 game.makeUnitMap = function () {
     var units = game.makeUnits(game.COLS, game.ROWS),
-        sp = game.getStartingPoint(),
-        x = 0,
-        y = 0;
-    while (x < game.ROWS) {
-        y = 0;
-        while (y < game.COLS) {
-            if (x === sp.x && y === sp.y) {
-                units[x][y] = "*";
+        sp = game.getStartingPoint();
+    game.x = 0;
+    while (game.x < game.ROWS) {
+        game.y = 0;
+        while (game.y < game.COLS) {
+            if (game.x === sp.x && game.y === sp.y) {
+                units[game.x][game.y] = "*";
             } else {
-                units[x][y] = "";
+                console.log(game.x + " " + game.y);
+                units[game.x][game.y] = "";
             }
-            y += 1;
+            game.y += 1;
         }
-        x += 1;
+        game.x += 1;
     }
 
     return units;
 };
 
-
-
 game.assignUnits = function () {
-    civilization.units = game.makeUnitMap();
+    game.unitsMap = game.makeUnitMap();
 };
 
 game.randomCol = function () {
