@@ -2,24 +2,23 @@
 // Hex math defined here: http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 "use strict";
 
-var Grid = {};
+var hex = {};
+var HexagonGrid = function (canvasId, radius, clickEventHandler) {
+    hex.radius = radius;
 
-Grid.HexagonGrid = function (canvasId, radius, clickEventHandler) {
-    Grid.radius = radius;
+    hex.height = Math.sqrt(3) * radius;
+    hex.width = 2 * radius;
+    hex.side = (3 / 2) * radius;
 
-    Grid.height = Math.sqrt(3) * radius;
-    Grid.width = 2 * radius;
-    Grid.side = (3 / 2) * radius;
+    hex.canvas = document.getElementById(canvasId);
+    hex.context = hex.canvas.getContext('2d');
 
-    Grid.canvas = document.getElementById(canvasId);
-    Grid.context = Grid.canvas.getContext('2d');
+    hex.canvasOriginX = 0;
+    hex.canvasOriginY = 0;
 
-    Grid.canvasOriginX = 0;
-    Grid.canvasOriginY = 0;
+    hex.canvas.addEventListener("mousedown", hex.clickEvent.bind(hex), false);
 
-    Grid.canvas.addEventListener("mousedown", Grid.clickEvent.bind(Grid), false);
-
-    Grid.clickEventHandler = clickEventHandler;
+    hex.clickEventHandler = clickEventHandler;
 };
 
 //helper functionality
@@ -29,12 +28,12 @@ function getCurrentHexXY(offsetColumn, col, row, originX, originY) {
         y: 0
     };
     if (!offsetColumn) {
-        currentHex.x = (col * Grid.side) + originX;
-        currentHex.y = (row * Grid.height) + originY;
+        currentHex.x = (col * hex.side) + originX;
+        currentHex.y = (row * hex.height) + originY;
         return {currentHex};
     } else {
-        currentHex.x = col * Grid.side + originX;
-        currentHex.y = (row * Grid.height) + originY + (Grid.height * 0.5);
+        currentHex.x = col * hex.side + originX;
+        currentHex.y = (row * hex.height) + originY + (hex.height * 0.5);
         return {currentHex};
     }
 }
@@ -82,9 +81,9 @@ function getColumn(mouseX, offSet, mouseY) {
         f2;
     mouseX -= offSet.x;
     mouseY -= offSet.y;
-    column = Math.floor(mouseX / Grid.side);
-    f1 = Math.floor(mouseY / Grid.height);
-    f2 = Math.floor((mouseY + (Grid.height * 0.5)) / Grid.height) - 1;
+    column = Math.floor(mouseX / hex.side);
+    f1 = Math.floor(mouseY / hex.height);
+    f2 = Math.floor((mouseY + (hex.height * 0.5)) / hex.height) - 1;
     if (isEvenColumn(column)) {
         row = f1;
     } else {
@@ -117,7 +116,7 @@ var drawHexagon = function (currentHex, fillColor) {
     var DrawHexagon = {};
     var x0 = currentHex.x,
         y0 = currentHex.y;
-    DrawHexagon.context = Grid.context;
+    DrawHexagon.context = hex.context;
     DrawHexagon.context.strokeStyle = "#000";
     DrawHexagon.context.beginPath();
     DrawHexagon.context.moveTo(x0 + DrawHexagon.width - DrawHexagon.side, y0);
@@ -137,46 +136,54 @@ var drawHexagon = function (currentHex, fillColor) {
 };
 //helper functions end
 
-Grid.drawHexGrid = function (rows, cols, originX, originY, colorFunc) {
-    Grid.canvasOriginX = originX;
-    Grid.canvasOriginY = originY;
+var Grid = (function () {
+    var self = {};
+    self.draw = function (rows, cols, originX, originY, colorFunc) {
+        hex.canvasOriginX = originX;
+        hex.canvasOriginY = originY;
 
-    var currentHexCoordinate = {
-        x: 0,
-        y: 0
-    };
-
-    var offsetColumn = false,
-        col = 0,
-        row = 0,
-        color = "";
-
-    var hexContents = {
-        currentHexCoordinate: {
+        var currentHexCoordinate = {
             x: 0,
             y: 0
-        },
-        color: ""
+        };
+
+        var offsetColumn = false,
+            color = "";
+
+        var hexContents = {
+            currentHexCoordinate: {
+                x: 0,
+                y: 0
+            },
+            color: ""
+        };
+
+        var hexGrid = create2DArray(cols, rows);
+
+        var row = 0,
+            col = 0;
+        while (row < rows) {
+            while (col < cols) {
+                hexContents = prepareHex(currentHexCoordinate, offsetColumn, col, row, originX, originY, color, colorFunc);
+                hexGrid[row][col] = drawHexagon(hexContents);
+                col += 1;
+            }
+            row += 1;
+            offsetColumn = !offsetColumn;
+        }
     };
 
-    var map = create2DArray(cols, rows);
+    return self;
+}());
 
-    map.map(function (item) {
-        item.map(function (subItem) {
-            hexContents = prepareHex(currentHexCoordinate, offsetColumn, col, row, originX, originY, color, colorFunc);
-            subItem = drawHexagon(hexContents);
-            map[row][col] = subItem;
-            col += 1;
-        });
-        row += 1;
-        offsetColumn = !offsetColumn;
-    });
+var Grinwald = function () {
+    Grid.draw();
 };
 
 var isPointInTriangle = function (pt, v1, v2, v3) {
-    var b1 = Grid.sign(pt, v1, v2) < 0.0,
-        b2 = Grid.sign(pt, v2, v3) < 0.0,
-        b3 = Grid.sign(pt, v3, v1) < 0.0;
+    var b1 = hex.sign(pt, v1, v2) < 0.0,
+        b2 = hex.sign(pt, v2, v3) < 0.0,
+        b3 = hex.sign(pt, v3, v1) < 0.0;
 
     return ((b1 === b2) && (b2 === b3));
 };
@@ -325,18 +332,18 @@ var sign = function (p1, p2, p3) {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 };
 
-var clickEvent = function (e) {
-    if (!Grid.clickEventHandler) {
+hex.clickEvent = function (e) {
+    if (!hex.clickEventHandler) {
         return;
     }
 
     var mouseX = e.pageX,
         mouseY = e.pageY,
-        localX = mouseX - Grid.canvasOriginX,
-        localY = mouseY - Grid.canvasOriginY,
-        tile = Grid.getSelectedTile(localX, localY);
+        localX = mouseX - hex.canvasOriginX,
+        localY = mouseY - hex.canvasOriginY,
+        tile = hex.getSelectedTile(localX, localY);
 
-    Grid.clickEventHandler(tile);
+    hex.clickEventHandler(tile);
 };
 
 //!!!linting for loop !!!
