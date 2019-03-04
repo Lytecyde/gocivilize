@@ -46,18 +46,18 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
         y: 0
     };
     if (!offsetColumn) {
-        currentHex.x = (Variables.location.column * hex.side) + Variables.origin.x;
-        currentHex.y = (Variables.location.row * hex.height) + Variables.origin.y;
+        currentHex.x = (location.column * hex.side) + origin.x;
+        currentHex.y = (location.row * hex.height) + origin.y;
         return {currentHex};
     } else {
-        currentHex.x = Variables.location.column * hex.side + Variables.origin.x;
-        currentHex.y = (Variables.location.row * hex.height) + Variables.origin.y + (hex.height * 0.5);
+        currentHex.x = location.column * hex.side + origin.x;
+        currentHex.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
         return {currentHex};
     }
 }
 
-function prepareHex(currentHex, offsetColumn, location, origin, color) {
-    currentHex = hex.getCurrentXY(offsetColumn, location, origin);
+function prepareHex(offsetColumn, location, origin, color) {
+    var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     return {currentHex, color};
 }
 
@@ -152,13 +152,9 @@ var drawHexagon = function (currentHex, fillColor) {
 
 var Grid = (function () {
     var self = {};
-    self.getHex = function() {
-        return hex;
-    };
-    self.draw = function (rows, cols, origin) {
-        hex = self.getHex();
-        hex.canvasOriginX = origin.x;
-        hex.canvasOriginY = origin.y;
+    self.draw = function (rows, cols, x, y, hex) {
+        hex.canvasOriginX = x;
+        hex.canvasOriginY = y;
 
         var currentHexCoordinate = {
             x: 0,
