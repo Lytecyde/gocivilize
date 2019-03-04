@@ -23,7 +23,7 @@ var game = {
         '#996633' //brown hills
     ],
     x: 0,
-    y: 0
+    y: 0,
 };
 
 game.clickEventHandler = function (tile) {
@@ -61,16 +61,15 @@ game.fogOfWarColor = function () {
 };
 
 game.hgrid = function () {
-    var h = new HexagonGrid("map", 50, game.clickEventHandler);
-    var gm = game.Grid();
-    gm.draw(game.ROWS, game.COLS, 50, 50, game.getMapColor);
+    var h = hex.HexagonGrid("map", 50, game.clickEventHandler);
+    Grid.draw(game.ROWS, game.COLS, 50, 50, game.getMapColor, h);
     //version 0.0.2
     //g.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
 };
 
 game.hgridMini = function () {
-    var hexagonGrid = new HexagonGrid("minimap", 5, null);
-    drawHexGrid(game.ROWS, game.COLS, 5, 5, game.getMapColor);
+    var h = hex.HexagonGrid("minimap", 5, null);
+    Grid.draw(game.ROWS, game.COLS, 5, 5, game.getMapColor, h);
 };
 
 game.createTabs = function () {

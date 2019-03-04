@@ -3,7 +3,24 @@
 "use strict";
 
 var hex = {};
-var HexagonGrid = function (canvasId, radius, clickEventHandler) {
+
+var Variables = {
+    origin: {
+        x: 0,
+        y: 0
+    },
+    location: {
+        column: 0,
+        row: 0
+    },
+    mouse: {
+        x: 0,
+        y: 0
+    },
+    color: ""
+};
+
+hex.HexagonGrid = function (canvasId, radius, clickEventHandler) {
     hex.radius = radius;
 
     hex.height = Math.sqrt(3) * radius;
@@ -19,28 +36,28 @@ var HexagonGrid = function (canvasId, radius, clickEventHandler) {
     hex.canvas.addEventListener("mousedown", hex.clickEvent.bind(hex), false);
 
     hex.clickEventHandler = clickEventHandler;
+    return hex;
 };
 
 //helper functionality
-function getCurrentHexXY(offsetColumn, col, row, originX, originY) {
+hex.getCurrentXY = function (offsetColumn, location, origin) {
     var currentHex = {
         x: 0,
         y: 0
     };
     if (!offsetColumn) {
-        currentHex.x = (col * hex.side) + originX;
-        currentHex.y = (row * hex.height) + originY;
+        currentHex.x = (Variables.location.column * hex.side) + Variables.origin.x;
+        currentHex.y = (Variables.location.row * hex.height) + Variables.origin.y;
         return {currentHex};
     } else {
-        currentHex.x = col * hex.side + originX;
-        currentHex.y = (row * hex.height) + originY + (hex.height * 0.5);
+        currentHex.x = Variables.location.column * hex.side + Variables.origin.x;
+        currentHex.y = (Variables.location.row * hex.height) + Variables.origin.y + (hex.height * 0.5);
         return {currentHex};
     }
 }
 
-function prepareHex(currentHex, offsetColumn, col, row, originX, originY, color, colorFunc) {
-    currentHex = getCurrentHexXY(offsetColumn, col, row, originX, originY);
-    color = colorFunc(col, row);
+function prepareHex(currentHex, offsetColumn, location, origin, color) {
+    currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     return {currentHex, color};
 }
 
@@ -74,29 +91,26 @@ function getYDifferenceOfEncirclement(col) {
     return dy;
 }
 
-function getColumn(mouseX, offSet, mouseY) {
-    var column,
-        row,
-        f1,
+function getColumn(mouse, offSet) {
+    var f1,
         f2;
-    mouseX -= offSet.x;
-    mouseY -= offSet.y;
-    column = Math.floor(mouseX / hex.side);
-    f1 = Math.floor(mouseY / hex.height);
-    f2 = Math.floor((mouseY + (hex.height * 0.5)) / hex.height) - 1;
-    if (isEvenColumn(column)) {
-        row = f1;
+    var location = Variables.location;
+    mouse.x -= offSet.x;
+    mouse.y -= offSet.y;
+    location.column = Math.floor(mouse.x / hex.side);
+    f1 = Math.floor(mouse.y / hex.height);
+    f2 = Math.floor((mouse.y + (hex.height * 0.5)) / hex.height) - 1;
+    if (isEvenColumn(location.column)) {
+        location.row = f1;
     } else {
-        row = f2;
+        location.row = f2;
     }
     return {
-        mouseX,
-        mouseY,
-        column,
+        mouse,
+        location,
         f1,
-        f2,
-        row
-    };
+        f2
+    }
 }
 
 function get_p3(p1, t) {
@@ -138,9 +152,13 @@ var drawHexagon = function (currentHex, fillColor) {
 
 var Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, originX, originY, colorFunc) {
-        hex.canvasOriginX = originX;
-        hex.canvasOriginY = originY;
+    self.getHex = function() {
+        return hex;
+    };
+    self.draw = function (rows, cols, origin) {
+        hex = self.getHex();
+        hex.canvasOriginX = origin.x;
+        hex.canvasOriginY = origin.y;
 
         var currentHexCoordinate = {
             x: 0,
@@ -164,7 +182,8 @@ var Grid = (function () {
             col = 0;
         while (row < rows) {
             while (col < cols) {
-                hexContents = prepareHex(currentHexCoordinate, offsetColumn, col, row, originX, originY, color, colorFunc);
+                Variables.location = {column: col, row: row};
+                hexContents = prepareHex(currentHexCoordinate, offsetColumn, Variables.location, origin, color);
                 hexGrid[row][col] = drawHexagon(hexContents);
                 col += 1;
             }
@@ -175,10 +194,6 @@ var Grid = (function () {
 
     return self;
 }());
-
-var Grinwald = function () {
-    Grid.draw();
-};
 
 var isPointInTriangle = function (pt, v1, v2, v3) {
     var b1 = hex.sign(pt, v1, v2) < 0.0,

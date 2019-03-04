@@ -8,3 +8,8 @@ var moves = {
     NW: 4,
     N: 5
 };
+
+var mapDimensions = {
+    rows: 8,
+    cols: 20
+};
