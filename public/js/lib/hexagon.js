@@ -152,14 +152,11 @@ var drawHexagon = function (currentHex, fillColor) {
 
 var Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, x, y, hex) {
-        hex.canvasOriginX = x;
-        hex.canvasOriginY = y;
-
-        var currentHexCoordinate = {
-            x: 0,
-            y: 0
-        };
+    self.draw = function (rows, cols, x, y) {
+        var origin = {
+            x: x,
+            y: y
+        }
 
         var offsetColumn = false,
             color = "";
@@ -179,7 +176,7 @@ var Grid = (function () {
         while (row < rows) {
             while (col < cols) {
                 Variables.location = {column: col, row: row};
-                hexContents = prepareHex(currentHexCoordinate, offsetColumn, Variables.location, origin, color);
+                hexContents = prepareHex(offsetColumn, Variables.location, origin, color);
                 hexGrid[row][col] = drawHexagon(hexContents);
                 col += 1;
             }

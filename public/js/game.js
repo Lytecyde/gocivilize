@@ -23,7 +23,7 @@ var game = {
         '#996633' //brown hills
     ],
     x: 0,
-    y: 0,
+    y: 0
 };
 
 game.clickEventHandler = function (tile) {
