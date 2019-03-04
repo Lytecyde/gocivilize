@@ -20,7 +20,7 @@ var Variables = {
     color: ""
 };
 
-hex.HexagonGrid = function (canvasId, radius, clickEventHandler) {
+var HexagonGrid = function (canvasId, radius, clickEventHandler) {
     hex.radius = radius;
 
     hex.height = Math.sqrt(3) * radius;
@@ -54,9 +54,9 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
         currentHex.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
         return {currentHex};
     }
-}
+};
 
-function prepareHex(offsetColumn, location, origin, color) {
+hex.prepare = function (offsetColumn, location, origin, color) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     return {currentHex, color};
 }
@@ -68,7 +68,7 @@ function create2DArray(columns, rows) {
     var mapRows = [];
     mapRows.length = rows;
     while (i > 0) {
-        arr[columns - 1 - i] = mapRows;
+        arr[columns  - i] = mapRows;
         i -= 1;
     }
 
@@ -150,10 +150,10 @@ var drawHexagon = function (currentHex, fillColor) {
 };
 //helper functions end
 
-var Grid = (function () {
+hex.Grid = (function () {
     var self = {};
     self.draw = function (rows, cols, x, y) {
-        var origin = {
+        origin = {
             x: x,
             y: y
         }
@@ -173,10 +173,11 @@ var Grid = (function () {
 
         var row = 0,
             col = 0;
+
         while (row < rows) {
             while (col < cols) {
                 Variables.location = {column: col, row: row};
-                hexContents = prepareHex(offsetColumn, Variables.location, origin, color);
+                hexContents = hex.prepare(offsetColumn, Variables.location, origin, color);
                 hexGrid[row][col] = drawHexagon(hexContents);
                 col += 1;
             }

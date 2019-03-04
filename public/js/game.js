@@ -61,15 +61,15 @@ game.fogOfWarColor = function () {
 };
 
 game.hgrid = function () {
-    var h = hex.HexagonGrid("map", 50, game.clickEventHandler);
-    Grid.draw(game.ROWS, game.COLS, 50, 50, h);
+    var h = new HexagonGrid("map", 50, game.clickEventHandler);
+    h.Grid.draw(game.ROWS, game.COLS, 50, 50);
     //version 0.0.2
     //g.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
 };
 
 game.hgridMini = function () {
-    var h = hex.HexagonGrid("minimap", 5, null);
-    Grid.draw(game.ROWS, game.COLS, 5, 5, h);
+    var h = new HexagonGrid("minimap", 5, null);
+    h.Grid.draw(game.ROWS, game.COLS, 5, 5);
 };
 
 game.createTabs = function () {
