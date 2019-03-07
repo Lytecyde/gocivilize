@@ -160,20 +160,20 @@ game.getStartingPoint = function () {
 
 game.makeUnitMap = function () {
     game.units = game.makeUnits(game.COLS, game.ROWS);
-    console.log(game.units[6][6]);
+    //console.log(game.units[6][6]);
     var sp = game.getStartingPoint();
     var x = 0;
     var y;
     while (x < game.ROWS) {
         y = 0;
         while (y < game.COLS) {
-            console.log("1:" + x + "x2  " + y + "y");
+            //console.log("1:" + x + "x2  " + y + "y");
             if (typeof(game.units) != 'undefined' && typeof(game.units[7]) != 'undefined') {
                 if (x === sp.x && y === sp.y ) {
-                    console.log(x + "found");
+                    //console.log(x + "found");
                     game.units[x][y] = "*";
                 } else {
-                    console.log("2:" + x + "x2  " + y + "y");
+                    //console.log("2:" + x + "x2  " + y + "y");
                     game.units[x][y] = "n";
                 }
             }

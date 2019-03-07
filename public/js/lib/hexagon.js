@@ -126,27 +126,27 @@ function get_p2(p1, t) {
     p2.y = p1.y + (t.height / 2);
     return p2;
 }
-var drawHexagon = function (currentHex, fillColor) {
-    var DrawHexagon = {};
-    var x0 = currentHex.x,
-        y0 = currentHex.y;
-    DrawHexagon.context = hex.context;
-    DrawHexagon.context.strokeStyle = "#000";
-    DrawHexagon.context.beginPath();
-    DrawHexagon.context.moveTo(x0 + DrawHexagon.width - DrawHexagon.side, y0);
-    DrawHexagon.context.lineTo(x0 + DrawHexagon.side, y0);
-    DrawHexagon.context.lineTo(x0 + DrawHexagon.width, y0 + (DrawHexagon.height / 2));
-    DrawHexagon.context.lineTo(x0 + DrawHexagon.side, y0 + DrawHexagon.height);
-    DrawHexagon.context.lineTo(x0 + DrawHexagon.width - DrawHexagon.side, y0 + DrawHexagon.height);
-    DrawHexagon.context.lineTo(x0, y0 + (DrawHexagon.height / 2));
+var drawHexagon = function (hexContents) {
+    var x0 = hexContents.currentHex.x,
+        y0 = hexContents.currentHex.y;
+    var fillColor = hexContents.color;
+    var ctx = hex.context;
+    ctx.strokeStyle = "#000";
+    ctx.beginPath();
+    ctx.moveTo(x0 + hex.width - hex.side, y0);
+    ctx.lineTo(x0 + hex.side, y0);
+    ctx.lineTo(x0 + hex.width, y0 + (hex.height / 2));
+    ctx.lineTo(x0 + hex.side, y0 + hex.height);
+    ctx.lineTo(x0 + hex.width - hex.side, y0 + hex.height);
+    ctx.lineTo(x0, y0 + (hex.height / 2));
 
     if (fillColor) {
-        DrawHexagon.context.fillStyle = fillColor;
-        DrawHexagon.context.fill();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
     }
 
-    DrawHexagon.context.closePath();
-    DrawHexagon.context.stroke();
+    ctx.closePath();
+    ctx.stroke();
 };
 //helper functions end
 
@@ -220,17 +220,16 @@ var getEncirclementOne = function (col, row) {
 };
 
 var drawHexAtColRow = function (column, row, color) {
-    var HexAt = {};
-    HexAt.drawy = 0;
+    var drawy = 0;
     if (isEvenColumn(column)) {
-        HexAt.drawy = (row * HexAt.height) + HexAt.canvasOriginY;
+        drawy = (row * hex.height) + hex.canvasOriginY;
     } else {
-        HexAt.drawy = (row * HexAt.height) + HexAt.canvasOriginY + (HexAt.height / 2);
+        drawy = (row * hex.height) + hex.canvasOriginY + (hex.height / 2);
     }
-    HexAt.drawx = (column * HexAt.side) + HexAt.canvasOriginX;
+    var drawx = (column * hex.side) + hex.canvasOriginX;
     var hexCoordinate = {
-        x: HexAt.drawx,
-        y: HexAt.drawy
+        x: drawx,
+        y: drawy
     };
     drawHexagon(hexCoordinate, color);
 };
@@ -257,7 +256,10 @@ var getRelativeCanvasOffset = function () {
 //Uses a grid overlay algorithm to determine hexagon location
 //Left edge of grid has a test to accurately determine correct hex
 function get_p1(column, row, tile) {
-    var p1 = {};
+    var p1 = {
+        x: 0,
+        y: 0
+    };
     p1.x = column * tile.side;
     if (isEvenColumn(column)) {
         p1.y = row * tile.height;
