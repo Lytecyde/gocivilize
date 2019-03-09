@@ -58,7 +58,8 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
 
 hex.prepare = function (offsetColumn, location, origin, color) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
-    return {currentHex, color};
+    var coordinate = currentHex.currentHex;
+    return {coordinate, color};
 }
 
 function create2DArray(columns, rows) {
@@ -68,7 +69,7 @@ function create2DArray(columns, rows) {
     var mapRows = [];
     mapRows.length = rows;
     while (i > 0) {
-        arr[columns  - i] = mapRows;
+        arr[columns - i] = mapRows;
         i -= 1;
     }
 
@@ -127,8 +128,8 @@ function get_p2(p1, t) {
     return p2;
 }
 var drawHexagon = function (hexContents) {
-    var x0 = hexContents.currentHex.x,
-        y0 = hexContents.currentHex.y;
+    var x0 = hexContents.coordinate.x,
+        y0 = hexContents.coordinate.y;
     var fillColor = hexContents.color;
     var ctx = hex.context;
     ctx.strokeStyle = "#000";
@@ -173,12 +174,13 @@ hex.Grid = (function () {
 
         var row = 0,
             col = 0;
-
+        var c;
         while (row < rows) {
             while (col < cols) {
                 Variables.location = {column: col, row: row};
-                hexContents = hex.prepare(offsetColumn, Variables.location, origin, color);
-                hexGrid[row][col] = drawHexagon(hexContents);
+                c = hex.prepare(offsetColumn, Variables.location, origin, color);
+                console.log("c x" + c.coordinate.x);
+                hexGrid[row][col] = drawHexagon(c);
                 col += 1;
             }
             row += 1;
