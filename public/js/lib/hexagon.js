@@ -79,7 +79,7 @@ function create2DArray(columns, rows) {
         arr[columns - i] = mapRows;
         i -= 1;
     }
-    console.log("2D array" + arr.length + "  " + arr[7].length);
+
     return arr;
 }
 
@@ -178,12 +178,12 @@ hex.Grid = (function () {
                     row: row
                 };
                 c = hex.prepare(offsetColumn, Variables.location, Variables.origin, color);
-                console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
+                console.log("c x" + c.coordinate.x + "y" + c.coordinate.y + "o/s" + offsetColumn);
                 hexGrid[row][col] = drawHexagon(c);
                 col += 1;
+                offsetColumn = !offsetColumn;
             }
             row += 1;
-            offsetColumn = !offsetColumn;
         }
     };
 
