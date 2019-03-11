@@ -48,23 +48,30 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
     if (!offsetColumn) {
         currentHex.x = (location.column * hex.side) + origin.x;
         currentHex.y = (location.row * hex.height) + origin.y;
-        return {currentHex};
+        return ({
+            currentHex
+        });
     } else {
         currentHex.x = location.column * hex.side + origin.x;
         currentHex.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
-        return {currentHex};
+        return ({
+            currentHex
+        });
     }
 };
 
 hex.prepare = function (offsetColumn, location, origin, color) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     var coordinate = currentHex.currentHex;
-    return {coordinate, color};
-}
+    return {
+        coordinate,
+        color
+    };
+};
 
 function create2DArray(columns, rows) {
     var arr = [];
-    arr.length = rows;
+    arr.length = columns;
     var i = columns;
     var mapRows = [];
     mapRows.length = rows;
@@ -72,7 +79,7 @@ function create2DArray(columns, rows) {
         arr[columns - i] = mapRows;
         i -= 1;
     }
-
+    console.log("2D array" + arr.length + "  " + arr[7].length);
     return arr;
 }
 
@@ -108,10 +115,8 @@ function getColumn(mouse, offSet) {
     }
     return {
         mouse,
-        location,
-        f1,
-        f2
-    }
+        location
+    };
 }
 
 function get_p3(p1, t) {
@@ -154,21 +159,12 @@ var drawHexagon = function (hexContents) {
 hex.Grid = (function () {
     var self = {};
     self.draw = function (rows, cols, x, y) {
-        origin = {
+        Variables.origin = {
             x: x,
             y: y
         }
-
         var offsetColumn = false,
-            color = "";
-
-        var hexContents = {
-            currentHexCoordinate: {
-                x: 0,
-                y: 0
-            },
-            color: ""
-        };
+            color = "green";
 
         var hexGrid = create2DArray(cols, rows);
 
@@ -177,9 +173,12 @@ hex.Grid = (function () {
         var c;
         while (row < rows) {
             while (col < cols) {
-                Variables.location = {column: col, row: row};
-                c = hex.prepare(offsetColumn, Variables.location, origin, color);
-                console.log("c x" + c.coordinate.x);
+                Variables.location = {
+                    column: col,
+                    row: row
+                };
+                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, color);
+                console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
                 hexGrid[row][col] = drawHexagon(c);
                 col += 1;
             }
@@ -199,6 +198,10 @@ var isPointInTriangle = function (pt, v1, v2, v3) {
     return ((b1 === b2) && (b2 === b3));
 };
 
+function getXDifferenceOfEncirclement() {
+    return [1, 1, 0, -1, -1, 0];
+}
+
 var getEncirclementOne = function (col, row) {
     //var numberOfTilesAroundHex = 6;
     var Encirclement = {};
@@ -207,7 +210,7 @@ var getEncirclementOne = function (col, row) {
         row: 0
     };
     Encirclement.firstCircle = [h, h, h, h, h, h];
-    Encirclement.dx = [1, 1, 0, -1, -1, 0];
+    Encirclement.dx = getXDifferenceOfEncirclement();
     Encirclement.dy = getYDifferenceOfEncirclement(col);
     var i = 0;
     Encirclement.firstCircle.map(function (en) {
@@ -240,7 +243,7 @@ var drawHexAtColRow = function (column, row, color) {
 var getRelativeCanvasOffset = function () {
     var x = 0,
         y = 0,
-        layoutElement = Grid.canvas;
+        layoutElement = hex.canvas;
 
     if (layoutElement.offsetParent) {
         do {
@@ -272,7 +275,7 @@ function get_p1(column, row, tile) {
 }
 
 var getSelectedTile = function (mouseX, mouseY) {
-    var offSet = Grid.getRelativeCanvasOffset(),
+    var offSet = hex.getRelativeCanvasOffset(),
         mousePoint,
         p1,
         p2,
@@ -281,36 +284,29 @@ var getSelectedTile = function (mouseX, mouseY) {
         p5,
         p6;
 
-    var data = {
-        mouseX: mouseX,
-        mouseY: mouseY,
-        column: 0,
-        f1: 0,
-        f2: 0,
-        row: 0
-    };
-
-    data = getColumn(mouseX, offSet, mouseY);
+    var data = Variables.mouse;
+    var m = {x: mouseX, y: mouseY};
+    data = getColumn(m, offSet);
 
     //Test if on left side of frame
-    if (data.mouseX > (data.column * Grid.side) && data.mouseX < (data.column * Grid.side) + Grid.width - Grid.side) {
+    if (data.mouse.x > (data.location.column * hex.side) && data.mouse.x < (data.location.column * hex.side) + hex.width - hex.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
-        p1 = get_p1(p1, data.column, data.row);
+        p1 = get_p1(p1, data.location.column, data.row);
 
         p2 = get_p2(p1);
 
         p3 = get_p3(p1);
 
         mousePoint = {};
-        mousePoint.x = data.mouseX;
-        mousePoint.y = data.mouseY;
+        mousePoint.x = data.mouse.x;
+        mousePoint.y = data.mouse.y;
 
         if (isPointInTriangle(mousePoint, p1, p2, p3)) {
-            data.column = data.column - 1;
+            data.location.column = data.location.column - 1;
 
-            if (isEvenColumn(data.column)) {
-                data.row = data.row - 1;
+            if (isEvenColumn(data.location.column)) {
+                data.location.row = data.location.row - 1;
             }
         }
 
@@ -320,24 +316,24 @@ var getSelectedTile = function (mouseX, mouseY) {
 
         p5 = {};
         p5.x = p4.x;
-        p5.y = p4.y + (Grid.height / 2);
+        p5.y = p4.y + (hex.height / 2);
 
         p6 = {};
-        p6.x = p5.x + (Grid.width - Grid.side);
+        p6.x = p5.x + (hex.width - hex.side);
         p6.y = p5.y;
 
         if (isPointInTriangle(mousePoint, p4, p5, p6)) {
-            data.column = data.column - 1;
+            data.location.column = data.location.column - 1;
 
-            if (isEvenColumn(data.column)) {
-                data.row += 1;
+            if (isEvenColumn(data.location.column)) {
+                data.location.row += 1;
             }
         }
     }
 
     return {
-        row: data.row,
-        column: data.column
+        row: data.location.row,
+        column: data.location.column
     };
 };
 
