@@ -135,6 +135,7 @@ function get_p2(p1, t) {
 var drawHexagon = function (hexContents) {
     var x0 = hexContents.coordinate.x,
         y0 = hexContents.coordinate.y;
+    console.log("hexcontents : x" + x0 + "y" + y0);
     var fillColor = hexContents.color;
     var ctx = hex.context;
     ctx.strokeStyle = "#000";
@@ -162,7 +163,7 @@ hex.Grid = (function () {
         Variables.origin = {
             x: x,
             y: y
-        }
+        };
         var offsetColumn = false,
             color = "green";
 
@@ -178,12 +179,14 @@ hex.Grid = (function () {
                     row: row
                 };
                 c = hex.prepare(offsetColumn, Variables.location, Variables.origin, color);
-                console.log("c x" + c.coordinate.x + "y" + c.coordinate.y + "o/s" + offsetColumn);
+                console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
                 hexGrid[row][col] = drawHexagon(c);
                 col += 1;
                 offsetColumn = !offsetColumn;
             }
+            console.log("ROW NR" + row);
             row += 1;
+            col = 0;
         }
     };
 
