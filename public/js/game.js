@@ -64,7 +64,7 @@ game.hgrid = function () {
     var h = new HexagonGrid("map", 50, game.clickEventHandler);
     h.Grid.draw(game.ROWS, game.COLS, 50, 50);
     //version 0.0.2
-    //g.drawHexGrid(game.ROWS, game.COLS, 50, 50, game.fogOfWarColor);
+    //draw game.fogOfWarColor;
 };
 
 game.hgridMini = function () {
@@ -138,7 +138,6 @@ game.create2DArray = function (columns, rows) {
 
 game.makeUnits = function (cols, rows) {
     var units = game.create2DArray(rows, cols);
-    console.log(units[7][1]);
     //units.fill("u");
     return units;
 };
@@ -160,20 +159,16 @@ game.getStartingPoint = function () {
 
 game.makeUnitMap = function () {
     game.units = game.makeUnits(game.COLS, game.ROWS);
-    //console.log(game.units[6][6]);
     var sp = game.getStartingPoint();
     var x = 0;
     var y;
     while (x < game.ROWS) {
         y = 0;
         while (y < game.COLS) {
-            //console.log("1:" + x + "x2  " + y + "y");
-            if (typeof(game.units) != 'undefined' && typeof(game.units[7]) != 'undefined') {
-                if (x === sp.x && y === sp.y ) {
-                    //console.log(x + "found");
+            if (game.units !== 'undefined' && game.units[7] !== 'undefined') {
+                if (x === sp.x && y === sp.y) {
                     game.units[x][y] = "*";
                 } else {
-                    //console.log("2:" + x + "x2  " + y + "y");
                     game.units[x][y] = "n";
                 }
             }
