@@ -5,7 +5,7 @@ var civilization = {
     capital: "",
     startingPoint: {
         x: 0,
-        y: 0,
+        y: 0
     },
     population: 4,
     gold: 50,
