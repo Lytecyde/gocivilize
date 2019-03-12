@@ -4,24 +4,21 @@
 var game = {
     ROWS: 8,
     COLS: 20,
+    VISIBLE: 1.0,
+    FOG: 0.5,
     moving: false,
     colorsMap: [],
     unitsMap: [],
+    fogMap: [],
     units: [],
     lastTile: {
         row: 0,
         column: 0
     },
-    colors: [
-        '#006600',//darkgreen forest
-        '#33cc33',//LIGHT GREEN
-        '#ffcc00',//yellow desert
-        '#99ff66',//VERYlight green field
-        '#808080',//grey mntn
-        '#0099ff',//light blue beach
-        '#003366',//dark blue ocean
-        '#996633' //brown hills
-    ],
+    reds: [0, 51, 255, 163, 128, 0, 0, 163],
+    greens: [102, 204, 204, 255, 128, 163, 51, 102],
+    blues: [0, 51, 0, 102, 128, 255, 102, 102],
+    colors: [],
     x: 0,
     y: 0
 };
@@ -46,23 +43,93 @@ game.clickEventHandler = function (tile) {
 
 game.onload = function () {
     game.createTabs();
+    //map
+    game.makePalette(game.VISIBLE);
     game.createColoredMap();
     game.assignUnits();
+    game.makeColorMap();
     game.hgrid();
     game.hgridMini();
+    
+    game.makeFogMap();
+    game.fogOfWar();
 };
+
+game.makePalette = function (alpha) {
+    var colorsLength = 8;
+    var i = 0;
+    while (i < colorsLength) {
+        game.colors[i] = "rgba(" + game.reds[i] + "," + game.greens[i] + "," + game.blues[i] + "," + alpha + ")";
+        i += 1;
+    }
+}
 
 game.getMapColor = function (col, row) {
     return game.colorsMap[col][row];
 };
 
-game.fogOfWarColor = function () {
-    return "rgba(110,110,110, 0.75)";
+game.makeFogMap = function () {
+    var col = 0;
+    var row;
+    game.fogMap = game.create2DArray(game.COLS, game.ROWS);
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            game.fogMap[col][row] = true;
+            row += 1;
+        }
+        col += 1;
+    }
+};
+
+game.makeColorMap = function () {
+    var col = 0;
+    var row;
+    game.colorsMap = game.create2DArray(game.COLS, game.ROWS);
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            game.colorsMap[row][col] = game.getRandomColor();
+            row += 1;
+        }
+        col += 1;
+    }
+};
+
+game.fogOfWar = function () {
+//paint fog on every tile 
+    var col = 0;
+    var row;
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            if (game.fogMap[row][col]) {
+                console.log("dark");
+                game.fogDarken(col, row);
+            }
+            row += 1;
+        }
+        col += 1;
+    }
+};
+
+game.fogDarken = function (col, row) {
+    game.makePalette(game.FOG);
+    game.makeColorMap();
+    var colorInRGBA = game.getMapColor(col, row);
+    game.colorsMap[col][row] = colorInRGBA;
+};
+
+game.fogLighten = function (col, row) {
+    game.makePalette(game.VISIBLE);
+    game.makeColorMap();
+    var colorInRGBA = game.getMapColor(col, row);
+    game.colorsMap[col][row] = colorInRGBA;
 };
 
 game.hgrid = function () {
     var h = new HexagonGrid("map", 50, game.clickEventHandler);
-    h.Grid.draw(game.ROWS, game.COLS, 50, 50);
+    h.Grid.draw(game.ROWS, game.COLS, 50, 50, game.colorsMap);
     //version 0.0.2
     //draw game.fogOfWarColor;
 };
@@ -104,21 +171,11 @@ game.setTabHandler = function (tabs, tabPos) {
 };
 
 game.createColoredMap = function () {
-    game.colorsMap = game.makeMapColors();
+    game.colorsMap = game.makeColorMap();
 };
 
 game.getRandomColor = function () {
-    return game.colors[Math.floor(Math.random() * game.colors.length)];
-};
-
-game.makeMapColors = function () {
-    var colorsMap = [[]];
-    colorsMap.length = game.COLS * game.ROWS;
-    colorsMap.forEach(function (x) {
-        colorsMap[x] = game.getRandomColor();
-    });
-
-    return colorsMap;
+    return game.colors[Math.floor(Math.random() * game.reds.length)];
 };
 
 game.create2DArray = function (columns, rows) {

@@ -158,13 +158,12 @@ var drawHexagon = function (hexContents) {
 
 hex.Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, x, y) {
+    self.draw = function (rows, cols, x, y, colors) {
         Variables.origin = {
             x: x,
             y: y
         };
-        var offsetColumn = false,
-            color = "green";
+        var offsetColumn = false;
 
         var hexGrid = create2DArray(cols, rows);
 
@@ -177,7 +176,7 @@ hex.Grid = (function () {
                     column: col,
                     row: row
                 };
-                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, color);
+                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, colors[row][col]);
                 //console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
                 hexGrid[row][col] = drawHexagon(c);
                 col += 1;
