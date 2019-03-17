@@ -29,7 +29,7 @@ var unit = {
     identification: null,
     location: [],
     type: "Settler",
-    sign: "👨",
+    sign: "*",
     movement: 2,
     power: 1,
     life: 10
