@@ -63,9 +63,11 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
 hex.prepare = function (offsetColumn, location, origin, color) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     var coordinate = currentHex.currentHex;
+    var text = "";
     return {
         coordinate,
-        color
+        color, 
+        text
     };
 };
 
@@ -132,10 +134,11 @@ function get_p2(p1, t) {
     p2.y = p1.y + (t.height / 2);
     return p2;
 }
-var drawHexagon = function (hexContents) {
+hex.drawHexagon = function (hexContents) {
     var x0 = hexContents.coordinate.x,
         y0 = hexContents.coordinate.y;
     var fillColor = hexContents.color;
+    var text = hexContents.text;
     var ctx = hex.context;
     ctx.strokeStyle = "#000";
     ctx.beginPath();
@@ -149,6 +152,10 @@ var drawHexagon = function (hexContents) {
     if (fillColor) {
         ctx.fillStyle = fillColor;
         ctx.fill();
+    }
+
+    if (text) {
+        ctx.fillText = text; 
     }
 
     ctx.closePath();
@@ -178,7 +185,7 @@ hex.Grid = (function () {
                 };
                 c = hex.prepare(offsetColumn, Variables.location, Variables.origin, colors[row][col]);
                 //console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
-                hexGrid[row][col] = drawHexagon(c);
+                hexGrid[row][col] = hex.drawHexagon(c);
                 col += 1;
                 offsetColumn = !offsetColumn;
             }
@@ -189,6 +196,10 @@ hex.Grid = (function () {
 
     return self;
 }());
+
+hex.getHex = function () {
+    return hex;
+};
 
 var isPointInTriangle = function (pt, v1, v2, v3) {
     var b1 = hex.sign(pt, v1, v2) < 0.0,
@@ -224,7 +235,7 @@ var getEncirclementOne = function (col, row) {
     return Encirclement.firstCircle;
 };
 
-var drawHexAtColRow = function (column, row, color) {
+hex.drawHexAtColRow = function (column, row, color) {
     var drawy = 0;
     if (isEvenColumn(column)) {
         drawy = (row * hex.height) + hex.canvasOriginY;

@@ -5,7 +5,7 @@ var game = {
     ROWS: 8,
     COLS: 20,
     VISIBLE: 1.0,
-    FOG: 0.5,
+    FOG: 0.75,
     moving: false,
     colorsMap: [],
     unitsMap: [],
@@ -20,7 +20,8 @@ var game = {
     blues: [0, 51, 0, 102, 128, 255, 102, 102],
     colors: [],
     x: 0,
-    y: 0
+    y: 0,
+    hex: {}
 };
 
 game.clickEventHandler = function (tile) {
@@ -45,14 +46,18 @@ game.onload = function () {
     game.createTabs();
     //map
     game.makePalette(game.VISIBLE);
-    game.createColoredMap();
     game.assignUnits();
+    game.makeUnitMap();
     game.makeColorMap();
     game.hgrid();
     game.hgridMini();
-    
+
     game.makeFogMap();
     game.fogOfWar();
+    //units
+    game.makeUnits();
+    game.showUnits();
+    game.placeUnit();
 };
 
 game.makePalette = function (alpha) {
@@ -62,7 +67,7 @@ game.makePalette = function (alpha) {
         game.colors[i] = "rgba(" + game.reds[i] + "," + game.greens[i] + "," + game.blues[i] + "," + alpha + ")";
         i += 1;
     }
-}
+};
 
 game.getMapColor = function (col, row) {
     return game.colorsMap[col][row];
@@ -97,14 +102,13 @@ game.makeColorMap = function () {
 };
 
 game.fogOfWar = function () {
-//paint fog on every tile 
+//paint fog on every tile
     var col = 0;
     var row;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {
             if (game.fogMap[row][col]) {
-                console.log("dark");
                 game.fogDarken(col, row);
             }
             row += 1;
@@ -170,10 +174,6 @@ game.setTabHandler = function (tabs, tabPos) {
     };
 };
 
-game.createColoredMap = function () {
-    game.colorsMap = game.makeColorMap();
-};
-
 game.getRandomColor = function () {
     return game.colors[Math.floor(Math.random() * game.reds.length)];
 };
@@ -222,7 +222,7 @@ game.makeUnitMap = function () {
     while (x < game.ROWS) {
         y = 0;
         while (y < game.COLS) {
-            if (game.units !== 'undefined' && game.units[7] !== 'undefined') {
+            if (game.units !== 'undefined') {
                 if (x === sp.x && y === sp.y) {
                     game.units[x][y] = "*";
                 } else {
@@ -243,6 +243,22 @@ game.assignUnits = function () {
 
 game.removeUnit = function (drawx, drawy, tile) {
     tile.drawHex(drawx, drawy - 6, game.colorsMap[tile.column][tile.row], "");
+};
+
+game.placeUnit = function () {
+    var i = 0;
+    var unitLocations = game.getListUnits();
+    var col = 0;
+    var row = 0;
+    var color = "";
+    var h = hex.getHex();
+    while (i < unitLocations.length) {
+        col = unitLocations.listUnitLocations[i].x;
+        row = unitLocations.listUnitLocations[i].y;
+        color = game.colorsMap[row][col];
+        h.drawHexagon({row, col}, color, "*");
+        //hex.drawHexAtColRow(1, 1, "red");
+    }
 };
 
 game.getListUnits = function (units) {
