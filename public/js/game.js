@@ -20,8 +20,7 @@ var game = {
     blues: [0, 51, 0, 102, 128, 255, 102, 102],
     colors: [],
     x: 0,
-    y: 0,
-    hex: {}
+    y: 0
 };
 
 game.clickEventHandler = function (tile) {
