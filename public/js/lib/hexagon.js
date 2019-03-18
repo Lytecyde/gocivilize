@@ -60,13 +60,16 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
     }
 };
 
-hex.prepare = function (offsetColumn, location, origin, color) {
+hex.getHex = function () {
+    return hex;
+};
+
+hex.prepare = function (offsetColumn, location, origin) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     var coordinate = currentHex.currentHex;
     var text = "";
     return {
         coordinate,
-        color,
         text
     };
 };
@@ -165,7 +168,7 @@ hex.drawHexagon = function (hexContents) {
 
 hex.Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, x, y, colors) {
+    self.draw = function (rows, cols, x, y) {
         Variables.origin = {
             x: x,
             y: y
@@ -183,7 +186,7 @@ hex.Grid = (function () {
                     column: col,
                     row: row
                 };
-                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, colors[row][col]);
+                c = hex.prepare(offsetColumn, Variables.location, Variables.origin);
                 //console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
                 hexGrid[row][col] = hex.drawHexagon(c);
                 col += 1;

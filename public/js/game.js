@@ -250,7 +250,7 @@ game.placeUnit = function () {
     var col = 0;
     var row = 0;
     var color = "";
-    var h = hex.getHex();
+    var h = hex();
     while (i < unitLocations.length) {
         col = unitLocations.listUnitLocations[i].x;
         row = unitLocations.listUnitLocations[i].y;
