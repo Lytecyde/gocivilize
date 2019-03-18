@@ -66,7 +66,7 @@ hex.prepare = function (offsetColumn, location, origin, color) {
     var text = "";
     return {
         coordinate,
-        color, 
+        color,
         text
     };
 };
@@ -155,7 +155,7 @@ hex.drawHexagon = function (hexContents) {
     }
 
     if (text) {
-        ctx.fillText = text; 
+        ctx.fillText = text;
     }
 
     ctx.closePath();
@@ -235,7 +235,7 @@ var getEncirclementOne = function (col, row) {
     return Encirclement.firstCircle;
 };
 
-hex.drawHexAtColRow = function (column, row, color) {
+function getHexCoordinates(column, row) {
     var drawy = 0;
     if (isEvenColumn(column)) {
         drawy = (row * hex.height) + hex.canvasOriginY;
@@ -243,11 +243,16 @@ hex.drawHexAtColRow = function (column, row, color) {
         drawy = (row * hex.height) + hex.canvasOriginY + (hex.height / 2);
     }
     var drawx = (column * hex.side) + hex.canvasOriginX;
+    return {drawx, drawy };
+}
+
+hex.drawHexAtColRow = function (column, row, color) {
     var hexCoordinate = {
-        x: drawx,
-        y: drawy
+        x: 0,
+        y: 0
     };
-    drawHexagon(hexCoordinate, color);
+    hexCoordinate = getHexCoordinates(column, row);
+    hex.drawHexagon(hexCoordinate, color);
 };
 
 //Recursively step up to the body to calculate canvas offset.
@@ -296,7 +301,10 @@ var getSelectedTile = function (mouseX, mouseY) {
         p6;
 
     var data = Variables.mouse;
-    var m = {x: mouseX, y: mouseY};
+    var m = {
+        x: mouseX,
+        y: mouseY
+    };
     data = getColumn(m, offSet);
 
     //Test if on left side of frame
