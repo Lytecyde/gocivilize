@@ -7,10 +7,10 @@ var game = {
     VISIBLE: 1.0,
     FOG: 0.75,
     moving: false,
-    colorsMap: [],
-    unitsMap: [],
-    fogMap: [],
-    units: [],
+    colorsMap: [[]],
+    unitsMap: [[]],
+    fogMap: [[]],
+    units: [[]],
     lastTile: {
         row: 0,
         column: 0
@@ -20,7 +20,9 @@ var game = {
     blues: [0, 51, 0, 102, 128, 255, 102, 102],
     colors: [],
     x: 0,
-    y: 0
+    y: 0,
+    h: {},
+    hMap: {}
 };
 
 game.clickEventHandler = function (tile) {
@@ -131,14 +133,15 @@ game.fogLighten = function (col, row) {
 };
 
 game.hgrid = function () {
-    var h = new HexagonGrid("map", 50, game.clickEventHandler);
+    game.h = new HexagonGrid("map", 50, game.clickEventHandler);
+    game.hMap = game.h;
     h.Grid.draw(game.ROWS, game.COLS, 50, 50, game.colorsMap);
     //version 0.0.2
     //draw game.fogOfWarColor;
 };
 
 game.hgridMini = function () {
-    var h = new HexagonGrid("minimap", 5, null);
+    game.h = new HexagonGrid("minimap", 5, null);
     h.Grid.draw(game.ROWS, game.COLS, 5, 5);
 };
 
@@ -180,20 +183,23 @@ game.getRandomColor = function () {
 game.create2DArray = function (columns, rows) {
     var arr = [];
     arr.length = rows;
-    var i = columns;
+    var index = columns;
+    var i = 0;
     var mapRows = [];
     mapRows.length = rows;
-    while (i > 0) {
-        mapRows.fill("u");
-        arr[columns - i] = mapRows;
-        i -= 1;
+    while (i < columns) {
+        //mapRows.fill("u");
+        index = columns - i;
+        arr[index] = mapRows;
+        i += 1;
     }
-
+    console.log(columns + "c   r" + rows);
     return arr;
 };
 
 game.makeUnits = function (cols, rows) {
-    var units = game.create2DArray(rows, cols);
+    var units = [[]];
+    units = game.create2DArray(cols, rows);
     //units.fill("u");
     return units;
 };
@@ -218,14 +224,16 @@ game.makeUnitMap = function () {
     var sp = game.getStartingPoint();
     var x = 0;
     var y;
-    while (x < game.ROWS) {
+    while (x < game.COLS) {
         y = 0;
-        while (y < game.COLS) {
-            if (game.units !== 'undefined') {
+        while (y < game.ROWS) {
+            if (game.units !== 'undefined' || game.units[x] !== 'undefined') {
                 if (x === sp.x && y === sp.y) {
                     game.units[x][y] = "*";
                 } else {
+                    console.log(x + ":" + y);
                     game.units[x][y] = "n";
+                    
                 }
             }
             y += 1;
@@ -250,7 +258,7 @@ game.placeUnit = function () {
     var col = 0;
     var row = 0;
     var color = "";
-    var h = hex();
+    var h = game.h;
     while (i < unitLocations.length) {
         col = unitLocations.listUnitLocations[i].x;
         row = unitLocations.listUnitLocations[i].y;

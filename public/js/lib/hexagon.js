@@ -39,6 +39,9 @@ var HexagonGrid = function (canvasId, radius, clickEventHandler) {
     return hex;
 };
 
+var GetHex = function () {
+    return hex;
+};
 //helper functionality
 hex.getCurrentXY = function (offsetColumn, location, origin) {
     var currentHex = {
