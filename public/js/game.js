@@ -206,7 +206,7 @@ game.setTabHandler = function (tabs, tabPos) {
 game.makeUnits = function () {
     var units = [[]];
     units = game.create2DArray(game.COLS, game.ROWS);
-    //units.fill("u");
+    units.fill("");
     return units;
 };
 
@@ -219,33 +219,39 @@ game.randomRow = function () {
 };
 
 game.getStartingPoint = function () {
-    return {
+    var p = {
         x: game.randomCol(),
         y: game.randomRow()
     };
+    return p;
 };
 
 game.makeUnitMap = function () {
-    var g = game.makeUnits(game.COLS, game.ROWS);
+    var g = [[]];
+    g = game.makeUnits(game.COLS, game.ROWS);
     game.unitsMap = g;
     var sp = game.getStartingPoint();
-    var x = 0;
+    console.log(sp.x + " " + sp.y + "starting point xy");
     var y;
-    while (x < g.COLS) {
+    var countUnits = 0;
+
+    var x = 0;
+    while (x < game.COLS) {
         y = 0;
-        while (y < g.ROWS) {
-            if (g.units !== 'undefined' || g.units[x] !== 'undefined') {
-                if (x === sp.x && y === sp.y) {
-                    g.units[x][y] = "*";
-                } else {
-                    g.units[x][y] = "n";
-                }
+        while (y < game.ROWS) {
+            console.log("xy of making unit map");
+            if (x === sp.x && y === sp.y) {
+                console.log("unit is placed on location");
+                g.units[x][y] = "*";//ERROR: not recording something correctly
+                countUnits += 1;
+            } else {
+                g.units[x][y] = "u";
             }
             y += 1;
         }
         x += 1;
     }
-
+    console.log("unit count" + countUnits);
     return game.units;
 };
 
@@ -260,6 +266,7 @@ game.removeUnit = function (drawx, drawy, tile) {
 game.placeUnit = function () {
     var i = 0;
     var unitLocations = game.getListUnits();
+    console.log("UL" + unitLocations.length);
     var col = 0;
     var row = 0;
     var color = "";
@@ -269,28 +276,32 @@ game.placeUnit = function () {
         row = unitLocations.listUnitLocations[i].y;
         color = game.colorsMap[row][col];
         h.drawHexagon({row, col}, color, "*");
-        //hex.drawHexAtColRow(1, 1, "red");
+        h.drawHexAtColRow(1, 1, "red");
     }
 };
 
 game.getListUnits = function () {
     var listUnitLocations = [],
         i = 0,
-        x = 0,
-        y = 0;
-
-    while (x < game.COLS) {
-        y = 0;
-        while (y < game.ROWS) {
-            if (game.unitsMap[x][y] === "*") {
+        col = 0,
+        row = 0;
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            if (game.unitsMap[col][row] === "*") {
+                listUnitLocations.push({
+                    x: 0,
+                    y: 0
+                });
                 listUnitLocations[i] = {
-                    x: x,
-                    y: y
+                    x: row,
+                    y: col
                 };
                 i += 1;
             }
+            row += 1;
         }
-        x = x + 1;
+        col += 1;
     }
 
     return listUnitLocations;
