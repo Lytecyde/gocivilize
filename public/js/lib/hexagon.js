@@ -39,6 +39,9 @@ var HexagonGrid = function (canvasId, radius, clickEventHandler) {
     return hex;
 };
 
+var GetHex = function () {
+    return hex;
+};
 //helper functionality
 hex.getCurrentXY = function (offsetColumn, location, origin) {
     var currentHex = {
@@ -60,13 +63,16 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
     }
 };
 
-hex.prepare = function (offsetColumn, location, origin, color) {
+hex.getHex = function () {
+    return hex;
+};
+
+hex.prepare = function (offsetColumn, location, origin) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     var coordinate = currentHex.currentHex;
     var text = "";
     return {
         coordinate,
-        color, 
         text
     };
 };
@@ -155,7 +161,7 @@ hex.drawHexagon = function (hexContents) {
     }
 
     if (text) {
-        ctx.fillText = text; 
+        ctx.fillText = text;
     }
 
     ctx.closePath();
@@ -165,7 +171,7 @@ hex.drawHexagon = function (hexContents) {
 
 hex.Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, x, y, colors) {
+    self.draw = function (rows, cols, x, y) {
         Variables.origin = {
             x: x,
             y: y
@@ -183,7 +189,7 @@ hex.Grid = (function () {
                     column: col,
                     row: row
                 };
-                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, colors[row][col]);
+                c = hex.prepare(offsetColumn, Variables.location, Variables.origin);
                 //console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
                 hexGrid[row][col] = hex.drawHexagon(c);
                 col += 1;
@@ -235,7 +241,7 @@ var getEncirclementOne = function (col, row) {
     return Encirclement.firstCircle;
 };
 
-hex.drawHexAtColRow = function (column, row, color) {
+function getHexCoordinates(column, row) {
     var drawy = 0;
     if (isEvenColumn(column)) {
         drawy = (row * hex.height) + hex.canvasOriginY;
@@ -243,11 +249,16 @@ hex.drawHexAtColRow = function (column, row, color) {
         drawy = (row * hex.height) + hex.canvasOriginY + (hex.height / 2);
     }
     var drawx = (column * hex.side) + hex.canvasOriginX;
+    return {drawx, drawy };
+}
+
+hex.drawHexAtColRow = function (column, row, color) {
     var hexCoordinate = {
-        x: drawx,
-        y: drawy
+        x: 0,
+        y: 0
     };
-    drawHexagon(hexCoordinate, color);
+    hexCoordinate = getHexCoordinates(column, row);
+    hex.drawHexagon(hexCoordinate, color);
 };
 
 //Recursively step up to the body to calculate canvas offset.
@@ -296,7 +307,10 @@ var getSelectedTile = function (mouseX, mouseY) {
         p6;
 
     var data = Variables.mouse;
-    var m = {x: mouseX, y: mouseY};
+    var m = {
+        x: mouseX,
+        y: mouseY
+    };
     data = getColumn(m, offSet);
 
     //Test if on left side of frame

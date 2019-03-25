@@ -17,7 +17,7 @@ var ArrayWorks = (function () {
         return arr;
     };
     self.arr2D = function (c, r) {
-        create2DArray(c,r);
+        create2DArray(c, r);
     };
 
     return self;

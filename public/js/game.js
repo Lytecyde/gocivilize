@@ -7,10 +7,10 @@ var game = {
     VISIBLE: 1.0,
     FOG: 0.75,
     moving: false,
-    colorsMap: [],
-    unitsMap: [],
-    fogMap: [],
-    units: [],
+    colorsMap: [[]],
+    unitsMap: [[]],
+    fogMap: [[]],
+    units: [[]],
     lastTile: {
         row: 0,
         column: 0
@@ -20,7 +20,9 @@ var game = {
     blues: [0, 51, 0, 102, 128, 255, 102, 102],
     colors: [],
     x: 0,
-    y: 0
+    y: 0,
+    h: {},
+    hMap: {}
 };
 
 game.clickEventHandler = function (tile) {
@@ -55,7 +57,7 @@ game.onload = function () {
     game.fogOfWar();
     //units
     game.makeUnits();
-    game.showUnits();
+    //game.showUnits();
     game.placeUnit();
 };
 
@@ -72,24 +74,49 @@ game.getMapColor = function (col, row) {
     return game.colorsMap[col][row];
 };
 
+game.create2DArray = function (columns, rows) {
+    var arr = [[]];
+    arr.length = rows;
+    var index = columns;
+    var i = 0;
+    var mapRows = [];
+    mapRows.length = rows;
+    while (i < columns) {
+        //mapRows.fill("u");
+        index = columns - i;
+        arr[index] = mapRows;
+        i += 1;
+    }
+
+    return arr;
+};
+
 game.makeFogMap = function () {
     var col = 0;
     var row;
-    game.fogMap = game.create2DArray(game.COLS, game.ROWS);
+    var g = game.create2DArray(game.COLS, game.ROWS);
+    game.fogMap = g;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {
-            game.fogMap[col][row] = true;
+            game.fogMap[row][col] = true;
             row += 1;
         }
         col += 1;
     }
+    //game.fogMap[][] = g.fogMap[][];
+    //return g.fogMap;
+};
+
+game.getRandomColor = function () {
+    return game.colors[Math.floor(Math.random() * game.reds.length)];
 };
 
 game.makeColorMap = function () {
     var col = 0;
     var row;
-    game.colorsMap = game.create2DArray(game.COLS, game.ROWS);
+    var g = game.create2DArray(game.COLS, game.ROWS);
+    game.colorsMap = g;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {
@@ -132,6 +159,7 @@ game.fogLighten = function (col, row) {
 
 game.hgrid = function () {
     var h = new HexagonGrid("map", 50, game.clickEventHandler);
+    game.hMap = h;
     h.Grid.draw(game.ROWS, game.COLS, 50, 50, game.colorsMap);
     //version 0.0.2
     //draw game.fogOfWarColor;
@@ -173,28 +201,12 @@ game.setTabHandler = function (tabs, tabPos) {
     };
 };
 
-game.getRandomColor = function () {
-    return game.colors[Math.floor(Math.random() * game.reds.length)];
-};
 
-game.create2DArray = function (columns, rows) {
-    var arr = [];
-    arr.length = rows;
-    var i = columns;
-    var mapRows = [];
-    mapRows.length = rows;
-    while (i > 0) {
-        mapRows.fill("u");
-        arr[columns - i] = mapRows;
-        i -= 1;
-    }
 
-    return arr;
-};
-
-game.makeUnits = function (cols, rows) {
-    var units = game.create2DArray(rows, cols);
-    //units.fill("u");
+game.makeUnits = function () {
+    var units = [[]];
+    units = game.create2DArray(game.COLS, game.ROWS);
+    units.fill("");
     return units;
 };
 
@@ -207,32 +219,39 @@ game.randomRow = function () {
 };
 
 game.getStartingPoint = function () {
-    return {
+    var p = {
         x: game.randomCol(),
         y: game.randomRow()
     };
+    return p;
 };
 
 game.makeUnitMap = function () {
-    game.units = game.makeUnits(game.COLS, game.ROWS);
+    var g = [[]];
+    g = game.makeUnits(game.COLS, game.ROWS);
+    game.unitsMap = g;
     var sp = game.getStartingPoint();
-    var x = 0;
+    console.log(sp.x + " " + sp.y + "starting point xy");
     var y;
-    while (x < game.ROWS) {
+    var countUnits = 0;
+
+    var x = 0;
+    while (x < game.COLS) {
         y = 0;
-        while (y < game.COLS) {
-            if (game.units !== 'undefined') {
-                if (x === sp.x && y === sp.y) {
-                    game.units[x][y] = "*";
-                } else {
-                    game.units[x][y] = "n";
-                }
+        while (y < game.ROWS) {
+            console.log("xy of making unit map");
+            if (x === sp.x && y === sp.y) {
+                console.log("unit is placed on location");
+                g.units[x][y] = "*";//ERROR: not recording something correctly
+                countUnits += 1;
+            } else {
+                g.units[x][y] = "u";
             }
             y += 1;
         }
         x += 1;
     }
-
+    console.log("unit count" + countUnits);
     return game.units;
 };
 
@@ -247,37 +266,42 @@ game.removeUnit = function (drawx, drawy, tile) {
 game.placeUnit = function () {
     var i = 0;
     var unitLocations = game.getListUnits();
+    console.log("UL" + unitLocations.length);
     var col = 0;
     var row = 0;
     var color = "";
-    var h = hex.getHex();
+    var h = game.h;
     while (i < unitLocations.length) {
         col = unitLocations.listUnitLocations[i].x;
         row = unitLocations.listUnitLocations[i].y;
         color = game.colorsMap[row][col];
         h.drawHexagon({row, col}, color, "*");
-        //hex.drawHexAtColRow(1, 1, "red");
+        h.drawHexAtColRow(1, 1, "red");
     }
 };
 
-game.getListUnits = function (units) {
+game.getListUnits = function () {
     var listUnitLocations = [],
         i = 0,
-        x = 0,
-        y = 0;
-
-    while (x < game.COLS) {
-        y = 0;
-        while (y < game.ROWS) {
-            if (units[x][y] === "*") {
+        col = 0,
+        row = 0;
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            if (game.unitsMap[col][row] === "*") {
+                listUnitLocations.push({
+                    x: 0,
+                    y: 0
+                });
                 listUnitLocations[i] = {
-                    x: x,
-                    y: y
+                    x: row,
+                    y: col
                 };
                 i += 1;
             }
+            row += 1;
         }
-        x = x + 1;
+        col += 1;
     }
 
     return listUnitLocations;
