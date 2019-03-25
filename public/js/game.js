@@ -38,7 +38,7 @@ game.clickEventHandler = function (tile) {
 
     if (game.moving && tile.isAroundTile(game.lastTile, tile)) {
         civilization.units[tile.column][tile.row] = "*";
-        tile.drawHexAtColRow(tile.column, tile.row);
+        tile.drawHexAtColRow(tile.column, tile.row, "red", "*");
         game.moving = false;
     }
 };
@@ -48,7 +48,7 @@ game.onload = function () {
     //map
     game.makePalette(game.VISIBLE);
     game.assignUnits();
-    game.makeUnitMap();
+    //game.makeUnitMap();
     game.makeColorMap();
     game.hgrid();
     game.hgridMini();
@@ -128,7 +128,6 @@ game.makeColorMap = function () {
 };
 
 game.fogOfWar = function () {
-//paint fog on every tile
     var col = 0;
     var row;
     while (col < game.COLS) {
@@ -204,9 +203,22 @@ game.setTabHandler = function (tabs, tabPos) {
 
 
 game.makeUnits = function () {
-    var units = [[]];
-    units = game.create2DArray(game.COLS, game.ROWS);
-    units.fill("");
+    var units = [],
+        col = 0,
+        row = 0,
+        r;
+    while (col < game.COLS) {
+        row = 0;
+        units[col] = [];
+        r = [];
+        r.length = game.ROWS;
+        units[col].push(r);
+        while (row < game.ROWS) {
+            units[col][row] = "*";
+            row += 1;
+        }
+        col += 1;
+    }
     return units;
 };
 
@@ -227,11 +239,10 @@ game.getStartingPoint = function () {
 };
 
 game.makeUnitMap = function () {
-    var g = [[]];
-    g = game.makeUnits(game.COLS, game.ROWS);
-    game.unitsMap = g;
+    var g = game.makeUnits();
     var sp = game.getStartingPoint();
     console.log(sp.x + " " + sp.y + "starting point xy");
+    console.log(g[0][0] + " unit");
     var y;
     var countUnits = 0;
 
@@ -242,17 +253,17 @@ game.makeUnitMap = function () {
             console.log("xy of making unit map");
             if (x === sp.x && y === sp.y) {
                 console.log("unit is placed on location");
-                g.units[x][y] = "*";//ERROR: not recording something correctly
+                g[x][y] = "*";//ERROR: not recording something correctly
                 countUnits += 1;
             } else {
-                g.units[x][y] = "u";
+                g[x][y] = "u";
             }
             y += 1;
         }
         x += 1;
     }
     console.log("unit count" + countUnits);
-    return game.units;
+    return g;
 };
 
 game.assignUnits = function () {
@@ -270,13 +281,24 @@ game.placeUnit = function () {
     var col = 0;
     var row = 0;
     var color = "";
-    var h = game.h;
+    var h = game.hMap;
+    var coordinate = {
+        x: 0,
+        y: 0
+    };
+    var contents = {};
     while (i < unitLocations.length) {
-        col = unitLocations.listUnitLocations[i].x;
-        row = unitLocations.listUnitLocations[i].y;
+        col = unitLocations[i].x;
+        row = unitLocations[i].y;
         color = game.colorsMap[row][col];
-        h.drawHexagon({row, col}, color, "*");
-        h.drawHexAtColRow(1, 1, "red");
+        coordinate.x = col;
+        coordinate.y = row;
+        contents.coordinate = coordinate;
+        contents.color = color;
+        contents.text = "*";
+        //h.drawHexagon(contents);
+        h.drawHexAtColRow(1, 1, "red", contents.text);
+        i += 1;
     }
 };
 

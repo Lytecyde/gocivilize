@@ -252,13 +252,17 @@ function getHexCoordinates(column, row) {
     return {drawx, drawy };
 }
 
-hex.drawHexAtColRow = function (column, row, color) {
-    var hexCoordinate = {
+hex.drawHexAtColRow = function (column, row, color, text) {
+    var coordinate = {
         x: 0,
         y: 0
     };
-    hexCoordinate = getHexCoordinates(column, row);
-    hex.drawHexagon(hexCoordinate, color);
+    coordinate = getHexCoordinates(column, row);
+    var contents = {};
+    contents.coordinate = coordinate;
+    contents.color = color;
+    contents.text = text;
+    hex.drawHexagon(contents);
 };
 
 //Recursively step up to the body to calculate canvas offset.
