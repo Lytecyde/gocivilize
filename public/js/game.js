@@ -51,7 +51,7 @@ game.onload = function () {
     game.assignUnits();
     game.makeColorMap();
     //ERROR: swapping order of hgridMini and hgrid has unintended consequences
-    
+
     game.hgrid();
     game.hgridMini();
     //fow
@@ -240,8 +240,6 @@ game.getStartingPoint = function () {
 game.makeUnitMap = function () {
     var g = game.makeUnits();
     var sp = game.getStartingPoint();
-    console.log(sp.x + " " + sp.y + "starting point xy");
-    console.log(g[0][0] + " unit");
     var y;
     var countUnits = 0;
 
@@ -249,10 +247,8 @@ game.makeUnitMap = function () {
     while (x < game.COLS) {
         y = 0;
         while (y < game.ROWS) {
-            console.log("xy of making unit map");
             if (x === sp.x && y === sp.y) {
-                console.log("unit is placed on location");
-                g[x][y] = "*";//ERROR: not recording something correctly
+                g[x][y] = "*";
                 countUnits += 1;
             } else {
                 g[x][y] = "u";
@@ -261,7 +257,6 @@ game.makeUnitMap = function () {
         }
         x += 1;
     }
-    console.log("unit count" + countUnits);
     return g;
 };
 

@@ -160,7 +160,9 @@ hex.drawHexagon = function (hexContents) {
     }
 
     if (text) {
-        ctx.fillText = text;
+        ctx.fillStyle = "#000";
+        ctx.font = "80px bold Times";
+        ctx.fillText(text, x0 + (hex.width / 4), y0 + hex.height);
     }
 
     ctx.closePath();
@@ -247,25 +249,19 @@ hex.getHexCoordinates = function (column, row) {
     }
     hex.canvasOriginX = 50;
     var drawx = (column * hex.side) + hex.canvasOriginX;
-    return {x: drawx, y: drawy };
-}
+    return {x: drawx, y: drawy};
+};
 
 hex.drawHexAtColRow = function (column, row, color, text) { // TODO: parameters TO contents
     var coordinate = {
         x: 0,
         y: 0
     };
-    console.log(column + " column row " + row);
     coordinate = hex.getHexCoordinates(column, row);
     var contents = {};
     contents.coordinate = coordinate;
     contents.color = color;
     contents.text = text;
-
-    if (color === "#FF0000") {
-        console.log("red x" + coordinate.x + " y" + coordinate.y);
-        console.log("red ffs");
-    }
 
     hex.drawHexagon(contents);
 };
