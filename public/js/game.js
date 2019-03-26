@@ -48,16 +48,14 @@ game.onload = function () {
     //map
     game.makePalette(game.VISIBLE);
     game.assignUnits();
-    //game.makeUnitMap();
     game.makeColorMap();
     game.hgrid();
     game.hgridMini();
-
+    //fow
     game.makeFogMap();
     game.fogOfWar();
     //units
     game.makeUnits();
-    //game.showUnits();
     game.placeUnit();
 };
 
@@ -104,8 +102,7 @@ game.makeFogMap = function () {
         }
         col += 1;
     }
-    //game.fogMap[][] = g.fogMap[][];
-    //return g.fogMap;
+    //return g;
 };
 
 game.getRandomColor = function () {
@@ -166,7 +163,7 @@ game.hgrid = function () {
 
 game.hgridMini = function () {
     var h = new HexagonGrid("minimap", 5, null);
-    h.Grid.draw(game.ROWS, game.COLS, 5, 5);
+    h.Grid.draw(game.ROWS, game.COLS, 5, 5, game.colorsMap);
 };
 
 game.createTabs = function () {
@@ -199,8 +196,6 @@ game.setTabHandler = function (tabs, tabPos) {
         panels[tabPos].className = 'active-panel';
     };
 };
-
-
 
 game.makeUnits = function () {
     var units = [],
@@ -274,34 +269,6 @@ game.removeUnit = function (drawx, drawy, tile) {
     tile.drawHex(drawx, drawy - 6, game.colorsMap[tile.column][tile.row], "");
 };
 
-game.placeUnit = function () {
-    var i = 0;
-    var unitLocations = game.getListUnits();
-    console.log("UL" + unitLocations.length);
-    var col = 0;
-    var row = 0;
-    var color = "";
-    var h = game.hMap;
-    var coordinate = {
-        x: 0,
-        y: 0
-    };
-    var contents = {};
-    while (i < unitLocations.length) {
-        col = unitLocations[i].x;
-        row = unitLocations[i].y;
-        color = game.colorsMap[row][col];
-        coordinate.x = col;
-        coordinate.y = row;
-        contents.coordinate = coordinate;
-        contents.color = color;
-        contents.text = "*";
-        //h.drawHexagon(contents);
-        h.drawHexAtColRow(1, 1, "red", contents.text);
-        i += 1;
-    }
-};
-
 game.getListUnits = function () {
     var listUnitLocations = [],
         i = 0,
@@ -327,4 +294,32 @@ game.getListUnits = function () {
     }
 
     return listUnitLocations;
+};
+
+game.placeUnit = function () {
+    var i = 0;
+    var unitLocations = game.getListUnits();
+    console.log("UL at 0" + unitLocations[0]);
+    var col = 0;
+    var row = 0;
+    var color = "";
+    var h = game.hMap;
+    var coordinate = {
+        x: 0,
+        y: 0
+    };
+    var contents = {};
+    while (i < unitLocations.length) {
+        col = unitLocations[i].x;
+        row = unitLocations[i].y;
+        color = game.colorsMap[row][col];
+        coordinate.x = col;
+        coordinate.y = row;
+        contents.coordinate = coordinate;
+        contents.color = color;
+        contents.text = "*";
+        //h.drawHexagon(contents);
+        h.drawHexAtColRow(1, 1, "#FF0000", "*");
+        i += 1;
+    }
 };

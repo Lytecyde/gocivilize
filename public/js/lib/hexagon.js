@@ -17,7 +17,7 @@ var Variables = {
         x: 0,
         y: 0
     },
-    color: ""
+    colorsMap: []
 };
 
 var HexagonGrid = function (canvasId, radius, clickEventHandler) {
@@ -44,21 +44,21 @@ var GetHex = function () {
 };
 //helper functionality
 hex.getCurrentXY = function (offsetColumn, location, origin) {
-    var currentHex = {
+    var coordinate = {
         x: 0,
         y: 0
     };
     if (!offsetColumn) {
-        currentHex.x = (location.column * hex.side) + origin.x;
-        currentHex.y = (location.row * hex.height) + origin.y;
+        coordinate.x = (location.column * hex.side) + origin.x;
+        coordinate.y = (location.row * hex.height) + origin.y;
         return ({
-            currentHex
+            coordinate
         });
     } else {
-        currentHex.x = location.column * hex.side + origin.x;
-        currentHex.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
+        coordinate.x = location.column * hex.side + origin.x;
+        coordinate.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
         return ({
-            currentHex
+            coordinate
         });
     }
 };
@@ -67,12 +67,14 @@ hex.getHex = function () {
     return hex;
 };
 
-hex.prepare = function (offsetColumn, location, origin) {
+hex.prepare = function (offsetColumn, location, origin, colors) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
-    var coordinate = currentHex.currentHex;
+    var coordinate = currentHex.coordinate;
     var text = "";
+    var color = colors[location.column][location.row];
     return {
         coordinate,
+        color,
         text
     };
 };
@@ -147,6 +149,7 @@ hex.drawHexagon = function (hexContents) {
     var text = hexContents.text;
     var ctx = hex.context;
     ctx.strokeStyle = "#000";
+
     ctx.beginPath();
     ctx.moveTo(x0 + hex.width - hex.side, y0);
     ctx.lineTo(x0 + hex.side, y0);
@@ -156,6 +159,7 @@ hex.drawHexagon = function (hexContents) {
     ctx.lineTo(x0, y0 + (hex.height / 2));
 
     if (fillColor) {
+        if(fillColor == "#FF0000" && text === "*") console.log("* hex red");
         ctx.fillStyle = fillColor;
         ctx.fill();
     }
@@ -171,11 +175,12 @@ hex.drawHexagon = function (hexContents) {
 
 hex.Grid = (function () {
     var self = {};
-    self.draw = function (rows, cols, x, y) {
+    self.draw = function (rows, cols, x, y, colors) {
         Variables.origin = {
             x: x,
             y: y
         };
+        Variables.colorsMap = colors;
         var offsetColumn = false;
 
         var hexGrid = create2DArray(cols, rows);
@@ -189,8 +194,7 @@ hex.Grid = (function () {
                     column: col,
                     row: row
                 };
-                c = hex.prepare(offsetColumn, Variables.location, Variables.origin);
-                //console.log("c x" + c.coordinate.x + "y" + c.coordinate.y);
+                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, Variables.colorsMap);
                 hexGrid[row][col] = hex.drawHexagon(c);
                 col += 1;
                 offsetColumn = !offsetColumn;
@@ -202,10 +206,6 @@ hex.Grid = (function () {
 
     return self;
 }());
-
-hex.getHex = function () {
-    return hex;
-};
 
 var isPointInTriangle = function (pt, v1, v2, v3) {
     var b1 = hex.sign(pt, v1, v2) < 0.0,
@@ -241,27 +241,35 @@ var getEncirclementOne = function (col, row) {
     return Encirclement.firstCircle;
 };
 
-function getHexCoordinates(column, row) {
+hex.getHexCoordinates = function (column, row) {
     var drawy = 0;
     if (isEvenColumn(column)) {
         drawy = (row * hex.height) + hex.canvasOriginY;
     } else {
         drawy = (row * hex.height) + hex.canvasOriginY + (hex.height / 2);
     }
+    console.log("origin" + hex.canvasOriginX);
     var drawx = (column * hex.side) + hex.canvasOriginX;
-    return {drawx, drawy };
+    return {x: drawx, y: drawy };
 }
 
-hex.drawHexAtColRow = function (column, row, color, text) {
+hex.drawHexAtColRow = function (column, row, color, text) { // TODO: parameters TO contents
     var coordinate = {
         x: 0,
         y: 0
     };
-    coordinate = getHexCoordinates(column, row);
+    console.log(column + " column row " + row);
+    coordinate = hex.getHexCoordinates(column, row);
     var contents = {};
     contents.coordinate = coordinate;
     contents.color = color;
     contents.text = text;
+
+    if (color === "#FF0000") {
+        console.log("red x" + coordinate.x + " y" + coordinate.y);
+        console.log("red ffs");
+    }
+
     hex.drawHexagon(contents);
 };
 
