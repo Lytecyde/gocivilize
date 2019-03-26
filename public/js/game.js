@@ -4,8 +4,8 @@
 var game = {
     ROWS: 8,
     COLS: 20,
-    VISIBLE: 1.0,
-    FOG: 0.75,
+    VISIBLE: 0.9,
+    FOG: 1.0,
     moving: false,
     colorsMap: [[]],
     unitsMap: [[]],
@@ -21,13 +21,14 @@ var game = {
     colors: [],
     x: 0,
     y: 0,
-    h: {},
-    hMap: {}
+    //h: {},
+    hMap: {},
+    hMini: {}
 };
 
 game.clickEventHandler = function (tile) {
     if (tile.column >= 0 && tile.row >= 0) {
-        if (civilization.units[tile.column][tile.row] === "*") {
+        if (game.unitsMap[tile.column][tile.row] === "*") {
             var color = game.colorsMap[tile.column][tile.row];
             tile.clearHexAtColRow(tile.column, tile.row, color);
             game.moving = true;
@@ -37,7 +38,7 @@ game.clickEventHandler = function (tile) {
     }
 
     if (game.moving && tile.isAroundTile(game.lastTile, tile)) {
-        civilization.units[tile.column][tile.row] = "*";
+        game.unitsMap[tile.column][tile.row] = "*";
         tile.drawHexAtColRow(tile.column, tile.row, "red", "*");
         game.moving = false;
     }
@@ -46,9 +47,11 @@ game.clickEventHandler = function (tile) {
 game.onload = function () {
     game.createTabs();
     //map
-    game.makePalette(game.VISIBLE);
+    game.makePalette(game.FOG);
     game.assignUnits();
     game.makeColorMap();
+    //ERROR: swapping order of hgridMini and hgrid has unintended consequences
+    
     game.hgrid();
     game.hgridMini();
     //fow
@@ -163,6 +166,7 @@ game.hgrid = function () {
 
 game.hgridMini = function () {
     var h = new HexagonGrid("minimap", 5, null);
+    game.hMini = h;
     h.Grid.draw(game.ROWS, game.COLS, 5, 5, game.colorsMap);
 };
 
@@ -299,16 +303,16 @@ game.getListUnits = function () {
 game.placeUnit = function () {
     var i = 0;
     var unitLocations = game.getListUnits();
-    console.log("UL at 0" + unitLocations[0]);
+
     var col = 0;
     var row = 0;
     var color = "";
-    var h = game.hMap;
     var coordinate = {
         x: 0,
         y: 0
     };
     var contents = {};
+    var unitLayer = new HexagonGrid("map", 50, game.clickEventHandler);
     while (i < unitLocations.length) {
         col = unitLocations[i].x;
         row = unitLocations[i].y;
@@ -319,7 +323,7 @@ game.placeUnit = function () {
         contents.color = color;
         contents.text = "*";
         //h.drawHexagon(contents);
-        h.drawHexAtColRow(1, 1, "#FF0000", "*");
+        unitLayer.drawHexAtColRow(1, 1, "#FF0000", "*");
         i += 1;
     }
 };

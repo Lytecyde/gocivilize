@@ -63,19 +63,15 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
     }
 };
 
-hex.getHex = function () {
-    return hex;
-};
-
 hex.prepare = function (offsetColumn, location, origin, colors) {
     var currentHex = hex.getCurrentXY(offsetColumn, location, origin);
     var coordinate = currentHex.coordinate;
     var text = "";
     var color = colors[location.column][location.row];
     return {
-        coordinate,
-        color,
-        text
+        coordinate: coordinate,
+        color: color,
+        text: text
     };
 };
 
@@ -159,7 +155,6 @@ hex.drawHexagon = function (hexContents) {
     ctx.lineTo(x0, y0 + (hex.height / 2));
 
     if (fillColor) {
-        if(fillColor == "#FF0000" && text === "*") console.log("* hex red");
         ctx.fillStyle = fillColor;
         ctx.fill();
     }
@@ -242,13 +237,15 @@ var getEncirclementOne = function (col, row) {
 };
 
 hex.getHexCoordinates = function (column, row) {
+    console.log("" + hex.canvas);
     var drawy = 0;
+    hex.canvasOriginY = 50;
     if (isEvenColumn(column)) {
         drawy = (row * hex.height) + hex.canvasOriginY;
     } else {
         drawy = (row * hex.height) + hex.canvasOriginY + (hex.height / 2);
     }
-    console.log("origin" + hex.canvasOriginX);
+    hex.canvasOriginX = 50;
     var drawx = (column * hex.side) + hex.canvasOriginX;
     return {x: drawx, y: drawy };
 }
@@ -309,7 +306,7 @@ function get_p1(column, row, tile) {
 }
 
 var getSelectedTile = function (mouseX, mouseY) {
-    var offSet = hex.getRelativeCanvasOffset(),
+    var offSet = getRelativeCanvasOffset(),
         mousePoint,
         p1,
         p2,
@@ -387,7 +384,7 @@ hex.clickEvent = function (e) {
         mouseY = e.pageY,
         localX = mouseX - hex.canvasOriginX,
         localY = mouseY - hex.canvasOriginY,
-        tile = hex.getSelectedTile(localX, localY);
+        tile = getSelectedTile(localX, localY);
 
     hex.clickEventHandler(tile);
 };
