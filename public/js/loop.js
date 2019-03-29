@@ -1,3 +1,4 @@
+/*global console,document,HexagonGrid,civilization,loop,state*/
 'use strict';
 
 var endings = {
@@ -9,28 +10,32 @@ var endings = {
 
 var loop = {};
 
-var looping = function () {
-    return loop;
-};
-
 loop.cycle = function () {
-    while (endings.exit === false) {
-        loop.update();
-        loop.render();
-    }
-    console.log("Archeologists have uncovered the signs of a lost civilization...");
+    loop.update();
+    loop.render();
 };
 
 function addEpoch() {
     var epochLength = 1;
-    var s = new statement();
-    s.year += epochLength;
+    state.year += epochLength;
 }
 
 loop.update = function () {
-    addEpoch();
+    //addEpoch();
+    //more functionality to come
+};
+
+loop.render = function () {
+    //console.log("Rendering the loops");
 };
 
 loop.clickExit = function () {
     endings.exit = true;
+    console.log("Archeologists have uncovered the signs of a lost civilization...");
+};
+
+loop.clickNext = function () {
+    addEpoch();
+    var id = document.getElementById("year");
+    id.innerHTML = state.year;
 };

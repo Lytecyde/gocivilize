@@ -1,4 +1,4 @@
-/*global document,HexagonGrid,civilization*/
+/*global console,setInterval,document,HexagonGrid,civilization,loop*/
 "use strict";
 
 var game = {
@@ -7,10 +7,18 @@ var game = {
     VISIBLE: 0.9,
     FOG: 1.0,
     moving: false,
-    colorsMap: [[]],
-    unitsMap: [[]],
-    fogMap: [[]],
-    units: [[]],
+    colorsMap: [
+        []
+    ],
+    unitsMap: [
+        []
+    ],
+    fogMap: [
+        []
+    ],
+    units: [
+        []
+    ],
     lastTile: {
         row: 0,
         column: 0
@@ -80,7 +88,9 @@ game.getMapColor = function (col, row) {
 };
 
 game.create2DArray = function (columns, rows) {
-    var arr = [[]];
+    var arr = [
+        []
+    ];
     arr.length = rows;
     var index = columns;
     var i = 0;
@@ -327,6 +337,7 @@ game.placeUnit = function () {
 };
 
 game.loop = function () {
-    var l = looping();
-    l.cycle;
+    const thirtyFramesPerSecond = 1000 / 30;
+    const sixtyFramesPerSecond = 1000 / 60;
+    setInterval(loop.cycle(), thirtyFramesPerSecond);
 };

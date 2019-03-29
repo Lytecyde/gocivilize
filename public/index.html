@@ -54,7 +54,7 @@
             <tr>
                 <td>Law:</td>
                 <td id="law"></td>
-            </tr> 
+            </tr>
             <tr>
                 <td>Storage:</td>
                 <td id="storage"></td>
@@ -62,7 +62,7 @@
             <tr>
                 <td>Food:</td>
                 <td id="food"></td>
-            </tr> 
+            </tr>
             <tr>
                 <td>Happiness:</td>
                 <td id="happy"></td>
@@ -70,7 +70,7 @@
             <tr>
                 <td>Pollution:</td>
                 <td id="pollution"></td>
-            </tr>  
+            </tr>
             <tr>
                 <td>Loyalty:</td>
                 <td id="loyal"></td>
@@ -80,8 +80,7 @@
                 <td id="idea"></td>
             </tr>
         </table>
-        <br>
-        Active unit:
+        <br> Active unit:
         <table id="unit-data">
             <tr>
                 <td>Name:</td>
@@ -109,10 +108,12 @@
             </tr>
         </table>
         </ul>
-        <div class="button" id="next">
+        <div class="button" id="next" onclick="loop.clickNext();">
             Next Turn!
         </div>
-        <div class="button" id="Exit" onclick="loop.clickExit();">Exit the game</div>
+        <div class="button" id="Exit" onclick="loop.clickExit();">
+            Exit the game
+        </div>
     </div>
     <script type="text/javascript" src="./js/lib/createArray.js"></script>
     <script type="text/javascript" src="./js/lib/hexagon.js"></script>
