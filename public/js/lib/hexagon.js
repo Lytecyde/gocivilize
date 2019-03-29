@@ -239,7 +239,6 @@ var getEncirclementOne = function (col, row) {
 };
 
 hex.getHexCoordinates = function (column, row) {
-    console.log("" + hex.canvas);
     var drawy = 0;
     hex.canvasOriginY = 50;
     if (isEvenColumn(column)) {

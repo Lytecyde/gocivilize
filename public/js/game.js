@@ -45,21 +45,25 @@ game.clickEventHandler = function (tile) {
 };
 
 game.onload = function () {
+    //menu
     game.createTabs();
+    //preparations
     //map
     game.makePalette(game.FOG);
-    game.assignUnits();
     game.makeColorMap();
-    //ERROR: swapping order of hgridMini and hgrid has unintended consequences
 
-    game.hgrid();
-    game.hgridMini();
+    game.assignUnits();
+
+    game.grid();
+    game.minimap();
     //fow
     game.makeFogMap();
     game.fogOfWar();
     //units
     game.makeUnits();
     game.placeUnit();
+
+    game.loop();
 };
 
 game.makePalette = function (alpha) {
@@ -93,10 +97,11 @@ game.create2DArray = function (columns, rows) {
 };
 
 game.makeFogMap = function () {
-    var col = 0;
-    var row;
+    var row, col;
     var g = game.create2DArray(game.COLS, game.ROWS);
     game.fogMap = g;
+
+    col = 0;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {
@@ -156,7 +161,7 @@ game.fogLighten = function (col, row) {
     game.colorsMap[col][row] = colorInRGBA;
 };
 
-game.hgrid = function () {
+game.grid = function () {
     var h = new HexagonGrid("map", 50, game.clickEventHandler);
     game.hMap = h;
     h.Grid.draw(game.ROWS, game.COLS, 50, 50, game.colorsMap);
@@ -164,7 +169,7 @@ game.hgrid = function () {
     //draw game.fogOfWarColor;
 };
 
-game.hgridMini = function () {
+game.minimap = function () {
     var h = new HexagonGrid("minimap", 5, null);
     game.hMini = h;
     h.Grid.draw(game.ROWS, game.COLS, 5, 5, game.colorsMap);
@@ -240,16 +245,14 @@ game.getStartingPoint = function () {
 game.makeUnitMap = function () {
     var g = game.makeUnits();
     var sp = game.getStartingPoint();
-    var y;
-    var countUnits = 0;
+    var x, y;
 
-    var x = 0;
+    x = 0;
     while (x < game.COLS) {
         y = 0;
         while (y < game.ROWS) {
             if (x === sp.x && y === sp.y) {
                 g[x][y] = "*";
-                countUnits += 1;
             } else {
                 g[x][y] = "u";
             }
@@ -318,7 +321,12 @@ game.placeUnit = function () {
         contents.color = color;
         contents.text = "*";
         //h.drawHexagon(contents);
-        unitLayer.drawHexAtColRow(1, 1, "#FF0000", "*");
+        unitLayer.drawHexAtColRow(row, col, color, "*");
         i += 1;
     }
+};
+
+game.loop = function () {
+    var l = looping();
+    l.cycle;
 };
