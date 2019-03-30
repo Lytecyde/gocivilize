@@ -30,8 +30,16 @@ loop.render = function () {
 };
 
 loop.clickExit = function () {
-    endings.exit = true;
+    loop.endSequence();
     console.log("Archeologists have uncovered the signs of a lost civilization...");
+};
+
+loop.endSequence = function () {
+    endings.exit = true;
+    var id = document.getElementById("next");
+    if (id) {
+        id.remove();
+    }
 };
 
 loop.clickNext = function () {
