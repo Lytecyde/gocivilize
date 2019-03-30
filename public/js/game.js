@@ -16,20 +16,15 @@ var game = {
     fogMap: [
         []
     ],
-    units: [
-        []
-    ],
     lastTile: {
         row: 0,
         column: 0
     },
-    reds: [0, 51, 255, 163, 128, 0, 0, 163],
-    greens: [102, 204, 204, 255, 128, 163, 51, 102],
-    blues: [0, 51, 0, 102, 128, 255, 102, 102],
     colors: [],
     x: 0,
     y: 0,
     //h: {},
+    colorsLength: 8,
     hMap: {},
     hMini: {}
 };
@@ -75,10 +70,12 @@ game.onload = function () {
 };
 
 game.makePalette = function (alpha) {
-    var colorsLength = 8;
+    var reds = [0, 51, 255, 163, 128, 0, 0, 163],
+        greens = [102, 204, 204, 255, 128, 163, 51, 102],
+        blues = [0, 51, 0, 102, 128, 255, 102, 102];
     var i = 0;
-    while (i < colorsLength) {
-        game.colors[i] = "rgba(" + game.reds[i] + "," + game.greens[i] + "," + game.blues[i] + "," + alpha + ")";
+    while (i < game.colorsLength) {
+        game.colors[i] = "rgba(" + reds[i] + "," + greens[i] + "," + blues[i] + "," + alpha + ")";
         i += 1;
     }
 };
@@ -124,7 +121,7 @@ game.makeFogMap = function () {
 };
 
 game.getRandomColor = function () {
-    return game.colors[Math.floor(Math.random() * game.reds.length)];
+    return game.colors[Math.floor(Math.random() * game.colorsLength)];
 };
 
 game.makeColorMap = function () {
@@ -308,10 +305,7 @@ game.getListUnits = function () {
     return listUnitLocations;
 };
 
-game.placeUnit = function () {
-    var i = 0;
-    var unitLocations = game.getListUnits();
-
+function placeOneUnit(i, unitLocations, unitLayer) {
     var col = 0;
     var row = 0;
     var color = "";
@@ -320,24 +314,33 @@ game.placeUnit = function () {
         y: 0
     };
     var contents = {};
+    col = unitLocations[i].x;
+    row = unitLocations[i].y;
+    color = game.colorsMap[row][col];
+    coordinate.x = col;
+    coordinate.y = row;
+    contents.coordinate = coordinate;
+    contents.color = color;
+    contents.text = "*";
+    //h.drawHexagon(contents);
+    unitLayer.drawHexAtColRow(row, col, color, "*");
+    i += 1;
+    return i;
+}
+
+game.placeUnit = function () {
+    var i = 0;
+    var unitLocations = game.getListUnits();
     var unitLayer = new HexagonGrid("map", 50, game.clickEventHandler);
     while (i < unitLocations.length) {
-        col = unitLocations[i].x;
-        row = unitLocations[i].y;
-        color = game.colorsMap[row][col];
-        coordinate.x = col;
-        coordinate.y = row;
-        contents.coordinate = coordinate;
-        contents.color = color;
-        contents.text = "*";
-        //h.drawHexagon(contents);
-        unitLayer.drawHexAtColRow(row, col, color, "*");
-        i += 1;
+        i = placeOneUnit(i, unitLocations, unitLayer);
     }
 };
 
 game.loop = function () {
-    const thirtyFramesPerSecond = 1000 / 30;
-    const sixtyFramesPerSecond = 1000 / 60;
-    setInterval(loop.cycle(), thirtyFramesPerSecond);
+    const framesPerSecond = {
+        thirty: 1000 / 30,
+        sixty: 1000 / 60
+    };
+    setInterval(loop.cycle(), framesPerSecond.thirty);
 };
