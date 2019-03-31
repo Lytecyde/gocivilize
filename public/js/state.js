@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-var state = {};
-
-state.year = 0;
+var state = {
+    year: 0
+};
