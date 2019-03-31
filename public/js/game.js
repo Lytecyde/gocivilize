@@ -1,5 +1,8 @@
+/*jslint
+    browser: true
+*/
 /*global console,setInterval,document,HexagonGrid,civilization,loop*/
-"use strict";
+//"use strict";
 
 var game = {
     ROWS: 8,
@@ -64,18 +67,21 @@ game.onload = function () {
     game.fogOfWar();
     //units
     game.makeUnits();
-    game.placeUnit();
+    //game.placeUnit();
 
     game.loop();
 };
 
 game.makePalette = function (alpha) {
-    var reds = [0, 51, 255, 163, 128, 0, 0, 163],
-        greens = [102, 204, 204, 255, 128, 163, 51, 102],
-        blues = [0, 51, 0, 102, 128, 255, 102, 102];
+    var reds = [0, 51, 255, 163, 128, 0, 0, 163];
+    var greens = [102, 204, 204, 255, 128, 163, 51, 102];
+    var blues = [0, 51, 0, 102, 128, 255, 102, 102];
     var i = 0;
     while (i < game.colorsLength) {
-        game.colors[i] = "rgba(" + reds[i] + "," + greens[i] + "," + blues[i] + "," + alpha + ")";
+        game.colors[i] = "rgba(" + reds[i] + ","
+        + greens[i] + ","
+        + blues[i] + ","
+        + alpha + ")";
         i += 1;
     }
 };
@@ -104,7 +110,8 @@ game.create2DArray = function (columns, rows) {
 };
 
 game.makeFogMap = function () {
-    var row, col;
+    var row;
+    var col;
     var g = game.create2DArray(game.COLS, game.ROWS);
     game.fogMap = g;
 
@@ -183,8 +190,8 @@ game.minimap = function () {
 };
 
 game.createTabs = function () {
-    var tabs = document.querySelectorAll('.tab-box li a'),
-        i = 0;
+    var tabs = document.querySelectorAll(".tab-box li a");
+    var i = 0;
 
     while (i < tabs.length) {
         game.setTabHandler(tabs[i], i);
@@ -193,31 +200,31 @@ game.createTabs = function () {
 };
 
 game.setTabHandler = function (tabs, tabPos) {
-    var panels = document.querySelectorAll('article'),
-        i = 0;
+    var panels = document.querySelectorAll("article");
+    var i = 0;
 
     tabs.onclick = function () {
         while (i < tabs.length) {
-            tabs[i].className = '';
+            tabs[i].className = "";
             i += 1;
         }
 
-        tabs.className = 'active';
+        tabs.className = "active";
         i = 0;
         while (i < panels.length) {
-            panels[i].className = '';
+            panels[i].className = "";
             i = i + 1;
         }
 
-        panels[tabPos].className = 'active-panel';
+        panels[tabPos].className = "active-panel";
     };
 };
 
 game.makeUnits = function () {
-    var units = [],
-        col = 0,
-        row = 0,
-        r;
+    var units = [];
+    var col = 0;
+    var row = 0;
+    var r;
     while (col < game.COLS) {
         row = 0;
         units[col] = [];
@@ -252,7 +259,8 @@ game.getStartingPoint = function () {
 game.makeUnitMap = function () {
     var g = game.makeUnits();
     var sp = game.getStartingPoint();
-    var x, y;
+    var x;
+    var y;
 
     x = 0;
     while (x < game.COLS) {
@@ -279,10 +287,10 @@ game.removeUnit = function (drawx, drawy, tile) {
 };
 
 game.getListUnits = function () {
-    var listUnitLocations = [],
-        i = 0,
-        col = 0,
-        row = 0;
+    var listUnitLocations = [];
+    var i = 0;
+    var col = 0;
+    var row = 0;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {

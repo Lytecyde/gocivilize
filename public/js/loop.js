@@ -1,5 +1,8 @@
-/*global console,document,HexagonGrid,civilization,loop,state*/
-'use strict';
+/*jslint
+    browser: true
+*/
+/*global console,document,HexagonGrid,civilization,loop,state,game*/
+//'use strict';
 
 var endings = {
     worldCatastrophy: false,
@@ -21,12 +24,11 @@ function addEpoch() {
 }
 
 loop.update = function () {
-    //addEpoch();
-    //more functionality to come
+    
 };
 
 loop.render = function () {
-    //console.log("Rendering the loops");
+    game.placeUnit();
 };
 
 loop.clickExit = function () {
