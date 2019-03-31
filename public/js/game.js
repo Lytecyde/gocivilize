@@ -322,7 +322,6 @@ function placeOneUnit(i, unitLocations, unitLayer) {
     contents.coordinate = coordinate;
     contents.color = color;
     contents.text = "*";
-    //h.drawHexagon(contents);
     unitLayer.drawHexAtColRow(row, col, color, "*");
     i += 1;
     return i;

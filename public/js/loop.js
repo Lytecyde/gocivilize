@@ -31,7 +31,6 @@ loop.render = function () {
 
 loop.clickExit = function () {
     loop.endSequence();
-    console.log("Archeologists have uncovered the signs of a lost civilization...");
 };
 
 loop.endSequence = function () {
@@ -40,6 +39,8 @@ loop.endSequence = function () {
     if (id) {
         id.remove();
     }
+    console.log("Archeologists have uncovered " +
+        "the signs of a lost civilization...");
 };
 
 loop.clickNext = function () {
