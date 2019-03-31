@@ -24,7 +24,7 @@ function addEpoch() {
 }
 
 loop.update = function () {
-    
+    //update the map with a new unitsmap
 };
 
 loop.render = function () {
