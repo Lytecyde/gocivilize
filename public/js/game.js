@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global console,setInterval,document,HexagonGrid,civilization,loop*/
+/*global console,setInterval,document,HexagonGrid,civilization,loop,unitFilm*/
 //"use strict";
 
 var game = {
@@ -10,9 +10,7 @@ var game = {
     VISIBLE: 0.9,
     FOG: 1.0,
     moving: false,
-    colorsMap: [
-        []
-    ],
+    colorsMap: null,
     unitsMap: [
         []
     ],
@@ -62,12 +60,14 @@ game.onload = function () {
 
     game.grid();
     game.minimap();
+    unitFilm.create();
+
     //fow
-    game.makeFogMap();
-    game.fogOfWar();
+    //game.makeFogMap();
+    //game.fogOfWar();
     //units
     game.makeUnits();
-    //game.placeUnit();
+    game.placeUnits();
 
     game.loop();
 };
@@ -78,10 +78,11 @@ game.makePalette = function (alpha) {
     var blues = [0, 51, 0, 102, 128, 255, 102, 102];
     var i = 0;
     while (i < game.colorsLength) {
-        game.colors[i] = "rgba(" + reds[i] + ","
-        + greens[i] + ","
-        + blues[i] + ","
-        + alpha + ")";
+        game.colors[i] = "rgba(" +
+        reds[i] + "," +
+        greens[i] + "," +
+        blues[i] + "," +
+        alpha + ")";
         i += 1;
     }
 };
@@ -96,9 +97,9 @@ game.create2DArray = function (columns, rows) {
     ];
     arr.length = rows;
     var index = columns;
-    var i = 0;
     var mapRows = [];
     mapRows.length = rows;
+    var i = 0;
     while (i < columns) {
         //mapRows.fill("u");
         index = columns - i;
@@ -131,15 +132,22 @@ game.getRandomColor = function () {
     return game.colors[Math.floor(Math.random() * game.colorsLength)];
 };
 
+game.init2DArray = function () {
+    var arr = [];
+    while (arr.length < game.COLS) {
+        arr.push([]);
+    }
+    return arr;
+};
+
 game.makeColorMap = function () {
-    var col = 0;
     var row;
-    var g = game.create2DArray(game.COLS, game.ROWS);
-    game.colorsMap = g;
+    game.colorsMap = game.init2DArray();
+    var col = 0;
     while (col < game.COLS) {
         row = 0;
         while (row < game.ROWS) {
-            game.colorsMap[row][col] = game.getRandomColor();
+            game.colorsMap[col][row] = game.getRandomColor();
             row += 1;
         }
         col += 1;
@@ -232,7 +240,7 @@ game.makeUnits = function () {
         r.length = game.ROWS;
         units[col].push(r);
         while (row < game.ROWS) {
-            units[col][row] = "*";
+            units[col][row] = "";
             row += 1;
         }
         col += 1;
@@ -324,21 +332,20 @@ function placeOneUnit(i, unitLocations, unitLayer) {
     var contents = {};
     col = unitLocations[i].x;
     row = unitLocations[i].y;
-    color = game.colorsMap[row][col];
     coordinate.x = col;
     coordinate.y = row;
     contents.coordinate = coordinate;
-    contents.color = color;
+    contents.color = "";
     contents.text = "*";
     unitLayer.drawHexAtColRow(row, col, color, "*");
     i += 1;
     return i;
 }
 
-game.placeUnit = function () {
+game.placeUnits = function () {
     var i = 0;
     var unitLocations = game.getListUnits();
-    var unitLayer = new HexagonGrid("map", 50, game.clickEventHandler);
+    var unitLayer = new HexagonGrid("unitFilm", 50, game.clickEventHandler);
     while (i < unitLocations.length) {
         i = placeOneUnit(i, unitLocations, unitLayer);
     }

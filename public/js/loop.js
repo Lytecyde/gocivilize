@@ -18,18 +18,20 @@ loop.cycle = function () {
     loop.render();
 };
 
+loop.update = function () {
+    //update the map with a new unitsmap
+    //movement 
+};
+
+loop.render = function () {
+    //game.placeUnits();
+};
+
+//TODO: move to game engine
 function addEpoch() {
     var epochLength = 1;
     state.year += epochLength;
 }
-
-loop.update = function () {
-    //update the map with a new unitsmap
-};
-
-loop.render = function () {
-    game.placeUnit();
-};
 
 loop.clickExit = function () {
     loop.endSequence();

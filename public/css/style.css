@@ -96,6 +96,20 @@ article {
     background-color: white;
 }
 
+
+#map {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 0; 
+}
+
+#unitFilm {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 2;
+}
 .button {
     color: white;
     width: 220px;

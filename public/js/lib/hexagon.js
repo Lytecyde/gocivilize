@@ -1,5 +1,9 @@
+/*jslint
+    browser: true
+*/
 /*global document*/
-// Hex math defined here: http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
+// Hex math defined here:
+//http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 "use strict";
 
 var hex = {};
@@ -28,7 +32,7 @@ var HexagonGrid = function (canvasId, radius, clickEventHandler) {
     hex.side = (3 / 2) * radius;
 
     hex.canvas = document.getElementById(canvasId);
-    hex.context = hex.canvas.getContext('2d');
+    hex.context = hex.canvas.getContext("2d");
 
     hex.canvasOriginX = 0;
     hex.canvasOriginY = 0;
@@ -56,7 +60,9 @@ hex.getCurrentXY = function (offsetColumn, location, origin) {
         });
     } else {
         coordinate.x = location.column * hex.side + origin.x;
-        coordinate.y = (location.row * hex.height) + origin.y + (hex.height * 0.5);
+        coordinate.y = (location.row * hex.height) +
+            origin.y +
+            (hex.height * 0.5);
         return ({
             coordinate
         });
@@ -106,8 +112,8 @@ function getYDifferenceOfEncirclement(col) {
 }
 
 function getColumn(mouse, offSet) {
-    var f1,
-        f2;
+    var f1;
+    var f2;
     var location = Variables.location;
     mouse.x -= offSet.x;
     mouse.y -= offSet.y;
@@ -139,8 +145,8 @@ function get_p2(p1, t) {
     return p2;
 }
 hex.drawHexagon = function (hexContents) {
-    var x0 = hexContents.coordinate.x,
-        y0 = hexContents.coordinate.y;
+    var x0 = hexContents.coordinate.x;
+    var y0 = hexContents.coordinate.y;
     var fillColor = hexContents.color;
     var text = hexContents.text;
     var ctx = hex.context;
@@ -182,8 +188,8 @@ hex.Grid = (function () {
 
         var hexGrid = create2DArray(cols, rows);
 
-        var row = 0,
-            col = 0;
+        var row = 0;
+        var col = 0;
         var c;
         while (row < rows) {
             while (col < cols) {
@@ -191,7 +197,10 @@ hex.Grid = (function () {
                     column: col,
                     row: row
                 };
-                c = hex.prepare(offsetColumn, Variables.location, Variables.origin, Variables.colorsMap);
+                c = hex.prepare(offsetColumn,
+                    Variables.location,
+                    Variables.origin,
+                    Variables.colorsMap);
                 hexGrid[row][col] = hex.drawHexagon(c);
                 col += 1;
                 offsetColumn = !offsetColumn;
@@ -205,9 +214,9 @@ hex.Grid = (function () {
 }());
 
 var isPointInTriangle = function (pt, v1, v2, v3) {
-    var b1 = hex.sign(pt, v1, v2) < 0.0,
-        b2 = hex.sign(pt, v2, v3) < 0.0,
-        b3 = hex.sign(pt, v3, v1) < 0.0;
+    var b1 = hex.sign(pt, v1, v2) < 0.0;
+    var b2 = hex.sign(pt, v2, v3) < 0.0;
+    var b3 = hex.sign(pt, v3, v1) < 0.0;
 
     return ((b1 === b2) && (b2 === b3));
 };
@@ -250,8 +259,8 @@ hex.getHexCoordinates = function (column, row) {
     var drawx = (column * hex.side) + hex.canvasOriginX;
     return {x: drawx, y: drawy};
 };
-
-hex.drawHexAtColRow = function (column, row, color, text) { // TODO: parameters TO contents
+// TODO: parameters to contents
+hex.drawHexAtColRow = function (column, row, color, text) {
     var coordinate = {
         x: 0,
         y: 0
@@ -267,9 +276,9 @@ hex.drawHexAtColRow = function (column, row, color, text) { // TODO: parameters 
 
 //Recursively step up to the body to calculate canvas offset.
 var getRelativeCanvasOffset = function () {
-    var x = 0,
-        y = 0,
-        layoutElement = hex.canvas;
+    var x = 0;
+    var y = 0;
+    var layoutElement = hex.canvas;
 
     if (layoutElement.offsetParent) {
         do {
@@ -301,14 +310,14 @@ function get_p1(column, row, tile) {
 }
 
 var getSelectedTile = function (mouseX, mouseY) {
-    var offSet = getRelativeCanvasOffset(),
-        mousePoint,
-        p1,
-        p2,
-        p3,
-        p4,
-        p5,
-        p6;
+    var offSet = getRelativeCanvasOffset();
+    var mousePoint;
+    var p1;
+    var p2;
+    var p3;
+    var p4;
+    var p5;
+    var p6;
 
     var data = Variables.mouse;
     var m = {
@@ -318,10 +327,11 @@ var getSelectedTile = function (mouseX, mouseY) {
     data = getColumn(m, offSet);
 
     //Test if on left side of frame
-    if (data.mouse.x > (data.location.column * hex.side) && data.mouse.x < (data.location.column * hex.side) + hex.width - hex.side) {
+    if (data.mouse.x > (data.location.column * hex.side) &&
+    data.mouse.x < (data.location.column * hex.side) + hex.width - hex.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
-        p1 = get_p1(p1, data.location.column, data.row);
+        p1 = get_p1(p1, data.location.column, data.x);
 
         p2 = get_p2(p1);
 
@@ -375,18 +385,19 @@ hex.clickEvent = function (e) {
         return;
     }
 
-    var mouseX = e.pageX,
-        mouseY = e.pageY,
-        localX = mouseX - hex.canvasOriginX,
-        localY = mouseY - hex.canvasOriginY,
-        tile = getSelectedTile(localX, localY);
+    var mouseX = e.pageX;
+    var mouseY = e.pageY;
+    var localX = mouseX - hex.canvasOriginX;
+    var localY = mouseY - hex.canvasOriginY;
+    var tile = getSelectedTile(localX, localY);
 
     hex.clickEventHandler(tile);
 };
 
 //!!!linting for loop !!!
 var isAroundTile = function (lastTile, tile) {
-    var listAroundTile = lastTile.getEncirclementOne(lastTile.column, lastTile.row);
+    var listAroundTile = lastTile.getEncirclementOne(lastTile.column,
+         lastTile.row);
     listAroundTile.foreach(function (h) {
         if (h.col === tile.column && h.row === tile.row) {
             return true;
