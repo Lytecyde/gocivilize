@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global document*/
+/*global document,constants*/
 // Hex math defined here:
 //http://blog.ruslans.com/2011/02/hexagonal-grid-math.html
 "use strict";
@@ -80,20 +80,6 @@ hex.prepare = function (offsetColumn, location, origin, colors) {
         text: text
     };
 };
-
-function create2DArray(columns, rows) {
-    var arr = [];
-    arr.length = columns;
-    var i = columns;
-    var mapRows = [];
-    mapRows.length = rows;
-    while (i > 0) {
-        arr[columns - i] = mapRows;
-        i -= 1;
-    }
-
-    return arr;
-}
 
 function isEvenColumn(column) {
     return column % 2 === 0;
@@ -175,6 +161,13 @@ hex.drawHexagon = function (hexContents) {
     ctx.stroke();
 };
 //helper functions end
+var init2DArray = function () {
+    var arr = [];
+    while (arr.length < constants.mapDimensions.cols) {
+        arr.push([]);
+    }
+    return arr;
+};
 
 hex.Grid = (function () {
     var self = {};
@@ -186,7 +179,7 @@ hex.Grid = (function () {
         Variables.colorsMap = colors;
         var offsetColumn = false;
 
-        var hexGrid = create2DArray(cols, rows);
+        var hexGrid = init2DArray();
 
         var row = 0;
         var col = 0;
@@ -246,6 +239,8 @@ var getEncirclementOne = function (col, row) {
     });
     return Encirclement.firstCircle;
 };
+
+
 
 hex.getHexCoordinates = function (column, row) {
     var drawy = 0;
@@ -309,7 +304,7 @@ function get_p1(column, row, tile) {
     return p1;
 }
 
-var getSelectedTile = function (mouseX, mouseY) {
+hex.getSelectedTile = function (mouseX, mouseY) {
     var offSet = getRelativeCanvasOffset();
     var mousePoint;
     var p1;
@@ -331,11 +326,11 @@ var getSelectedTile = function (mouseX, mouseY) {
     data.mouse.x < (data.location.column * hex.side) + hex.width - hex.side) {
         //Now test which of the two triangles we are in
         //Top left triangle points
-        p1 = get_p1(p1, data.location.column, data.x);
+        p1 = get_p1(data.location.column, data.location.row, hex);
 
-        p2 = get_p2(p1);
+        p2 = get_p2(p1, hex);
 
-        p3 = get_p3(p1);
+        p3 = get_p3(p1, hex);
 
         mousePoint = {};
         mousePoint.x = data.mouse.x;
@@ -371,12 +366,12 @@ var getSelectedTile = function (mouseX, mouseY) {
     }
 
     return {
-        row: data.location.row,
-        column: data.location.column
+        column: data.location.column,
+        row: data.location.row
     };
 };
-
-var sign = function (p1, p2, p3) {
+//TODO: rename var "sign"
+hex.sign = function (p1, p2, p3) {
     return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 };
 
@@ -389,7 +384,7 @@ hex.clickEvent = function (e) {
     var mouseY = e.pageY;
     var localX = mouseX - hex.canvasOriginX;
     var localY = mouseY - hex.canvasOriginY;
-    var tile = getSelectedTile(localX, localY);
+    var tile = hex.getSelectedTile(localX, localY);
 
     hex.clickEventHandler(tile);
 };

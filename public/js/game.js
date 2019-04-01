@@ -30,24 +30,6 @@ var game = {
     hMini: {}
 };
 
-game.clickEventHandler = function (tile) {
-    if (tile.column >= 0 && tile.row >= 0) {
-        if (game.unitsMap[tile.column][tile.row] === "*") {
-            var color = game.colorsMap[tile.column][tile.row];
-            tile.clearHexAtColRow(tile.column, tile.row, color);
-            game.moving = true;
-            game.lastTile = tile;
-            civilization.units[tile.column][tile.row] = "";
-        }
-    }
-
-    if (game.moving && tile.isAroundTile(game.lastTile, tile)) {
-        game.unitsMap[tile.column][tile.row] = "*";
-        tile.drawHexAtColRow(tile.column, tile.row, "red", "*");
-        game.moving = false;
-    }
-};
-
 game.onload = function () {
     //menu
     game.createTabs();
@@ -91,29 +73,10 @@ game.getMapColor = function (col, row) {
     return game.colorsMap[col][row];
 };
 
-game.create2DArray = function (columns, rows) {
-    var arr = [
-        []
-    ];
-    arr.length = rows;
-    var index = columns;
-    var mapRows = [];
-    mapRows.length = rows;
-    var i = 0;
-    while (i < columns) {
-        //mapRows.fill("u");
-        index = columns - i;
-        arr[index] = mapRows;
-        i += 1;
-    }
-
-    return arr;
-};
-
 game.makeFogMap = function () {
     var row;
     var col;
-    var g = game.create2DArray(game.COLS, game.ROWS);
+    var g = game.init2DArray();
     game.fogMap = g;
 
     col = 0;
@@ -184,7 +147,7 @@ game.fogLighten = function (col, row) {
 };
 
 game.grid = function () {
-    var h = new HexagonGrid("map", 50, game.clickEventHandler);
+    var h = new HexagonGrid("map", 50, null);
     game.hMap = h;
     h.Grid.draw(game.ROWS, game.COLS, 50, 50, game.colorsMap);
     //version 0.0.2
@@ -345,16 +308,52 @@ function placeOneUnit(i, unitLocations, unitLayer) {
 game.placeUnits = function () {
     var i = 0;
     var unitLocations = game.getListUnits();
-    var unitLayer = new HexagonGrid("unitFilm", 50, game.clickEventHandler);
+    var unitLayer = new HexagonGrid("unitFilm", 50, null);
+    game.unitFilm = unitLayer;
     while (i < unitLocations.length) {
         i = placeOneUnit(i, unitLocations, unitLayer);
+    }
+
+};
+
+game.getHexCoordinates = function (column, row) {
+    var drawy = 0;
+    var radius = 50;
+    var canvasOriginY = 50;
+    var height = Math.sqrt(3) * radius;
+    var side = (3 / 2) * radius;
+
+    if (column % 2 === 0) {
+        drawy = (row * height) + canvasOriginY;
+    } else {
+        drawy = (row * height) + canvasOriginY + (height / 2);
+    }
+    var canvasOriginX = 50;
+    var drawx = (column * side) + canvasOriginX;
+    return {x: drawx, y: drawy};
+};
+
+game.replaceUnits = function (context) {
+    var i = 0;
+    var unitLocations = game.getListUnits();
+    var x = 0;
+    var y = 0;
+    var loc;
+    var coordinates;
+    console.log(unitLocations.length);
+    while (i < unitLocations.length) {
+        loc = unitLocations[i];
+        coordinates = game.getHexCoordinates(loc.x, loc.y);
+        x = coordinates.x;
+        y = coordinates.y;
+        context.font = "80px bold Times";
+        console.log("unit loc x " + x + " y " + y);
+        context.fillText("*", y, x);
+        context.stroke();
+        i += 1;
     }
 };
 
 game.loop = function () {
-    const framesPerSecond = {
-        thirty: 1000 / 30,
-        sixty: 1000 / 60
-    };
-    setInterval(loop.cycle(), framesPerSecond.thirty);
+    loop.cycle();
 };

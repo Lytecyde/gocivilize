@@ -1,9 +1,23 @@
 /*jslint
     browser: true
 */
-/*global game*/
+/*global game,hex*/
 
-var move = {};
+var move = {
+    coordinates: {
+        x: 0,
+        y: 0
+    },
+    location: {
+        column: 0,
+        row: 0
+    },
+    nextLocation: {
+        column: 0,
+        row: 0
+    },
+    ongoing: false
+};
 
 var selectUnit = function () {
     //get mouse coordinates
@@ -34,16 +48,19 @@ move.fitsOnMap = function (location) {
 };
 
 move.unit = function (location, nextLocation) {
-    move.removeUnit(location);
-    move.placeUnit(nextLocation);
+    if (game.unitsMap[location.column][location.row] === "*") {
+        move.removeUnit(location);
+        move.placeUnit(nextLocation);
+    }
 };
 
 move.removeUnit = function (location) {
     game.unitsMap[location.column][location.row] = "";
+
 };
 
 move.placeUnit = function (nextLocation) {
-    game.unitsMap[nextLocation.column][nextLocation.row] = "*";
+    game.unitsMap[nextLocation.row][nextLocation.column] = "*";
 };
 
 move.unitToAdjacentHex = function () {
@@ -53,4 +70,29 @@ move.unitToAdjacentHex = function () {
     if (move.fitsOnMap(location)) {
         move.unit(location, nextLocation);
     }
+};
+
+document.getElementById("unitFilm").onclick = function fun()
+{
+    var e = window.event;
+    var x = e.pageX;
+    var y = e.pageY;
+    if (!move.ongoing ) {
+        move.location = hex.getSelectedTile(x, y);
+        console.log("location and tile selected   c" +
+        move.location.column + "r" + move.location.row);
+        move.ongoing = true;
+    } else {
+        move.nextLocation = hex.getSelectedTile(x, y);
+        console.log("next location and tile selected" +
+        move.nextLocation.column + "r" + move.nextLocation.row);
+        //&& game.unitsMap[move.location.column][move.location.row] === "*"
+        move.unit(move.location, move.nextLocation);
+        move.ongoing = false;
+    }
+    //update unitFilm
+    var unitFilm = document.getElementById("unitFilm");
+    const context = unitFilm.getContext("2d");
+    context.clearRect(0, 0, 1800, 800);
+    game.replaceUnits(context);
 };

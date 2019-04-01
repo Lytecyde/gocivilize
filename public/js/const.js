@@ -9,7 +9,16 @@ var moves = {
     N: 5
 };
 
-var mapDimensions = {
+var constants = {
+    radius: 50
+};
+
+constants.mapDimensions = {
     rows: 8,
     cols: 20
+};
+
+constants.framesPerSecond = {
+    thirty: 1000 / 30,
+    sixty: 1000 / 60
 };

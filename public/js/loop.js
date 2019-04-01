@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global console,document,HexagonGrid,civilization,loop,state,game*/
+/*global console,document,HexagonGrid,civilization,loop,state,game,move*/
 //'use strict';
 
 var endings = {
@@ -11,16 +11,18 @@ var endings = {
     isTimeUp: false
 };
 
-var loop = {};
+var loop = {}; //from turn to turn and vic check to vic check
 
 loop.cycle = function () {
     loop.update();
     loop.render();
 };
 
+
+
 loop.update = function () {
     //update the map with a new unitsmap
-    //movement 
+    var event = window.event;
 };
 
 loop.render = function () {
