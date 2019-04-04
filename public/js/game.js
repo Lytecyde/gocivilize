@@ -284,7 +284,7 @@ game.getListUnits = function () {
     return listUnitLocations;
 };
 
-function placeOneUnit(i, unitLocations, unitLayer) {
+game.placeOneUnit= function(i, unitLocations, unitLayer) {
     var col = 0;
     var row = 0;
     var color = "";
@@ -301,8 +301,6 @@ function placeOneUnit(i, unitLocations, unitLayer) {
     contents.color = "";
     contents.text = "*";
     unitLayer.drawHexAtColRow(row, col, color, "*");
-    i += 1;
-    return i;
 }
 
 game.placeUnits = function () {
@@ -311,7 +309,8 @@ game.placeUnits = function () {
     var unitLayer = new HexagonGrid("unitFilm", 50, null);
     game.unitFilm = unitLayer;
     while (i < unitLocations.length) {
-        i = placeOneUnit(i, unitLocations, unitLayer);
+        game.placeOneUnit(i, unitLocations, unitLayer);
+        i += 1;
     }
 
 };
@@ -344,8 +343,8 @@ game.replaceUnits = function (context) {
     while (i < unitLocations.length) {
         loc = unitLocations[i];
         coordinates = game.getHexCoordinates(loc.x, loc.y);
-        x = coordinates.x;
-        y = coordinates.y;
+        x = coordinates.x - 25;
+        y = coordinates.y + 25;
         context.font = "80px bold Times";
         console.log("unit loc x " + x + " y " + y);
         context.fillText("*", y, x);
