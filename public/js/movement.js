@@ -17,7 +17,7 @@ var move = {
         row: 0
     },
     ongoing: {
-        selectorClick: false,
+        selectorClicked: false,
         targetClick: false
     }
 };
@@ -56,11 +56,19 @@ move.unit = function (location, nextLocation) {
 };
 
 move.removeUnit = function (location) {
+    console.log("removing unit from location " +
+        location.column +
+        "  " +
+        location.row);
     game.unitsMap[location.column][location.row] = "";
-
 };
 
 move.placeUnit = function (nextLocation) {
+    /*console.log("placing unit from location " +
+        nextLocation.column +
+        "  " +
+        nextLocation.row);
+    */
     game.unitsMap[nextLocation.column][nextLocation.row] = "*";
 };
 
@@ -77,38 +85,40 @@ document.getElementById("unitFilm").onclick = function fun() {
     var e = window.event;
     var x = e.pageX;
     var y = e.pageY;
-    move.location = hex.getSelectedTile(x - 50, y - 125);
     var unitLayer = new HexagonGrid("unitFilm", 50, null);
     var unitFilm = document.getElementById("unitFilm");
     const context = unitFilm.getContext("2d");
-    if (!move.ongoing.selectorClick &&
-        game.unitsMap[move.location.column][move.location.row] === "*"
-    ) {
-        console.log("location and tile selected   c" +
-            move.location.column + "r" + move.location.row);
-        unitLayer.drawHexAtColRow(move.location.column,
-            move.location.row,
-            "red",
-            "*");
-        move.ongoing.selectorClick = true;
-        move.ongoing.targetClick = true;
+    if (!move.ongoing.selectorClicked) {
+        move.location = hex.getSelectedTile(x - 50, y - 125);
+        if (game.unitsMap[move.location.column][move.location.row] === "*") {
+            console.log("location and tile selected   c" +
+                move.location.column + "r" + move.location.row);
+            unitLayer.drawHexAtColRow(move.location.column,
+                move.location.row,
+                "red",
+                "*");
+            move.ongoing.selectorClicked = true;
+            move.ongoing.targetClick = true;
+        }
     } else {
         if (move.ongoing.targetClick) {
             //TODO: needs rework
-            move.nextLocation = hex.getSelectedTile(x, y);
+            move.nextLocation = hex.getSelectedTile(x + 25, y);
             move.nextLocation.column -= 1;
             move.nextLocation.row -= move.nextLocation.column % 2 + 1;
             console.log("next location and tile selected" +
                 move.nextLocation.column + "r" + move.nextLocation.row);
+            //move unit on unitmap
             move.unit(move.location, move.nextLocation);
+
             //repaint units onto unitfilm
             context.clearRect(0, 0, 1800, 800);
             //game.replaceUnits(context);
             var col = move.nextLocation.column;
             var row = move.nextLocation.row;
             unitLayer.drawHexAtColRow(col, row, "", "*");
-            move.ongoing.selectorClick = false;
             move.ongoing.targetClick = false;
+            move.ongoing.selectorClicked = false;
         }
     }
 };
