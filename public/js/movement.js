@@ -73,37 +73,39 @@ move.unitToAdjacentHex = function () {
     }
 };
 
-document.getElementById("unitFilm").onclick = function fun()
-{
+document.getElementById("unitFilm").onclick = function fun() {
     var e = window.event;
-    var x = e.pageX ;
-    var y = e.pageY ;
-    move.location = hex.getSelectedTile(x -50, y -100);
-    if (
-        !move.ongoing.selectorClick
-        && game.unitsMap[move.location.column][move.location.row] === "*"
-        ) {
+    var x = e.pageX;
+    var y = e.pageY;
+    move.location = hex.getSelectedTile(x - 50, y - 125);
+    var unitLayer = new HexagonGrid("unitFilm", 50, null);
+    var unitFilm = document.getElementById("unitFilm");
+    const context = unitFilm.getContext("2d");
+    if (!move.ongoing.selectorClick &&
+        game.unitsMap[move.location.column][move.location.row] === "*"
+    ) {
         console.log("location and tile selected   c" +
-        move.location.column + "r" + move.location.row);
+            move.location.column + "r" + move.location.row);
+        unitLayer.drawHexAtColRow(move.location.column,
+            move.location.row,
+            "red",
+            "*");
         move.ongoing.selectorClick = true;
         move.ongoing.targetClick = true;
-    }
-    else {
+    } else {
         if (move.ongoing.targetClick) {
+            //TODO: needs rework
             move.nextLocation = hex.getSelectedTile(x, y);
             move.nextLocation.column -= 1;
-            move.nextLocation.row -= move.nextLocation.column%2 + 1;
+            move.nextLocation.row -= move.nextLocation.column % 2 + 1;
             console.log("next location and tile selected" +
-            move.nextLocation.column + "r" + move.nextLocation.row);
+                move.nextLocation.column + "r" + move.nextLocation.row);
             move.unit(move.location, move.nextLocation);
             //repaint units onto unitfilm
-            var unitFilm = document.getElementById("unitFilm");
-            const context = unitFilm.getContext("2d");
             context.clearRect(0, 0, 1800, 800);
             //game.replaceUnits(context);
             var col = move.nextLocation.column;
             var row = move.nextLocation.row;
-            var unitLayer = new HexagonGrid("unitFilm", 50, null);
             unitLayer.drawHexAtColRow(col, row, "", "*");
             move.ongoing.selectorClick = false;
             move.ongoing.targetClick = false;
