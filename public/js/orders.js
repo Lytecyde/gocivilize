@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global game,hex,HexagonGrid*/
+/*global game,hex,HexagonGrid,move*/
 
 document.onkeypress = function (evt) {
     //"use strict";
@@ -13,8 +13,12 @@ document.onkeypress = function (evt) {
         orders.constructCity();
     }
     if (charStr === "g" || charStr === "G") {
-        alert("Population growth");
+        //console.log("Population growth");
         orders.grow();
+    }
+    if (charStr === "m" || charStr === "M") {
+        //alert("Moving unit");
+        orders.move();
     }
 };
 
@@ -36,33 +40,75 @@ orders.constructCity = function () {
 orders.grow = function () {
     var unitList = game.getListUnits();
     var countUnits = unitList.length;
+    var unitLocation = null;
     var i = 0;
-    var unitLocations = null;
     while (i < countUnits) {
         //place to free unit on nearby spot
-        unitLocations = unitList[i];
-        document.getElementById("unitFilm").onclick =
-            placeNewUnit(i, unitLocations);
+        unitLocation = unitList[i];
+
+        placeNewUnit(unitLocation);
+        console.log("unit SELECTOR" +
+            unitLocation.column +
+            " " +
+            unitLocation.row);
         //add to unitmap
+        
+        i += 1;
     }
+    console.log("done growing");
 };
 
-var placeNewUnit = function (i, location) {
-    var event = window.event;
-    var x = event.pageX;
-    var y = event.pageY;
-    var mouseLocation = hex.getSelectedTile(x, y);
-    if (hex.isAroundTile(location, mouseLocation)) {
-        //place unit
-        game.unitFilm.drawHexAtColRow(
-            mouseLocation.column,
-            mouseLocation.row,
-            "",
-            "*"
-        );
-    }
+var addUnitToUnitsMap = function (nextLocation) {
+    /*console.log("placing unit from location " +
+        nextLocation.column +
+        "  " +
+        nextLocation.row);
+    */
+    game.unitsMap[nextLocation.column][nextLocation.row] = "*";
+};
+
+var placeNewUnit = function (location) {
+    var done = false;
+    document.getElementById("unitFilm").onclick = function () {
+        var event = window.event;
+        var x = event.pageX;
+        var y = event.pageY;
+        var mouseLocation = hex.getSelectedTile(x, y);
+        console.log("clickin on unitfilm @column" +
+            mouseLocation.column +
+            " r " +
+            mouseLocation.row +
+            "unit location is @ loc column" +
+            location.column +
+            " loc row" +
+            location.row);
+        function isAnotherLocation (mouseLocation, location) {
+            return !(mouseLocation.column === location.column &&
+                mouseLocation.row === location.row);
+        }
+
+        if (isAnotherLocation(mouseLocation, location) && !done) {
+            //place unit
+            console.log("good enough, placing unit");
+            var h = new HexagonGrid("unitFilm", 50, null);
+            h.drawHexAtColRow(
+                mouseLocation.column,
+                mouseLocation.row,
+                "",
+                "*"
+            );
+            addUnitToUnitsMap(mouseLocation);
+            done = true;
+        } else {
+            document.getElementById("unitFilm").onclick = function () {};
+        }
+    };
 };
 
 orders.fortify = function () {
     console.log("fortify a unit here");
+};
+
+orders.move = function () {
+    document.getElementById("unitFilm").onclick = move.moving;
 };

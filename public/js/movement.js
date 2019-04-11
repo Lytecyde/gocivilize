@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global game,hex,HexagonGrid*/
+/*global window,game,hex,HexagonGrid*/
 
 var move = {
     coordinates: {
@@ -81,7 +81,8 @@ move.unitToAdjacentHex = function () {
     }
 };
 
-document.getElementById("unitFilm").onclick = function fun() {
+move.moving = function () {
+    console.log("count movable units:" + game.getListUnits().length);
     var e = window.event;
     var x = e.pageX;
     var y = e.pageY;
@@ -113,12 +114,15 @@ document.getElementById("unitFilm").onclick = function fun() {
 
             //repaint units onto unitfilm
             context.clearRect(0, 0, 1800, 800);
-            //game.replaceUnits(context);
-            var col = move.nextLocation.column;
-            var row = move.nextLocation.row;
-            unitLayer.drawHexAtColRow(col, row, "", "*");
+            //var col = move.nextLocation.column;
+            //var row = move.nextLocation.row;
+            //unitLayer.drawHexAtColRow(col, row, "", "*");
+            game.placeUnits();
+            //reset click flags
             move.ongoing.targetClick = false;
             move.ongoing.selectorClicked = false;
         }
     }
 };
+
+document.getElementById("unitFilm").onclick = move.moving;

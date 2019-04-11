@@ -350,7 +350,7 @@ hex.getSelectedTile = function (mouseX, mouseY) {
     var minBorderX = data.location.column * hex.side;
     var maxBorderX = (data.location.column * hex.side) + hex.width - hex.side;
 
-    if (mouseX > (minBorderX) &&
+    if (mouseX > minBorderX &&
         mouseX < maxBorderX) {
         //Now test which of the two triangles we are in
         //Top left triangle points
