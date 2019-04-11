@@ -20,13 +20,35 @@ document.onkeypress = function (evt) {
         //alert("Moving unit");
         orders.move();
     }
+    if (charStr === "n" || charStr === "N") {
+        //alert("Next active unit");
+        orders.selectNextUnit();
+    }
 };
 
 var orders = {};
 
+orders.selectNextUnit = function () {
+//TODO: going to fix unknown location appearing once every cycle of units 
+    var unitList = game.getListUnits();
+    var indexOfActiveUnit = game.activeUnitIndex;
+    var location = unitList[indexOfActiveUnit];
+    //empty the 
+    var selectorLayer = new HexagonGrid("unitFilm", 50, null);
+    var context = selectorLayer.context;
+    context.clearRect(0, 0, 1800, 800);
+
+    game.incrementActiveUnitIndex();
+
+    game.placeUnits();
+    location = unitList[game.activeUnitIndex];
+    selectorLayer.drawHexAtColRow(location.column, location.row, "white", "*");
+
+};
+
 orders.constructCity = function () {
     var unitList = game.getListUnits();
-    var indexOfActiveUnit = 0;
+    var indexOfActiveUnit = game.activeUnitIndex;
     var cityLocation = unitList[indexOfActiveUnit];
     console.log("column" + cityLocation.column + "row " + cityLocation.row);
     game.cityMap[cityLocation.column][cityLocation.row] = "#";
@@ -51,8 +73,6 @@ orders.grow = function () {
             unitLocation.column +
             " " +
             unitLocation.row);
-        //add to unitmap
-        
         i += 1;
     }
     console.log("done growing");

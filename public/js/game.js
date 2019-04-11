@@ -10,6 +10,7 @@ var game = {
     VISIBLE: 0.9,
     FOG: 1.0,
     moving: false,
+    activeUnitIndex: 0,
     colorsMap: null,
     unitsMap: [
         []
@@ -18,6 +19,7 @@ var game = {
     fogMap: [
         []
     ],
+
     lastTile: {
         row: 0,
         column: 0
@@ -50,7 +52,7 @@ game.onload = function () {
     //game.makeFogMap();
     //game.fogOfWar();
     //units
-    game.makeUnits();
+    //game.makeUnits();
     game.placeUnits();
 
     game.loop();
@@ -298,6 +300,16 @@ game.getListUnits = function () {
     }
 
     return listUnitLocations;
+};
+
+game.incrementActiveUnitIndex = function () {
+    console.log("game.getListUnits.length" + game.getListUnits().length);
+    if(game.activeUnitIndex < game.getListUnits().length) {
+        game.activeUnitIndex += 1;
+    } else {
+        game.activeUnitIndex = 0;
+    }
+    console.log("index : " + game.activeUnitIndex);
 };
 
 game.placeOneUnit = function (i, unitLocations, unitLayer) {

@@ -81,6 +81,15 @@ move.unitToAdjacentHex = function () {
     }
 };
 
+move.showActiveUnit = function (column, row, unitLayer) {
+    console.log("location and tile selected   c" +
+                column + "r" + row);
+    unitLayer.drawHexAtColRow(column,
+        row,
+        "red",
+        "*");
+};
+
 move.moving = function () {
     console.log("count movable units:" + game.getListUnits().length);
     var e = window.event;
@@ -92,12 +101,9 @@ move.moving = function () {
     if (!move.ongoing.selectorClicked) {
         move.location = hex.getSelectedTile(x - 50, y - 125);
         if (game.unitsMap[move.location.column][move.location.row] === "*") {
-            console.log("location and tile selected   c" +
-                move.location.column + "r" + move.location.row);
-            unitLayer.drawHexAtColRow(move.location.column,
+            move.showActiveUnit(move.location.column,
                 move.location.row,
-                "red",
-                "*");
+                unitLayer);
             move.ongoing.selectorClicked = true;
             move.ongoing.targetClick = true;
         }
