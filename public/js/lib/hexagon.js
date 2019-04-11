@@ -221,7 +221,7 @@ var isPointInTriangle = function (pt, v1, v2, v3) {
     var b1 = hex.isAbove(pt, v1, v2);
     var b2 = hex.isAbove(pt, v2, v3);
     var b3 = hex.isAbove(pt, v3, v1);
-    return ((b1===b2) && (b2===b3)); //
+    return ((b1 === b2) && (b2 === b3)); //
 };
 //todo: encirclement obj
 
@@ -241,7 +241,7 @@ function getYDifferenceOfEncirclement(col) {
     return dy;
 }
 
-var getEncirclementOne = function (col, row) {
+hex.getEncirclementOne = function (col, row) {
     //var numberOfTilesAroundHex = 6;
     var Encirclement = {};
     var h = {
@@ -397,15 +397,16 @@ hex.clickEvent = function (e) {
     hex.clickEventHandler(tile);
 };
 
-//!!!linting for loop !!!
-var isAroundTile = function (lastTile, tile) {
-    var listAroundTile = lastTile.getEncirclementOne(lastTile.column,
-        lastTile.row);
-    listAroundTile.foreach(function (h) {
-        if (h.col === tile.column && h.row === tile.row) {
-            return true;
+//!!!tODO fix error
+hex.isAroundTile = function (centreTile, tile) {
+    var listAroundTile = hex.getEncirclementOne(centreTile.column,
+        centreTile.row);
+    var isAdjacent = false;
+    listAroundTile.forEach(function (h) {
+        if (h.column === tile.column && h.row === tile.row) {
+            isAdjacent = true;
         }
     });
 
-    return false;
+    return isAdjacent;
 };
