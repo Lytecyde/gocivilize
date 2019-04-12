@@ -11,7 +11,7 @@ var game = {
     FOG: 1.0,
     moving: false,
     activeUnitIndex: 0,
-    colorsMap: null,
+    colorsMap: null, //TODO: rename landsMap
     unitsMap: [
         []
     ],
@@ -304,7 +304,7 @@ game.getListUnits = function () {
 
 game.incrementActiveUnitIndex = function () {
     console.log("game.getListUnits.length" + game.getListUnits().length);
-    if(game.activeUnitIndex < game.getListUnits().length) {
+    if (game.activeUnitIndex < game.getListUnits().length) {
         game.activeUnitIndex += 1;
     } else {
         game.activeUnitIndex = 0;

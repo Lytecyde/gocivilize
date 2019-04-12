@@ -29,7 +29,7 @@ document.onkeypress = function (evt) {
 var orders = {};
 
 orders.selectNextUnit = function () {
-//TODO: going to fix unknown location appearing once every cycle of units 
+    //TODO: going to fix unknown location appearing once every cycle of units 
     var unitList = game.getListUnits();
     var indexOfActiveUnit = game.activeUnitIndex;
     var location = unitList[indexOfActiveUnit];
@@ -43,7 +43,7 @@ orders.selectNextUnit = function () {
     game.placeUnits();
     location = unitList[game.activeUnitIndex];
     selectorLayer.drawHexAtColRow(location.column, location.row, "white", "*");
-
+    hud.fillUnitSheet();
 };
 
 orders.constructCity = function () {
@@ -102,7 +102,8 @@ var placeNewUnit = function (location) {
             location.column +
             " loc row" +
             location.row);
-        function isAnotherLocation (mouseLocation, location) {
+
+        function isAnotherLocation(mouseLocation, location) {
             return !(mouseLocation.column === location.column &&
                 mouseLocation.row === location.row);
         }
