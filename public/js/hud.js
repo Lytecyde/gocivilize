@@ -8,3 +8,7 @@ var hud = {
     playerScreen: document.getElementById("hud-data"),
     cityScreen: document.getElementById("city-data")
 };
+
+hud.update = function () {
+    hud.playerScreen.getElementById("")
+};

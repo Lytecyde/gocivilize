@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global console,setInterval,document,HexagonGrid,civilization,loop,unitFilm,cityFilm*/
+/*global console,setInterval,document,HexagonGrid,civilization,loop,unitFilm,cityFilm,hud*/
 //"use strict";
 
 var game = {

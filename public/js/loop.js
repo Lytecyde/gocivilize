@@ -54,4 +54,5 @@ loop.clickNext = function () {
     addEpoch();
     var id = document.getElementById("year");
     id.innerHTML = state.year;
+    hud.update();
 };
