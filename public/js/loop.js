@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global console,document,HexagonGrid,civilization,loop,state,game,move*/
+/*global console,document,HexagonGrid,civilization,loop,state,game,move,turn*/
 //'use strict';
 
 var endings = {
@@ -50,6 +50,7 @@ loop.endSequence = function () {
 };
 
 loop.clickNext = function () {
+    turn.run();
     addEpoch();
     var id = document.getElementById("year");
     id.innerHTML = state.year;

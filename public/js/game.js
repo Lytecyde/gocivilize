@@ -19,7 +19,6 @@ var game = {
     fogMap: [
         []
     ],
-
     lastTile: {
         row: 0,
         column: 0
@@ -30,7 +29,8 @@ var game = {
     //h: {},
     colorsLength: 8,
     hMap: {},
-    hMini: {}
+    hMini: {},
+    scorePoints: 0
 };
 
 game.onload = function () {
@@ -302,6 +302,33 @@ game.getListUnits = function () {
     return listUnitLocations;
 };
 
+game.getListCities = function () {
+    var listCityLocations = [];
+    var i = 0;
+    var col = 0;
+    var row = 0;
+    while (col < game.COLS) {
+        row = 0;
+        while (row < game.ROWS) {
+            if (game.cityMap[col][row] === "#") {
+                listCityLocations.push({
+                    column: 0,
+                    row: 0
+                });
+                listCityLocations[i] = {
+                    column: col,
+                    row: row
+                };
+                i += 1;
+            }
+            row += 1;
+        }
+        col += 1;
+    }
+
+    return listCityLocations;
+};
+
 game.incrementActiveUnitIndex = function () {
     console.log("game.getListUnits.length" + game.getListUnits().length);
     if (game.activeUnitIndex < game.getListUnits().length) {
@@ -371,14 +398,18 @@ game.replaceUnits = function (context) {
     while (i < unitLocations.length) {
         loc = unitLocations[i];
         coordinates = game.getHexCoordinates(loc.column, loc.row);
-        x = coordinates.x - 25;
-        y = coordinates.y + 25;
-        context.font = "80px bold Times";
-        console.log("unit loc x " + x + " y " + y);
-        context.fillText("*", y, x);
+        x = coordinates.x;
+        y = coordinates.y;
+        context.font = "80";
+        console.log("unit " + " y " + y);
+        context.fillText();
         context.stroke();
         i += 1;
     }
+};
+
+game.score = function () {
+    game.scorePoints += 1;
 };
 
 game.loop = function () {
