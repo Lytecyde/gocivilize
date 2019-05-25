@@ -1,7 +1,7 @@
 /*jslint
     browser: true
 */
-/*global document*/
+/*global document,economy*/
 
 var hud = {
     unitScreen: document.getElementById("unit-data"),
@@ -10,5 +10,5 @@ var hud = {
 };
 
 hud.update = function () {
-    hud.playerScreen.getElementById("")
+    hud.getElementById("bank").innerHTML = economy.bank;
 };

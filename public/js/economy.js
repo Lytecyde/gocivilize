@@ -85,10 +85,10 @@ economy.disasters = function () {
     var i = 0;
     var n = 0;
     while (i < (Math.random() * 1)) {
-        n = Math.floor(Math.random() * disaster.length);
+        n = Math.floor(Math.random() * disasters.length);
         disaster = disasters[n];
         badEvents.push(disaster);
-        alert(badEvents[i]);
+        alert(disaster);
         i += 1;
     }
 };
@@ -115,7 +115,7 @@ economy.celebrations = function () {
         n = Math.floor(Math.random() * celebrations.length);
         celebration = celebrations[n];
         goodEvents.push(celebration);
-        alert(goodEvents[i]);
+        alert(celebration);
         i += 1;
     }
 };
